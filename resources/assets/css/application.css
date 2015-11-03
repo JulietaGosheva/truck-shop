@@ -1,0 +1,79 @@
+html, body {
+    height: 100%;
+}
+
+.application-content {
+    min-height: 100%;
+    position: relative;
+}
+
+.single-view-content {
+	padding-bottom: 30px;   /* Height of the footer element */
+}
+
+.footer {
+	padding-top: 5px;
+    background: #333;
+    min-width: 100%;
+    position: absolute;
+    color: #eee;
+    height: 30px;
+    bottom: 0px;
+}
+
+.nav-link-container {
+	padding-left: 35px;
+    float: left;
+}
+
+.content-container {
+	padding-right: 35px; 
+	float: right;
+}
+
+.nav-bar-link {
+	min-width: 100%;
+    border-radius: 0px;
+    background-color: #FF3737;
+    color: white;
+}
+
+.nav-bar-link-list {
+    min-width: 100%;
+    border-radius: 0px;
+}
+
+.nav-ul li a:hover {
+	background-color: #484848;
+	color: white;
+}
+
+.nav-ul li a:active {
+    background-color: #484848;
+    color: white;
+}
+
+.thumbnail-size {
+	max-width: 250px;
+	min-height: 325px;
+	max-height: 325px;
+}
+
+.nav-item-size {
+	max-width: 150px;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+.thumbnail-image {
+	min-height: 85px;
+	max-width: 250px;
+}
+
+.center-alignment {
+    text-align: center;	
+}
+
+.artical-link:hover {
+	border-color: blue;
+}
