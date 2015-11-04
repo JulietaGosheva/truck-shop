@@ -4,61 +4,61 @@
 	var NavigationUtil = function() {
 		var navigationArticals = {
 				"accessoars": {
-						href: "#/accessoars",
-						displayName: "Аксесоари",
-						subArtical : [
-							{ 
-								"gresiorka" : {
-					            		href: "#/buffers/subArtical/gresiorka",
-						            	displayName: "Гресьорка",
-						            	subArtical : []
-					            	}
-							},
-							{ 
-								"eluredi" : {
-					            		href: "#/buffers/subArtical/eluredi",
-						            	displayName: "Електрически уреди",
-						            	subArtical : []
-					            	}
-							}
-		                ],
-					},
+					href: "#/accessoars",
+					displayName: "Аксесоари",
+					subArtical : [
+						{ 
+							"gresiorka" : {
+			            		href: "#/buffers/subArtical/gresiorka",
+				            	displayName: "Гресьорка",
+				            	subArtical : []
+			            	}
+						},
+						{ 
+							"eluredi" : {
+			            		href: "#/buffers/subArtical/eluredi",
+				            	displayName: "Електрически уреди",
+				            	subArtical : []
+			            	}
+						}
+	                ],
+				},
 			    "buffers": {
-						href: "#/buffers",
-						displayName: "Буфери",
-						subArtical : [
-				            { 
-				            	"golemi" : {
-					            		href: "#/buffers/subArtical/golemi",
-						            	displayName: "Буфери и лафети",
-						            	subArtical : []
-					            	}
-		            		},
-				            {
-		            			"lafeti" : {
-					            		href: "#/buffers/subArtical/lafeti",
-					            		displayName: "Лафети",
-					            		subArtical : []
-					            	}
-				            }
-			            ],
-						
-				    },
+					href: "#/buffers",
+					displayName: "Буфери",
+					subArtical : [
+			            { 
+			            	"golemi" : {
+			            		href: "#/buffers/subArtical/golemi",
+				            	displayName: "Буфери и лафети",
+				            	subArtical : []
+			            	}
+	            		},
+			            {
+	            			"lafeti" : {
+			            		href: "#/buffers/subArtical/lafeti",
+			            		displayName: "Лафети",
+			            		subArtical : []
+			            	}
+			            }
+		            ],
+					
+			    },
 			    "engines": {
-				    	href: "#/engines",
-				    	displayName: "Двигатели",
-				    	subArtical : [],
-				    },
+			    	href: "#/engines",
+			    	displayName: "Двигатели",
+			    	subArtical : [],
+			    },
 			    "buffer-laffets": {
-				    	href: "#/buffer-laffets",
-				    	displayName: "Буфери-Лафети",
-				    	subArtical : [],
-				    },
+			    	href: "#/buffer-laffets",
+			    	displayName: "Буфери-Лафети",
+			    	subArtical : [],
+			    },
 			    "snow-net": {
-				    	href: "#/snow-net",
-				    	displayName: "Вериги за сняг",
-				    	subArtical : []
-				    }
+			    	href: "#/snow-net",
+			    	displayName: "Вериги за сняг",
+			    	subArtical : []
+			    }
 		};
 		
 		return {

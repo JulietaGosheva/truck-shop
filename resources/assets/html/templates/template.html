@@ -1,15 +1,9 @@
 <div class="template">
 
-   <nav class="navbar navbar-default" style="background-color: #FF3737; border-radius: 0px; padding: 0px;">
-      <div class="container-fluid">
-         <div class="navbar-header">
-            <a class="navbar-brand" href="#/" style="color: white">Авточасти</a>
-         </div>
-      </div>
-   </nav>
+   <div ng-include="'../resources/assets/html/navigation.html'"></div>
    
    <div class="nav-link-container col-sm-2" ng-controller="TemplateController">
-      <a class="nav-bar-link btn btn-default">Навигация</a>
+      <!-- <a class="nav-bar-link btn btn-default">Навигация</a> -->
       <ul class="nav-ul nav nav-pills nav-stacked" style="text-align: center" ng-repeat="navLink in navLinks">
          <li role="presentation" class="nav-bar-link-list">
             <a class="nav-bar-link-elem" href="{{ navLink.navLinkUrl }}">{{ navLink.navLinkName }}</a>

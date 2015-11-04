@@ -1,6 +1,6 @@
 <div class="row" ng-hide="subArticals">
    <div class="col-sm-4 col-md-3" ng-repeat="artical in articals">
-      <a href="#/" class="thumbnail thumbnail-size" style="text-decoration: none">
+      <a href="{{ artical.href }}" class="thumbnail thumbnail-size" style="text-decoration: none">
          <img class="thumbnail-image" ng-src="{{ artical.src }}" alt="">
          <div class="caption">
             <h3 class="center-alignment">Description : {{ artical.description }}</h3>

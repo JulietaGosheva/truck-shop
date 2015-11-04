@@ -21,12 +21,17 @@ html, body {
     bottom: 0px;
 }
 
+.menu-item {
+    color: white;	
+}
+
 .nav-link-container {
-	padding-left: 35px;
+	padding: 0px;
     float: left;
 }
 
 .content-container {
+	padding-top: 35px;
 	padding-right: 35px; 
 	float: right;
 }
