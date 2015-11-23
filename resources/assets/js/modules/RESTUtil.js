@@ -3,19 +3,19 @@
 	var ValidationUtil = {
 		validateUrl: function(oData) {
 			if (!oData.url || oData.url === "") {
-				throw new Exception("Can invoke such type of request without specifying the url.");
+				throw new Exception("Cant invoke such type of request without specifying the url.");
 			};
 		},
 		
 		validateGETMethodType: function(oData) {
 			if (oData.method && oData.method.toUpperCase() !== "GET") {
-				throw new Exception("Method type different than \"GET\" can't be passed.");
+				throw new Exception("Method type different than \"GET\", can't be passed.");
 			}
 		},
 		
 		validatePOSTMethodType: function(oData) {
 			if (oData.method && oData.method.toUpperCase() !== "POST") {
-				throw new Exception("Method type different than \"GET\" can't be passed.");
+				throw new Exception("Method type different than \"POST\", can't be passed.");
 			}
 		}
 	
