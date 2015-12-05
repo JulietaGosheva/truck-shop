@@ -83,3 +83,10 @@ html, body {
 .artical-link:hover {
 	border-color: blue;
 }
+
+.rs-navbar {
+	background-color: #FF3737;
+	border-radius: 0px; 
+	padding: 0px; 
+	margin: 0px;
+}

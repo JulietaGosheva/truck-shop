@@ -8,6 +8,10 @@
         <script src="../../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
         <script src="../../resources/admin/js/admin.js"></script>
         <script src="../../resources/admin/js/controllers/ProductController.js"></script>
+        <script src="../../resources/admin/js/controllers/NavigationController.js"></script>
+        <script src="../../resources/admin/js/controllers/OrdersController.js"></script>
+        <script src="../../resources/admin/js/controllers/PromotionController.js"></script>
+        <script src="../../resources/admin/js/controllers/UsersController.js"></script>
 		<link rel="stylesheet" href="../../resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/css/bootstrap-theme.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/css/font-awesome.min.css"></link>
