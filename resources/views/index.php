@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
+		<title>Авточасти</title>
 		<script src="../resources/dependencies/js/angular.min.js"></script>
 		<script src="../resources/dependencies/js/angular-route.min.js"></script>
         <script src="../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
