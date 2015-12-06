@@ -1,0 +1,30 @@
+<form class="form-horizontal col-sm-10">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Емайл</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" name="type" placeholder="Емайл на потребителя">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Име</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" name="type" placeholder="Име на потребителя">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Фамилия</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" name="type" placeholder="Фамилия на потребителя">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-6 col-sm-2">
+			<button type="submit" class="btn btn-{{ buttonStyle }}" style='min-width: 200px;' ng-bind-html="buttonText">
+			     {{ buttonText }}
+			</button>
+		</div>
+	</div>
+</form>

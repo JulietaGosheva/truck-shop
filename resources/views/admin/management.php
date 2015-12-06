@@ -3,18 +3,38 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Администрация</title>
+		
+        <script src="../../resources/dependencies/js/jquery-2.1.3.min.js"></script>
+        <script src="../../resources/dependencies/external/chosen/chosen.jquery.js"></script>
+        
 		<script src="../../resources/dependencies/js/angular.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-route.min.js"></script>
+		<script src="../../resources/dependencies/js/angular-sanitize.min.js"></script>
         <script src="../../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
-        <script src="../../resources/admin/js/admin.js"></script>
-        <script src="../../resources/admin/js/controllers/ProductController.js"></script>
+        
+        <script src="../../resources/admin/js/AdminController.js"></script>
+        
+        <script src="../../resources/admin/js/controllers/products/ProductCreationController.js"></script>
+		<script src="../../resources/admin/js/controllers/products/DeleteProductController.js"></script>
+		<script src="../../resources/admin/js/controllers/products/EditProductController.js"></script>
+		<script src="../../resources/admin/js/controllers/products/SearchProductController.js"></script>
+		
+        <script src="../../resources/admin/js/controllers/users/UserCreationController.js"></script>
+        <script src="../../resources/admin/js/controllers/users/DeleteUserController.js"></script>
+        <script src="../../resources/admin/js/controllers/users/EditUserController.js"></script>
+        <script src="../../resources/admin/js/controllers/users/SearchUserController.js"></script>
+
         <script src="../../resources/admin/js/controllers/NavigationController.js"></script>
         <script src="../../resources/admin/js/controllers/OrdersController.js"></script>
         <script src="../../resources/admin/js/controllers/PromotionController.js"></script>
-        <script src="../../resources/admin/js/controllers/UsersController.js"></script>
+        
+        <script src="../../resources/admin/js/modules/EndpointHelper.js"></script>
+        
 		<link rel="stylesheet" href="../../resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/css/bootstrap-theme.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="../../resources/dependencies/external/chosen/chosen.css"></link>
+        
         <link rel="stylesheet" href="../../resources/assets/css/application.css"></link>
 	</head>
 	<body>
