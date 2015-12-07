@@ -1,0 +1,22 @@
+<div style="padding-top: 25px;">
+
+    <form class="form-horizontal col-sm-offset-3" ng-submit="executeRequest(scope, {})">
+        <div class="form-group col-sm-8" style="margin-right: -75px;">
+	        <label class="control-label" style="padding-right: 15px;">Тип на продукта</label>
+            <select class="form-control chosen-select" name="type"></select>
+	    </div>
+        <button type="submit" class="btn btn-primary col-sm-2">
+            <span class="glyphicon glyphicon-search"></span></span>
+        </button>
+    </form>
+
+</div>
+    
+<script>
+    (function() {
+        $('.chosen-select').chosen({
+            no_results_text : "Не е намерен резултат с името: ",
+            placeholder_text_single : "Изберете опция"
+        });
+    })();
+</script>

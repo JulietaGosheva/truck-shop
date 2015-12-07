@@ -1,7 +1,21 @@
 <div>
 
-    <h3 style='text-align: center;'>Търсене на потребител</h3>
+	<h3 style='text-align: center;'>Търсене на потребител</h3>
 
-    <div ng-include="'../../resources/admin/html/users/template.html'"></div>
+	<div ng-include="'../../resources/admin/html/users/template.html'"></div>
+
+	<div class="row" style="margin-top: 25px;">
+		<div class="col-sm-4 col-md-3" ng-repeat="user in users">
+			<a href="#{{ url }}/{{ user.id }}" class="thumbnail users-thumbnail-size" style="text-decoration: none">
+				<div class="thumbnail-image" align="center">
+					<i class="fa fa-user fa-5x"></i>
+				</div>
+				<div class="caption">
+					<h4 class="center-alignment">Емайл : {{ user.email }}</h4>
+					<p class="center-alignment">Име : {{ user.firstname }} {{ user.lastname }}</p>
+				</div>
+			</a>
+		</div>
+	</div>
 
 </div>

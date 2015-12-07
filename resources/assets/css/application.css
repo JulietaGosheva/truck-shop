@@ -65,6 +65,12 @@ html, body {
 	max-height: 325px;
 }
 
+.users-thumbnail-size {
+	max-width: 250px;
+    min-height: 200px;
+    max-height: 200px;
+}
+
 .nav-item-size {
 	max-width: 150px;
     min-height: 200px;

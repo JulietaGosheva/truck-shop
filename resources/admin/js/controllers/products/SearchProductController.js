@@ -5,9 +5,8 @@
 	var SearchProductController = function($scope, $location, EndpointHelper) {
 		var oData = {};
 		$scope.model = $scope;
-		$scope.location = $location;
-		$scope.endpointHelper = EndpointHelper;
-		$scope.findSearchedElements = findSearchedElements;
+		$scope.searchProducts = findSearchedProducts;
+		$scope.url = constructUrl($location, EndpointHelper);
 	};
 	
 	module.controller("SearchProductController", ["$scope", "$location", "EndpointHelper", SearchProductController]);
@@ -22,9 +21,8 @@
 		return hash;
 	};
 	
-	var findSearchedElements = function($scope, $location, EndpointHelper, oData) {
-		$scope.url = constructUrl($location, EndpointHelper);
-		$scope.foundedElements = [
+	var findSearchedProducts = function($scope, oData) {
+		$scope.products = [
 	   		   {
 	   			   id: 1,
 	   			   src: "http://weknowyourdreams.com/images/car/car-05.jpg",
