@@ -23,8 +23,11 @@
         <script src="../../resources/admin/js/controllers/users/DeleteUserController.js"></script>
         <script src="../../resources/admin/js/controllers/users/EditUserController.js"></script>
         <script src="../../resources/admin/js/controllers/users/SearchUserController.js"></script>
+        
+        <script src="../../resources/admin/js/controllers/navigations/NavigationCreationController.js"></script>
+        <script src="../../resources/admin/js/controllers/navigations/DeleteNavigationController.js"></script>
+        <script src="../../resources/admin/js/controllers/navigations/EditNavigationController.js"></script>
 
-        <script src="../../resources/admin/js/controllers/NavigationController.js"></script>
         <script src="../../resources/admin/js/controllers/OrdersController.js"></script>
         <script src="../../resources/admin/js/controllers/PromotionController.js"></script>
         

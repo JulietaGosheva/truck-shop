@@ -66,9 +66,17 @@
 				templateUrl: "../../resources/admin/html/promotions.html",
 				controller: "PromotionController"
 			})
-			.when("/navigations", {
-				templateUrl: "../../resources/admin/html/navigations.html",
-				controller: "NavigationController"
+			.when("/navigations/creation", {
+				templateUrl: "../../resources/admin/html/navigations/creation.html",
+				controller: "NavigationCreationController"
+			})
+			.when("/navigations/edit", {
+				templateUrl: "../../resources/admin/html/navigations/edit.html",
+				controller: "EditNavigationController"
+			})
+			.when("/navigations/delete", {
+				templateUrl: "../../resources/admin/html/navigations/delete.html",
+				controller: "DeleteNavigationController"
 			})
 			.otherwise({ redirectTo: "/" });
 	});

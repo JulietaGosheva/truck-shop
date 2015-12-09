@@ -44,8 +44,14 @@
                 <a class="menu-item" href="#/promotions" ng-click="">Промоции</a>
             </li>
             
-            <li>
-                <a class="menu-item" href="#/navigations" ng-click="">Навигациони менюта</a>
+            <li class="dropdown" uib-dropdown>
+                <a href="#" class="dropdown-toggle menu-item" data-toggle="dropdown" role="button" aria-haspopup="true"
+                    aria-expanded="false"  uib-dropdown-toggle>Навигациони менюта <span class="caret"></span></a>
+                <ul class="dropdown-menu" uib-dropdown-menu>
+                     <li><a class="menu-item" href="#/navigations/creation">Създаване</a></li>
+                     <li><a class="menu-item" href="#/navigations/edit">Редактиране</a></li>
+                     <li><a class="menu-item" href="#/navigations/delete">Изтриване</a></li>
+                  </ul>
             </li>
             
          </ul>

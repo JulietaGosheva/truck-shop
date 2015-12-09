@@ -1,0 +1,52 @@
+<div>
+
+    <h3 style='text-align: center;'>Създаване на навигационни менюта</h3>
+
+	<form class="form-horizontal col-sm-10">
+	    <div class="form-group">
+	        <label class="col-sm-3 control-label">Име</label>
+	        <div class="col-sm-9">
+	            <div class="input-group">
+	                <span class="input-group-addon">
+	                    <input type="checkbox" ng-model="menuInsertMode">
+	                </span>
+	                <input type="text" class="form-control" name="type" ng-show="menuInsertMode" placeholder="Име на менюто">
+	                <div ng-show="menuInsertMode == false">
+	                   <select class="form-control chosen-select" name="type"></select>
+	               </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <label class="col-sm-3 control-label">Под меню</label>
+	        <div class="col-sm-9">
+	            <div class="input-group">
+	                <span class="input-group-addon">
+	                    <input type="checkbox" ng-model="subMenuInsertMode">
+	                </span>
+	                <input type="text" class="form-control" name="brand" ng-show="subMenuInsertMode" placeholder="Име на под менюто">
+	                <div ng-show="subMenuInsertMode == false">
+	                   <select class="form-control chosen-select" name="brand"></select>
+	               </div>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="col-sm-offset-6 col-sm-2">
+	            <button type="submit" class="btn btn-default" style='min-width: 200px;'>Създай</button>
+	        </div>
+	    </div>
+	</form>
+
+</div>
+
+<script>
+    (function() {
+        $('.chosen-select').chosen({
+            no_results_text : "Не е намерен резултат с името: ",
+            placeholder_text_single : "Изберете опция"
+        });
+    })();
+</script>
