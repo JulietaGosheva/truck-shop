@@ -31,6 +31,9 @@
         <script src="../../resources/admin/js/controllers/OrdersController.js"></script>
         <script src="../../resources/admin/js/controllers/PromotionController.js"></script>
         
+        <script src="../../resources/common/js/modules/RESTUtil.js"></script>
+        <script src="../../resources/common/js/modules/DestinationUtil.js"></script>
+        
         <script src="../../resources/admin/js/modules/EndpointHelper.js"></script>
         
 		<link rel="stylesheet" href="../../resources/dependencies/css/bootstrap.min.css"></link>
@@ -38,7 +41,7 @@
         <link rel="stylesheet" href="../../resources/dependencies/css/font-awesome.min.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/external/chosen/chosen.css"></link>
         
-        <link rel="stylesheet" href="../../resources/assets/css/application.css"></link>
+        <link rel="stylesheet" href="../../resources/common/css/application.css"></link>
 	</head>
 	<body>
 		<div class="application-content" ng-app="AdminController">

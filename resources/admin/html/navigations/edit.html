@@ -17,7 +17,7 @@
                     <span class="input-group-addon">
                         <input type="checkbox" ng-model="subMenuEnabled">
                     </span>
-                    <p ng-show="subMenuEnabled == false" style="padding-left: 15px; padding-top: 4px;">Натиснете върху checkbox-а ако искате да редактирате под менюта</p>
+                    <p ng-show="subMenuEnabled == false" style="padding-left: 15px; padding-top: 4px;">Натиснете върху checkbox-а ако искате да редактирате под меню</p>
                     <div ng-show="subMenuEnabled">
                         <select class="form-control chosen-select" name="submenuName"></select>
                     </div>
@@ -26,11 +26,18 @@
         </div>
         
         <div class="form-group">
-	        <label class="col-sm-3 control-label">Ново име</label>
+	        <label class="col-sm-3 control-label">Ново име(англииско наименование)</label>
 	        <div class="col-sm-9">
 	            <input type="text" class="form-control" name="newName" placeholder="Новото име на менюто">
 	        </div>
 	    </div>
+	    
+	    <div class="form-group">
+            <label class="col-sm-3 control-label">Ново име(българско наименование)</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" name="newName" placeholder="Новото име на менюто">
+            </div>
+        </div>
         
         <div class="form-group">
             <div class="col-sm-offset-6 col-sm-2">

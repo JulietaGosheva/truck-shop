@@ -6,6 +6,7 @@
 		<script src="../resources/dependencies/js/angular.min.js"></script>
 		<script src="../resources/dependencies/js/angular-route.min.js"></script>
         <script src="../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
+		
 		<script src="../resources/assets/js/application.js"></script>
         <script src="../resources/assets/js/helper.js"></script>
         <script src="../resources/assets/js/modules/NavigationUtil.js"></script>
@@ -14,9 +15,12 @@
         <script src="../resources/assets/js/controllers/ArticalsController.js"></script>
         <script src="../resources/assets/js/controllers/DetailsController.js"></script>
         <script src="../resources/assets/js/controllers/CarouselController.js"></script>
+		
 		<link rel="stylesheet" href="../resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../resources/dependencies/css/bootstrap-theme.css"></link>
-		<link rel="stylesheet" href="../resources/assets/css/application.css"></link>
+		
+		<link rel="stylesheet" href="../resources/common/css/application.css"></link>
+        
         <link rel="stylesheet" href="../resources/dependencies/css/font-awesome.min.css"></link>
 	</head>
 	<body>
