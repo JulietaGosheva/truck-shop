@@ -2,26 +2,33 @@
 
     <h3 style='text-align: center;'>Търсене на продукт</h3>
 
-    <form class="form-horizontal col-sm-10" ng-submit="searchProducts(model, {})">
+    <form class="form-horizontal col-sm-10" ng-submit="executeSearchRequest({
+            'name': name,
+            'uniqueNumber': uniqueNumber,
+            'type': type,
+            'brand': brand,
+            'model': model,
+            'price': price
+       })">
     
         <div class="form-group">
             <label class="col-sm-3 control-label">Име на продукта</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="" placeholder="Номер на продукта">
+                <input type="text" class="form-control" name="name" placeholder="Име на продукта" ng-model="name">
             </div>
         </div>
     
         <div class="form-group">
             <label class="col-sm-3 control-label">Номер на продукта</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="" placeholder="Номер на продукта">
+                <input type="text" class="form-control" name="uniqueNumber" placeholder="Номер на продукта" ng-model="uniqueNumber">
             </div>
         </div>
         
         <div class="form-group">
             <label class="col-sm-3 control-label">Тип на продукта</label>
             <div class="col-sm-9">
-                <select class="form-control chosen-select" name="">
+                <select class="form-control chosen-select" name="type" ng-model="type">
                 </select>
             </div>
         </div>
@@ -29,7 +36,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Производител</label>
             <div class="col-sm-9">
-                <select class="form-control chosen-select" name="">
+                <select class="form-control chosen-select" name="brand" ng-model="brand">
                 </select>
             </div>
         </div>
@@ -37,10 +44,18 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">Модел</label>
             <div class="col-sm-9">
-                <select class="form-control chosen-select" name="">
+                <select class="form-control chosen-select" name="model" ng-model="model">
                 </select>
             </div>
         </div>
+        
+        <div class="form-group">
+	        <label class="col-sm-3 control-label">Цена</label>
+	        <div class="col-sm-9">
+	            <input type="text" class="form-control" name="price" placeholder="Цена" ng-model="price">
+	        </div>
+	    </div>
+    
         
         <div class="form-group">
             <div class="col-sm-offset-6 col-sm-2">
@@ -52,7 +67,7 @@
 
     <div>
         
-        <div class="col-sm-4 col-md-3" ng-repeat="product in products">
+       <div class="col-sm-4 col-md-3" ng-repeat="product in products">
 	      <a href="#{{ url }}/{{ product.id }}" class="thumbnail thumbnail-size" style="text-decoration: none">
 	         <img class="thumbnail-image" ng-src="{{ product.src }}" alt="">
 	         <div class="caption">

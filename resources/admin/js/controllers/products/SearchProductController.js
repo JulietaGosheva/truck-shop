@@ -2,14 +2,12 @@
 	
 	var module = angular.module("AdminController");
 	
-	var SearchProductController = function($scope, $location, EndpointHelper) {
-		var oData = {};
-		$scope.model = $scope;
-		$scope.searchProducts = findSearchedProducts;
+	var SearchProductController = function($scope, $location, RESTUtil, DestinationUtil, EndpointHelper) {
 		$scope.url = constructUrl($location, EndpointHelper);
+		$scope.executeSearchRequest = jQuery.proxy(executeSearchRequest, $scope, RESTUtil, DestinationUtil);
 	};
 	
-	module.controller("SearchProductController", ["$scope", "$location", "EndpointHelper", SearchProductController]);
+	module.controller("SearchProductController", ["$scope", "$location", "RESTUtil", "DestinationUtil", "EndpointHelper", SearchProductController]);
 	
 	var constructUrl = function($location, EndpointHelper) {
 		var hash = $location.path();
@@ -21,39 +19,39 @@
 		return hash;
 	};
 	
-	var findSearchedProducts = function($scope, oData) {
-		$scope.products = [
-	   		   {
-	   			   id: 1,
-	   			   src: "http://weknowyourdreams.com/images/car/car-05.jpg",
-	   			   name: "Laborghini",
-	   			   type: "Car"
-			   },
-			   {
-				   id: 2,
-				   src: "http://dreamatico.com/data_images/car/car-3.jpg",
-				   name: "Renault",
-	   			   type: "Car"
-			   },
-			   {
-				   id: 3,
-				   src: "http://weknowyourdreams.com/images/car/car-04.jpg",
-				   name: "Mustang",
-	   			   type: "Car"
-			   },
-			   {
-				   id: 4,
-				   src: "http://dreamatico.com/data_images/car/car-1.jpg",
-				   name: "Laborghini",
-	   			   type: "Car"
-			   },
-			   {
-				   id: 5,
-				   src: "http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg",
-				   name: "BMW",
-	   			   type: "Car"
-			   }
-        ];
+	var executeSearchRequest = function(RESTUtil, DestinationUtil, oData) {
+		var requestData = prepareRequestData(oData, DestinationUtil, this);
+		RESTUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
+	};
+	
+	var prepareRequestData = function(oData, DestinationUtil, scope) {
+		var path = "?";
+		
+		for (key in oData) {
+			if (typeof oData[key] !== "undefined" && oData[key] !== "") {
+				path += key + "=" + oData[key] + "&";
+			}
+		}
+		
+		var headers = {
+			"Content-Type" : "application/json"
+		};
+		
+		return {
+			method : "GET",
+			url : DestinationUtil.Products.search + path,
+			headers : headers
+		};
+	};
+	
+	var onSuccess = function(xhrResponse) {
+		this.products = xhrResponse.data;
+		console.log("Success message : " + xhrResponse.data);
+	};
+	
+	var onError = function(xhrResponse) {
+		this.products = [];
+		console.log("Error message : " + xhrResponse.data);
 	};
 	
 })();

@@ -1,12 +1,14 @@
 (function() {
 	var DestinationUtil = function() {
 		var SERVER_URL = "http://localhost/truck-shop/public/index.php/";
+		var PRODUCTS_ENDPOINT = "products/api/v1";
 		
 		return {
 			Products : {
-				creation: SERVER_URL + "products/api/v1",
-				edit: SERVER_URL + "products/api/v1",
-				deletion: SERVER_URL + "products/api/v1"
+				creation: SERVER_URL + PRODUCTS_ENDPOINT,
+				edit: SERVER_URL + PRODUCTS_ENDPOINT,
+				deletion: SERVER_URL + PRODUCTS_ENDPOINT,
+				search: SERVER_URL + PRODUCTS_ENDPOINT
 			}
 		};
 	};
