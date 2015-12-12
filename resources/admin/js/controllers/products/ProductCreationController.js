@@ -35,7 +35,7 @@
 		
 		return {
 			method : "POST",
-			url : DestinationUtil.Products.creation,
+			url : DestinationUtil.Product.creation,
 			headers : headers,
 			data : JSON.stringify(data) 
 		};

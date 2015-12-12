@@ -35,6 +35,7 @@
         <script src="../../resources/common/js/modules/DestinationUtil.js"></script>
         
         <script src="../../resources/admin/js/modules/EndpointHelper.js"></script>
+        <script src="../../resources/admin/js/modules/products/ProductLoader.js"></script>
         
 		<link rel="stylesheet" href="../../resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../../resources/dependencies/css/bootstrap-theme.css"></link>

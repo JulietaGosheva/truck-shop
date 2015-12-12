@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'products/api/v1'], function() {
+	
 	Route::get('/', 'ProductsController@findEntity');
 	
 	Route::post('/', 'ProductsController@persistEntity');
@@ -24,12 +25,14 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::delete('/', 'ProductsController@deleteEntity');
 	
-	Route::get('brands', 'ProductsController@getBrands');
 	
-	Route::get('types', 'ProductsController@getBrands');
+	Route::get('/types', 'ProductsController@getTypes');
 	
-	Route::get('models', 'ProductsController@getBrands');
+	Route::get('/models', 'ProductsController@getModels');
+	
+	Route::get('/brands', 'ProductsController@getBrands');
 
+	
 	Route::get('type/{type}', 'ProductsController@getBrands');
 	
 	Route::get('type/{type}/models', 'ProductsController@getBrands');

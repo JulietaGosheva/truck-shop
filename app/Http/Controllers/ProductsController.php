@@ -10,10 +10,6 @@ class ProductsController extends Controller  {
 		
 	}
 	
-	function getBrands() {
-		return "There are no created brands till the moment.";
-	}
-	
 	function findEntity() {
 		return "[{".
 	   			   "\"id\": 1,".
@@ -57,5 +53,17 @@ class ProductsController extends Controller  {
 	
 	function deleteEntity() {
 		return "Successfully deleted product entity";
+	}
+
+	function getTypes() {
+		return "";
+	}
+	
+	function getBrands() {
+		return "";
+	}
+	
+	function getModels() {
+		return "";
 	}
 }

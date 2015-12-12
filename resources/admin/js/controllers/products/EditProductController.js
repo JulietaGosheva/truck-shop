@@ -2,17 +2,19 @@
 	
 	var module = angular.module("AdminController");
 	
-	var EditProductController = function($scope, RESTUtil, DestinationUtil) {
+	var EditProductController = function($scope, $routeParams, RESTUtil, DestinationUtil, ProductLoader) {
 		$scope.typeInsertMode = true;
 		$scope.modelInsertMode = true;
 		$scope.brandInsertMode = true;
 		$scope.buttonText = "Редактирай";
-		
+
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, RESTUtil, DestinationUtil);
+
+		ProductLoader.loadProductById($routeParams.id, $scope);
 	};
 	
-	module.controller("EditProductController", ["$scope", "RESTUtil", "DestinationUtil", EditProductController]);
-	
+	module.controller("EditProductController", ["$scope", "$routeParams", "RESTUtil", "DestinationUtil", "ProductLoader", EditProductController]);
+
 	//TODO: clarify whether or not the verification of the data will be here in the controller or at the backend
 	var executeRequest = function(RESTUtil, DestinationUtil, oData) {
 		var requestData = prepareRequestData(oData, DestinationUtil, this);
@@ -35,7 +37,7 @@
 		
 		return {
 			method : "PUT",
-			url : DestinationUtil.Products.edit,
+			url : DestinationUtil.Product.edit,
 			headers : headers,
 			data : JSON.stringify(data) 
 		};

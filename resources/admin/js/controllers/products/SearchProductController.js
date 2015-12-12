@@ -39,7 +39,7 @@
 		
 		return {
 			method : "GET",
-			url : DestinationUtil.Products.search + path,
+			url : DestinationUtil.Product.search + path,
 			headers : headers
 		};
 	};

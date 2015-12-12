@@ -21,7 +21,7 @@
 
 		return {
 			method : "DELETE",
-			url : DestinationUtil.Products.deletion,
+			url : DestinationUtil.Product.deletion,
 			headers : headers,
 			data : JSON.stringify(data) 
 		};
