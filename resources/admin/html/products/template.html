@@ -46,7 +46,7 @@
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="brandInsertMode">
                 </span>
-                <input type="text" class="form-control" name="brand" ng-show="brandInsertMode" placeholder="Име на типа продукт" ng-model="newProductBrand">
+                <input type="text" class="form-control" name="brand" ng-show="brandInsertMode" placeholder="Име на производителя на продукта" ng-model="newProductBrand">
                 <div ng-show="brandInsertMode == false">
                    <select class="form-control chosen-select" name="brand" ng-model="existingProductBrand"></select>
                </div>
@@ -61,7 +61,7 @@
                 <span class="input-group-addon">
                     <input type="checkbox" ng-model="modelInsertMode">
                 </span>
-                <input type="text" class="form-control" name="model" ng-show="modelInsertMode" placeholder="Име на типа продукт" ng-model="newProductModel">
+                <input type="text" class="form-control" name="model" ng-show="modelInsertMode" placeholder="Име на модела продукта" ng-model="newProductModel">
                 <div ng-show="modelInsertMode == false">
                    <select class="form-control chosen-select" name="model" ng-model="existingProductModel"></select>
                </div>

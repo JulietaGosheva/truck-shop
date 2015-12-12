@@ -72,7 +72,7 @@
 	
 	/* ============ BRANDS Loading =============*/
 	
-	var loadProductBrands = function() {
+	var loadProductBrands = function($scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
@@ -92,7 +92,7 @@
 	
 	/* ============ MODELS Loading =============*/
 	
-	var loadProductModels = function() {
+	var loadProductModels = function($scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
