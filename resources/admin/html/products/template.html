@@ -35,6 +35,7 @@
                 <div ng-show="typeInsertMode == false">
                    <select class="form-control chosen-select" name="type" id="types" 
                         ng-model="existingProductType" ng-change="reloadBrandsIfNeeded(this)">
+                        <option value=""></option>
                         <option ng-repeat="type in types" value="{{ type.id }}"
                             ng-custom-repeat-watcher="updateProductTypes">{{ type.name }}</option>
                     </select>
@@ -54,6 +55,7 @@
                 <div ng-show="brandInsertMode == false">
                    <select class="form-control chosen-select" name="brand" id="brands" 
                         ng-model="existingProductBrand" ng-change="reloadModelsIfNeeded(this)">
+                        <option value=""></option>
                         <option ng-repeat="brand in brands" value="{{ brand.id }}"
                             ng-custom-repeat-watcher="updateProductBrands">{{ brand.name }}</option>
                    </select>
@@ -73,6 +75,7 @@
                 <div ng-show="modelInsertMode == false">
                    <select class="form-control chosen-select" name="model" id="models"
                     ng-model="existingProductModel">
+                        <option value=""></option>
                         <option ng-repeat="model in models" value="{{ model.id }}"
                             ng-custom-repeat-watcher="updateProductModels">{{ model.name }}</option>
                    </select>
