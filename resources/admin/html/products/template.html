@@ -34,9 +34,9 @@
                 <input type="text" class="form-control" name="type" ng-show="typeInsertMode" placeholder="Име на типа продукт" ng-model="newProductType">
                 <div ng-show="typeInsertMode == false">
                    <select class="form-control chosen-select" name="type" id="types" 
-                        ng-model="existingProductType">
+                        ng-model="existingProductType" ng-change="reloadBrandsIfNeeded(this)">
                         <option ng-repeat="type in types" value="{{ type.id }}"
-                            ng-custom-repeat-watcher="loadProductTypes">{{ type.name }}</option>
+                            ng-custom-repeat-watcher="updateProductTypes">{{ type.name }}</option>
                     </select>
                </div>
             </div>
@@ -48,14 +48,14 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="brandInsertMode">
+                    <input type="checkbox" ng-model="brandInsertMode" ng-disabled="existingProductType == undefined">
                 </span>
                 <input type="text" class="form-control" name="brand" ng-show="brandInsertMode" placeholder="Име на производителя на продукта" ng-model="newProductBrand">
                 <div ng-show="brandInsertMode == false">
                    <select class="form-control chosen-select" name="brand" id="brands" 
-                        ng-model="existingProductBrand">
+                        ng-model="existingProductBrand" ng-change="reloadModelsIfNeeded(this)">
                         <option ng-repeat="brand in brands" value="{{ brand.id }}"
-                            ng-custom-repeat-watcher="loadProductBrands">{{ brand.name }}</option>
+                            ng-custom-repeat-watcher="updateProductBrands">{{ brand.name }}</option>
                    </select>
                </div>
             </div>
@@ -67,14 +67,14 @@
         <div class="col-sm-9">
             <div class="input-group">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="modelInsertMode">
+                    <input type="checkbox" ng-model="modelInsertMode" ng-disabled="existingProductBrand == undefined">
                 </span>
                 <input type="text" class="form-control" name="model" ng-show="modelInsertMode" placeholder="Име на модела продукта" ng-model="newProductModel">
                 <div ng-show="modelInsertMode == false">
                    <select class="form-control chosen-select" name="model" id="models"
                     ng-model="existingProductModel">
                         <option ng-repeat="model in models" value="{{ model.id }}"
-                            ng-custom-repeat-watcher="loadProductModels">{{ model.name }}</option>
+                            ng-custom-repeat-watcher="updateProductModels">{{ model.name }}</option>
                    </select>
                </div>
             </div>

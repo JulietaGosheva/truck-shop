@@ -8,9 +8,12 @@
 		$scope.brandInsertMode = true;
 		$scope.buttonText = "Създай";
 		
-		$scope.loadProductTypes = jQuery.proxy(loadProductTypes, $scope, ProductLoader);
-		$scope.loadProductBrands = jQuery.proxy(loadProductBrands, $scope, ProductLoader);
-		$scope.loadProductModels = jQuery.proxy(loadProductModels, $scope);
+		$scope.updateProductModels = jQuery.proxy(updateProductModels, $scope);
+		$scope.updateProductTypes = jQuery.proxy(updateProductTypes, $scope, ProductLoader);
+		$scope.updateProductBrands = jQuery.proxy(updateProductBrands, $scope, ProductLoader);
+		
+		$scope.reloadBrandsIfNeeded = jQuery.proxy(reloadBrandsIfNeeded, $scope, ProductLoader);
+		$scope.reloadModelsIfNeeded = jQuery.proxy(reloadModelsIfNeeded, $scope, ProductLoader);
 		
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, RESTUtil, DestinationUtil);
 		
@@ -19,24 +22,32 @@
 	
 	module.controller("ProductCreationController", ["$scope", "RESTUtil", "DestinationUtil", "ProductLoader", ProductCreationController]);
 
-	var loadProductTypes = function(ProductLoader) {
+	var updateProductTypes = function(ProductLoader) {
 		ProductLoader.loadProductBrands(this.types[0].id, this);
 		setTimeout(function() {
 			$("#types").trigger("chosen:updated");
 		}, 50);
 	};
 	
-	var loadProductBrands = function(ProductLoader) {
+	var updateProductBrands = function(ProductLoader) {
 		ProductLoader.loadProductModels(this.types[0].id, this.brands[0].id, this);
 		setTimeout(function() {
 			$("#brands").trigger("chosen:updated");
 		}, 50);
 	};
 	
-	var loadProductModels = function(ProductLoader) {
+	var updateProductModels = function(ProductLoader) {
 		setTimeout(function() {
 			$("#models").trigger("chosen:updated");
 		}, 50);
+	};
+	
+	var reloadBrandsIfNeeded = function(ProductLoader, oElement) {
+		ProductLoader.loadProductBrands(oElement.existingProductType, this);
+	};
+	
+	var reloadModelsIfNeeded = function(ProductLoader, oElement) {
+		ProductLoader.loadProductModels(oElement.existingProductType, oElement.existingProductBrand, this);
 	};
 	
 	//TODO: clarify whether or not the verification of the data will be here in the controller or at the backend
