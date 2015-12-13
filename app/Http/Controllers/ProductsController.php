@@ -56,14 +56,25 @@ class ProductsController extends Controller  {
 	}
 
 	function getTypes() {
-		return "";
+		return "[".
+					"{\"id\":1,\"name\":\"Волан\"},".
+					"{\"id\":2,\"name\":\"Двигател\"}".
+			   "]";
 	}
 	
-	function getBrands() {
-		return "";
+	function getBrands($typeId) {
+		if ($typeId === "1") {
+			return "[{\"id\":1,\"name\":\"Nissan\"}]";
+		}
+		return "[{\"id\":2,\"name\":\"Mercedes\"}]";
 	}
 	
-	function getModels() {
-		return "";
+	function getModels($typeId, $brandId) {
+		if ($typeId === "1" && $brandId === "1") {
+			return "[{\"id\":1,\"name\":\"Съзтезателен\"}]";
+		} else if ($typeId === "2" && $brandId === "2") {
+			return "[{\"id\":1,\"name\":\"Бизнесменски\"}]";
+		}
+		return "[]";
 	}
 }

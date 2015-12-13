@@ -5,14 +5,16 @@
 		<title>Администрация</title>
 		
         <script src="../../resources/dependencies/js/jquery-2.1.3.min.js"></script>
-        <script src="../../resources/dependencies/external/chosen/chosen.jquery.js"></script>
+		<script src="../../resources/dependencies/external/chosen/chosen.jquery.js"></script>
         
 		<script src="../../resources/dependencies/js/angular.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-route.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-sanitize.min.js"></script>
         <script src="../../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
+
         
         <script src="../../resources/admin/js/AdminController.js"></script>
+        <script src="../../resources/common/js/FunctionDefinition.js"></script>
         
         <script src="../../resources/admin/js/controllers/products/ProductCreationController.js"></script>
 		<script src="../../resources/admin/js/controllers/products/DeleteProductController.js"></script>

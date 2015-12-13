@@ -8,7 +8,7 @@
         <script src="../resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
 		
 		<script src="../resources/assets/js/application.js"></script>
-        <script src="../resources/assets/js/helper.js"></script>
+        <script src="../resources/common/js/FunctionDefinition.js"></script>
         <script src="../resources/assets/js/modules/NavigationUtil.js"></script>
         <script src="../resources/assets/js/controllers/SearchController.js"></script>
         <script src="../resources/assets/js/controllers/TemplateController.js"></script>

@@ -28,25 +28,9 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::get('/types', 'ProductsController@getTypes');
 	
-	Route::get('/models', 'ProductsController@getModels');
+	Route::get('/types/{typeId}/brands', 'ProductsController@getBrands');
 	
-	Route::get('/brands', 'ProductsController@getBrands');
-
-	
-	Route::get('type/{type}', 'ProductsController@getBrands');
-	
-	Route::get('type/{type}/models', 'ProductsController@getBrands');
-	
-	Route::get('uniqueNumber/{uniqueNumber}', 'ProductsController@getBrands');
-	
-	// wouldn't it be better if i use filters e.g query parameters to filter the searched results ? or to use 
-	// distinct url for everything ?? ?? ??
-	
-	Route::get('type/{type}/models/{model}', 'ProductsController@getBrands');
-	
-	Route::get('type/{type}/models/{model}/brands', 'ProductsController@getBrands');
-	
-	Route::get('type/{type}/models/{model}/brands/{brand}', 'ProductsController@getBrands');
+	Route::get('/types/{typeId}/brands/{brandId}/models', 'ProductsController@getModels');
 });
 
 Route::group(['prefix' => 'orders/api/v1'], function() {

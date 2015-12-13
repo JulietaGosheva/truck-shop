@@ -13,4 +13,15 @@
 	     }
 	     return keys;
 	}
+	
+	if (!String.format) {
+		String.format = function(format) {
+			var formatedString = format;
+			var formatArgs = Array.prototype.slice.call(arguments, 1);
+			for (var i = 0; i < formatArgs.length ; i++) {
+				formatedString = formatedString.replace(/{(\w+)}/, formatArgs[i]);
+			}
+			return formatedString;
+		};
+	}
 })();

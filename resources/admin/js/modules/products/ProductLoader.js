@@ -72,11 +72,11 @@
 	
 	/* ============ BRANDS Loading =============*/
 	
-	var loadProductBrands = function($scope) {
+	var loadProductBrands = function(typeId, $scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
-			url: destinationUtil.Product.brands
+			url: String.format(destinationUtil.Product.brands, typeId)
 		};
 		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductBrands, $scope), jQuery.proxy(onFailingOfLoadingProductBrands, $scope));
 	};
@@ -92,11 +92,11 @@
 	
 	/* ============ MODELS Loading =============*/
 	
-	var loadProductModels = function($scope) {
+	var loadProductModels = function(typeId, brandId, $scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
-			url: destinationUtil.Product.brands
+			url: String.format(destinationUtil.Product.models, typeId, brandId)
 		};
 		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductModels, $scope), jQuery.proxy(onFailingOfLoadingProductModels, $scope));
 	};

@@ -4,8 +4,8 @@
 		
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
 		var PRODUCT_TYPES_ENDPOINT = PRODUCTS_ENDPOINT + "/types";
-		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/models";
-		var PRODUCT_BRANDS_ENDPOINT = PRODUCTS_ENDPOINT + "/brands";
+		var PRODUCT_BRANDS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands";
+		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
 		return {
 			Product : {
@@ -14,8 +14,8 @@
 				deletion: PRODUCTS_ENDPOINT,
 				search: PRODUCTS_ENDPOINT,
 				types: PRODUCT_TYPES_ENDPOINT,
-				models: PRODUCT_TYPES_ENDPOINT,
-				brands: PRODUCT_TYPES_ENDPOINT
+				brands: PRODUCT_BRANDS_ENDPOINT,
+				models: PRODUCT_MODELS_ENDPOINT
 			}
 		};
 	};
