@@ -80,4 +80,17 @@
 			})
 			.otherwise({ redirectTo: "/" });
 	});
+	
+	application.directive("ngCustomRepeatWatcher", function() {
+		var directive = {};
+		
+		directive.restrict = "A";
+		directive.link = function(scope, element, attributes) {
+			if (scope.$last === true) {
+				scope[attributes.ngCustomRepeatWatcher]();
+			}
+		};
+		
+		return directive;
+	});
 })();

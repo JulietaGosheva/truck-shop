@@ -19,31 +19,24 @@
 	
 	module.controller("ProductCreationController", ["$scope", "RESTUtil", "DestinationUtil", "ProductLoader", ProductCreationController]);
 
-	module.directive("ngCustomRepeatWatcher", function() {
-		var directive = {};
-		
-		directive.restrict = "A";
-		directive.link = function(scope, element, attributes) {
-			if (scope.$last === true) {
-				scope[attributes.ngCustomRepeatWatcher]();
-			}
-		};
-		
-		return directive;
-	});
-	
 	var loadProductTypes = function(ProductLoader) {
-		$("#types").trigger("chosen:updated");
 		ProductLoader.loadProductBrands(this.types[0].id, this);
+		setTimeout(function() {
+			$("#types").trigger("chosen:updated");
+		}, 50);
 	};
 	
 	var loadProductBrands = function(ProductLoader) {
-		$("#brands").trigger("chosen:updated");
 		ProductLoader.loadProductModels(this.types[0].id, this.brands[0].id, this);
+		setTimeout(function() {
+			$("#brands").trigger("chosen:updated");
+		}, 50);
 	};
 	
 	var loadProductModels = function(ProductLoader) {
-		$("#models").trigger("chosen:updated");
+		setTimeout(function() {
+			$("#models").trigger("chosen:updated");
+		}, 50);
 	};
 	
 	//TODO: clarify whether or not the verification of the data will be here in the controller or at the backend
