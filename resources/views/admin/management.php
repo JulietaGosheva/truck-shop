@@ -18,6 +18,7 @@
 		<script src="../../resources/admin/js/controllers/products/DeleteProductController.js"></script>
 		<script src="../../resources/admin/js/controllers/products/EditProductController.js"></script>
 		<script src="../../resources/admin/js/controllers/products/SearchProductController.js"></script>
+		<script src="../../resources/admin/js/controllers/products/ProductDetailsController.js"></script>
 		
         <script src="../../resources/admin/js/controllers/users/UserCreationController.js"></script>
         <script src="../../resources/admin/js/controllers/users/DeleteUserController.js"></script>

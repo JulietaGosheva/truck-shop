@@ -16,7 +16,7 @@
 		} else if (hash.indexOf("delete") !== -1) {
 			return EndpointHelper.products.deletion;
 		}
-		return hash;
+		return EndpointHelper.products.details;
 	};
 	
 	var executeSearchRequest = function(RESTUtil, DestinationUtil, oData) {

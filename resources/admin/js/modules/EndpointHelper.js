@@ -7,7 +7,7 @@
 				edit: "/products/edit",
 				deletion: "/products/delete",
 				search: "/products/search",
-				review: "/products/review"
+				details: "/products/details"
 			},
 			users: {
 				creation: "/users/creation",

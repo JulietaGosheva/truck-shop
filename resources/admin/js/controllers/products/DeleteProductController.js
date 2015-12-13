@@ -11,7 +11,7 @@
 	//TODO: clarify whether or not the verification of the data will be here in the controller or at the backend
 	var executeRequest = function(routeParams, RESTUtil, DestinationUtil) {
 		var requestData = prepareRequestData(DestinationUtil, routeParams);
-		RESTUtil.POST(requestData, onSuccess, onError);
+		RESTUtil.DELETE(requestData, onSuccess, onError);
 	};
 	
 	var prepareRequestData = function(DestinationUtil, routeParams) {
@@ -19,6 +19,10 @@
 			id: routeParams.id
 		};
 
+		var headers = {
+			"Content-Type" : "application/json"
+		};
+		
 		return {
 			method : "DELETE",
 			url : DestinationUtil.Product.deletion,

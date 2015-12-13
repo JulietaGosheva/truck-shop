@@ -30,9 +30,9 @@
 				templateUrl: "../../resources/admin/html/products/search.html",
 				controller: "SearchProductController"
 			})
-			.when("/products/review", {
-				templateUrl: "../../resources/admin/html/products/review.html",
-				controller: "ProductController"
+			.when("/products/details/:id", {
+				templateUrl: "../../resources/admin/html/products/details.html",
+				controller: "ProductDetailsController"
 			})
 			.when("/users/creation", {
 				templateUrl: "../../resources/admin/html/users/creation.html",
