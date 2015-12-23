@@ -1,17 +1,18 @@
 (function() {
-	if(!Object.keys) 
+	if(!Object.keys) {
 		Object.keys = function(object){
-	     if (object !== Object(object)) {
-	    	 throw new TypeError('Object.keys called on non-object');
-	     }
-
-	     var keys = []
-	     for(var key in object) {
-	    	 if(Object.prototype.hasOwnProperty.call(object,key)) {
-	    		 keys.push(key);
-	    	 }
-	     }
-	     return keys;
+		    if (object !== Object(object)) {
+		    	throw new TypeError('Object.keys called on non-object');
+		    }
+	
+		    var keys = []
+		    for(var key in object) {
+		    	if(Object.prototype.hasOwnProperty.call(object,key)) {
+		    		keys.push(key);
+		    	}
+		    }
+		    return keys;
+		}
 	}
 	
 	if (!String.format) {
@@ -23,5 +24,25 @@
 			}
 			return formatedString;
 		};
+	}
+	
+	if (!Object.isEmpty) {
+		Object.isEmpty = function(object) {
+			if (object == null) {
+				return true;
+			}
+			
+			if (object.length === 0) {
+				return true;
+			}
+			
+			for (var key in object) {
+				if (Object.prototype.hasOwnProperty.call(object, key)) {
+					return false;
+				}
+			}
+			
+			return true;
+		}
 	}
 })();

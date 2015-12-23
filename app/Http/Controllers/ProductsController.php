@@ -50,6 +50,11 @@ class ProductsController extends Controller  {
 			   "}]";
 	}
 	
+	function getAllEntries() {
+		$products = Products::with('productTypes', 'brands', 'models')->get();
+		return json_decode($products);
+	}
+	
 	function persistEntity(Request $request) {
 		$rawContentBody = $request->getContent();
 		$requestBody = json_decode($rawContentBody);
@@ -65,7 +70,8 @@ class ProductsController extends Controller  {
 	
 	private function persistProduct($requestBody) {
 		$response = new Response();
-		DB::transaction(function() {
+		
+		DB::transaction(function() use(&$requestBody, &$response) {
 			$productType = $this->persistAndRetrieveProductTypeEntry($requestBody);
 			$brand = $this->persistAndRetrieveBrandEntry($requestBody);
 			$model = $this->persistAndRetrieveModelEntry($requestBody);
@@ -75,7 +81,7 @@ class ProductsController extends Controller  {
 				
 			$productName = $requestBody->name;
 			$uniqueId = $requestBody->uniqueNumber;
-			$price = $requestBody->price;
+			$price = intval($requestBody->price);
 			$imageName = round(microtime(true) * 1000);
 				
 			$product = Products::create([
@@ -88,10 +94,12 @@ class ProductsController extends Controller  {
 					"image_name" => $imageName
 			]);
 			
-			$responseBody = "{\"productId\":\"" + $product->id + "\"}";
-			$response->setContent($responseBody);
+			$response->header("Content-Type", "application/json");
 			$response->header("X-Response-Result", "success");
 			$response->setStatusCode(201);
+
+			$responseBody = "{\"productId\":\"". $product->id ."\", \"imagename\":\"". $imageName ."\"}";
+			$response->setContent($responseBody);
 		});
 		
 		return $response;

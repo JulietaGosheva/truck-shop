@@ -25,6 +25,7 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::delete('/', 'ProductsController@deleteEntity');
 	
+	Route::get('/all', 'ProductsController@getAllEntries');
 	
 	Route::get('/types', 'ProductsController@getTypes');
 	

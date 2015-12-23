@@ -3,12 +3,14 @@
 		var SERVER_URL = "http://localhost/truck-shop/public/index.php/";
 		
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
+		var ALL_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT + "/all";
 		var PRODUCT_TYPES_ENDPOINT = PRODUCTS_ENDPOINT + "/types";
 		var PRODUCT_BRANDS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands";
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
 		return {
 			Product : {
+				all: ALL_PRODUCTS_ENDPOINT,
 				creation: PRODUCTS_ENDPOINT,
 				edit: PRODUCTS_ENDPOINT,
 				deletion: PRODUCTS_ENDPOINT,

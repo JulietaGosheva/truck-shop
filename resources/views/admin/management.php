@@ -6,6 +6,7 @@
 		
         <script src="../../resources/dependencies/js/jquery-2.1.3.min.js"></script>
 		<script src="../../resources/dependencies/external/chosen/chosen.jquery.js"></script>
+		<script src="../../resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
         
 		<script src="../../resources/dependencies/js/angular.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-route.min.js"></script>

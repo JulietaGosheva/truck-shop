@@ -9,7 +9,7 @@ class Products extends Model
     public $timestamps = false;
     protected $table = "products";
     
-    protected $fillable = ["name", "unique_id", "brand_id", "product_type_id", "model_id", "image_name"];
+    protected $fillable = ["name", "unique_id", "brand_id", "product_type_id", "model_id", "image_name", "price"];
     
     public function brands() {
     	return $this->belongsTo("App\Brands", "brand_id");
