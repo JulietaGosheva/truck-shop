@@ -51,8 +51,7 @@ class ProductsController extends Controller  {
 	}
 	
 	function getAllEntries() {
-		$products = Products::with('productTypes', 'brands', 'models')->get();
-		return json_decode($products);
+		return Products::with('productTypes', 'brands', 'models')->get();
 	}
 	
 	function persistEntity(Request $request) {
@@ -62,7 +61,7 @@ class ProductsController extends Controller  {
 		$response = $this->persistProduct($requestBody);
 		
 		if ($response->isEmpty()) {
-			$response->setStatusCode(500);
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR, "Възникна проблем при създаването на продукта.");
 			$response->header("X-Response-Result", "Failed to create product with provided data.");
 		}
 		return $response;
@@ -82,7 +81,7 @@ class ProductsController extends Controller  {
 			$productName = $requestBody->name;
 			$uniqueId = $requestBody->uniqueNumber;
 			$price = intval($requestBody->price);
-			$imageName = round(microtime(true) * 1000);
+			$imageName = $requestBody->imageName;
 				
 			$product = Products::create([
 					"name" => $productName,
@@ -115,6 +114,38 @@ class ProductsController extends Controller  {
 	
 	private function persistAndRetrieveModelEntry($requestBody) {
 		return Models::firstOrCreate(["name" => $requestBody->model]);
+	}
+	
+	function uploadImage(Request $request) {
+		$response = new Response();
+		if ($request->hasFile("file")) {
+			$file = $request->file("file");
+			if ($file->isValid()) {
+				$imageName = round(microtime(true) * 1000) . "." . $file->getClientOriginalExtension();
+				try {
+					$file->move(base_path("resources/assets/images"), $imageName);
+				} catch (Exception $exception) {
+					$response->header("Content-Type", "application/json; charset=UTF-8");
+					$response->header("X-Response-Result", "Failed to upload image reason: [" . $exception->getMessage() . "]");
+					$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+					return $response;
+				}
+				$response->header("Content-Type", "application/json; charset=UTF-8");
+				$response->header("X-Response-Result", "Successfully uploaded image.");
+				$response->setStatusCode(Response::HTTP_CREATED);
+	
+				$response->setContent("{\"imageName\":\"" . $imageName . "\"}");
+			} else {
+				$response->header("X-Response-Result", "Uploaded file is invalid.");
+				$response->header("Content-Type", "application/json; charset=UTF-8");
+				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			}
+		} else {
+			$response->header("X-Response-Result", "File must be uploaded.");
+			$response->header("Content-Type", "application/json; charset=UTF-8");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+		}
+		return $response;
 	}
 	
 	function updateEntity() {

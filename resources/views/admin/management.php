@@ -4,10 +4,14 @@
 		<meta charset="utf-8" />
 		<title>Администрация</title>
 		
+		<!-- 	============ IMPORTANT NOTE ============
+				Move all of this relative links to one blade file
+					 which constructs paths with laravel build-in functions -->
+					 
         <script src="../../resources/dependencies/js/jquery-2.1.3.min.js"></script>
 		<script src="../../resources/dependencies/external/chosen/chosen.jquery.js"></script>
-		<script src="../../resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
-        
+	    <script src="../../resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
+            
 		<script src="../../resources/dependencies/js/angular.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-route.min.js"></script>
 		<script src="../../resources/dependencies/js/angular-sanitize.min.js"></script>
@@ -36,6 +40,7 @@
         <script src="../../resources/admin/js/controllers/PromotionController.js"></script>
         
         <script src="../../resources/common/js/modules/RESTUtil.js"></script>
+        <script src="../../resources/common/js/modules/AJAXRESTUtil.js"></script>
         <script src="../../resources/common/js/modules/DestinationUtil.js"></script>
         
         <script src="../../resources/admin/js/modules/EndpointHelper.js"></script>

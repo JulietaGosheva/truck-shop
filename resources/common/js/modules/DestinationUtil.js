@@ -5,6 +5,7 @@
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
 		var ALL_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT + "/all";
 		var PRODUCT_TYPES_ENDPOINT = PRODUCTS_ENDPOINT + "/types";
+		var PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image";
 		var PRODUCT_BRANDS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands";
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
@@ -17,7 +18,8 @@
 				search: PRODUCTS_ENDPOINT,
 				types: PRODUCT_TYPES_ENDPOINT,
 				brands: PRODUCT_BRANDS_ENDPOINT,
-				models: PRODUCT_MODELS_ENDPOINT
+				models: PRODUCT_MODELS_ENDPOINT,
+				image: PRODUCT_IMAGE_ENDPOINT
 			}
 		};
 	};

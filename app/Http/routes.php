@@ -27,6 +27,8 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::get('/all', 'ProductsController@getAllEntries');
 	
+	Route::post('/image', 'ProductsController@uploadImage');
+	
 	Route::get('/types', 'ProductsController@getTypes');
 	
 	Route::get('/types/{typeId}/brands', 'ProductsController@getBrands');
