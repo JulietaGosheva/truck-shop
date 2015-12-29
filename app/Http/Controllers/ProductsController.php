@@ -2,67 +2,110 @@
 
 namespace App\Http\Controllers;
 
-use App\Brands;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use App\ProductTypes;
+
+use Validator;
+
+use App\Brands;
 use App\Models;
 use App\Products;
+use App\ProductTypes;
+use App\Http\Controllers\Controller;
+
 use Illuminate\Support\Facades\DB;
+use App;
 
 class ProductsController extends Controller  {
 	
-	function __construct() {
+	public function findEntities(Request $request, Response $response) {
+		if ($request->has("id")) {
+			return $this->findEntityById($request, $response);
+		}
 		
+		if ($request->has("uniqueid")) {
+			return $this->findEntityByUniqueId($request, $response);
+		}
+		
+		return $this->findEntity($request, $response);
 	}
 	
-	function findEntity() {
+	private function findEntityById(Request $request, Response $response) {
+		$validator = Validator::make($request->all(), [
+		    'id' => 'required|numeric'
+		]);
+		
+		if ($validator->fails()) {
+			$response->header("X-Request-Result", "\"id\" query parameter is required and must contain number as value.");
+			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+			
+		$id = $request->input("id");
+		
+		$product = Products::with('productTypes', 'brands', 'models')->find($id);
+
+		if ($product === null) {
+			$response->header("X-Request-Result", "Entity not found.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+		
+		$response->header("X-Request-Result", "Successfully retrieved data.");
+
+		return $product;
+	}
+	
+	private function findEntityByUniqueId(Request $request, Response $response) {
+		return "Method is not implemented";
+	}
+	
+	private function findEntity(Request $request, Response $response) {
 		return "[{".
-	   			   "\"id\": 1,".
-	   			   "\"src\": \"http://weknowyourdreams.com/images/car/car-05.jpg\",".
-	   			   "\"name\": \"Laborghini\",".
-	   			   "\"type\": \"Car\"".
-			   "},".
-			   "{".
-				   "\"id\": 2,".
-				   "\"src\": \"http://dreamatico.com/data_images/car/car-3.jpg\",".
-				   "\"name\": \"Renault\",".
-	   			   "\"type\": \"Car\"".
-			   "},".
-			   "{".
-				   "\"id\": 3,".
-				   "\"src\": \"http://weknowyourdreams.com/images/car/car-04.jpg\",".
-				   "\"name\": \"Mustang\",".
-	   			   "\"type\": \"Car\"".
-			   "},".
-			   "{".
-				   "\"id\": 4,".
-				   "\"src\": \"http://dreamatico.com/data_images/car/car-1.jpg\",".
-				   "\"name\": \"Laborghini\",".
-	   			   "\"type\": \"Car\"".
-			   "},".
-			   "{".
-				   "\"id\": 5,".
-				   "\"src\": \"http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg\",".
-				   "\"name\": \"BMW\",".
-	   			   "\"type\": \"Car\"".
-			   "}]";
+				"\"id\": 1,".
+				"\"src\": \"http://weknowyourdreams.com/images/car/car-05.jpg\",".
+				"\"name\": \"Laborghini\",".
+				"\"type\": \"Car\"".
+				"},".
+				"{".
+				"\"id\": 2,".
+				"\"src\": \"http://dreamatico.com/data_images/car/car-3.jpg\",".
+				"\"name\": \"Renault\",".
+				"\"type\": \"Car\"".
+				"},".
+				"{".
+				"\"id\": 3,".
+				"\"src\": \"http://weknowyourdreams.com/images/car/car-04.jpg\",".
+				"\"name\": \"Mustang\",".
+				"\"type\": \"Car\"".
+				"},".
+				"{".
+				"\"id\": 4,".
+				"\"src\": \"http://dreamatico.com/data_images/car/car-1.jpg\",".
+				"\"name\": \"Laborghini\",".
+				"\"type\": \"Car\"".
+				"},".
+				"{".
+				"\"id\": 5,".
+				"\"src\": \"http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg\",".
+				"\"name\": \"BMW\",".
+				"\"type\": \"Car\"".
+				"}]";
 	}
 	
-	function getAllEntries() {
+	public function getAllEntries(Response $response) {
 		return Products::with('productTypes', 'brands', 'models')->get();
 	}
 	
-	function persistEntity(Request $request) {
+	public function persistEntity(Request $request) {
 		$rawContentBody = $request->getContent();
 		$requestBody = json_decode($rawContentBody);
 		
 		$response = $this->persistProduct($requestBody);
 		
 		if ($response->isEmpty()) {
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR, "Възникна проблем при създаването на продукта.");
-			$response->header("X-Response-Result", "Failed to create product with provided data.");
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			$response->header("X-Request-Result", "Failed to create product with provided data.");
 		}
 		return $response;
 	}
@@ -71,34 +114,26 @@ class ProductsController extends Controller  {
 		$response = new Response();
 		
 		DB::transaction(function() use(&$requestBody, &$response) {
-			$productType = $this->persistAndRetrieveProductTypeEntry($requestBody);
 			$brand = $this->persistAndRetrieveBrandEntry($requestBody);
 			$model = $this->persistAndRetrieveModelEntry($requestBody);
+			$productType = $this->persistAndRetrieveProductTypeEntry($requestBody);
 				
-			$productType->brands()->attach($brand->id);
 			$brand->models()->attach($model->id);
-				
-			$productName = $requestBody->name;
-			$uniqueId = $requestBody->uniqueNumber;
-			$price = intval($requestBody->price);
-			$imageName = $requestBody->imageName;
+			$productType->brands()->attach($brand->id);
 				
 			$product = Products::create([
-					"name" => $productName,
-					"unique_id" => $uniqueId,
-					"product_type_id" => $productType->id,
-					"brand_id" => $brand->id,
-					"model_id" => $model->id,
-					"price" => $price,
-					"image_name" => $imageName
+				"brand_id" => $brand->id,
+				"model_id" => $model->id,
+				"name" => $requestBody->name,
+				"product_type_id" => $productType->id,
+				"image_name" => $requestBody->imageName,
+				"price" => floatval($requestBody->price),
+				"unique_id" => $requestBody->uniqueNumber
 			]);
 			
 			$response->header("Content-Type", "application/json");
-			$response->header("X-Response-Result", "success");
+			$response->header("X-Request-Result", "Successfully persisted entity.");
 			$response->setStatusCode(201);
-
-			$responseBody = "{\"productId\":\"". $product->id ."\", \"imagename\":\"". $imageName ."\"}";
-			$response->setContent($responseBody);
 		});
 		
 		return $response;
@@ -116,7 +151,7 @@ class ProductsController extends Controller  {
 		return Models::firstOrCreate(["name" => $requestBody->model]);
 	}
 	
-	function uploadImage(Request $request) {
+	public function uploadImage(Request $request) {
 		$response = new Response();
 		if ($request->hasFile("file")) {
 			$file = $request->file("file");
@@ -125,52 +160,71 @@ class ProductsController extends Controller  {
 				try {
 					$file->move(base_path("resources/assets/images"), $imageName);
 				} catch (Exception $exception) {
-					$response->header("Content-Type", "application/json; charset=UTF-8");
-					$response->header("X-Response-Result", "Failed to upload image reason: [" . $exception->getMessage() . "]");
+					$response->header("X-Request-Result", "Failed to upload image reason: [" . $exception->getMessage() . "]");
 					$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 					return $response;
 				}
 				$response->header("Content-Type", "application/json; charset=UTF-8");
-				$response->header("X-Response-Result", "Successfully uploaded image.");
+				$response->header("X-Request-Result", "Successfully uploaded image.");
 				$response->setStatusCode(Response::HTTP_CREATED);
 	
 				$response->setContent("{\"imageName\":\"" . $imageName . "\"}");
 			} else {
-				$response->header("X-Response-Result", "Uploaded file is invalid.");
-				$response->header("Content-Type", "application/json; charset=UTF-8");
+				$response->header("X-Request-Result", "Uploaded file is invalid.");
 				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			}
 		} else {
-			$response->header("X-Response-Result", "File must be uploaded.");
-			$response->header("Content-Type", "application/json; charset=UTF-8");
+			$response->header("X-Request-Result", "File must be specified.");
 			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 		}
 		return $response;
 	}
 	
-	function updateEntity() {
-		return "Successfully updated product entity";
+	public function updateEntity(Request $request, Response $response) {
+		$rawContentBody = $request->getContent();
+		$requestBody = json_decode($rawContentBody);
+		
+		$queryResult = Products::where("id", $requestBody->id)->
+				update([
+					"name" => $requestBody->name,
+					"unique_id" => $requestBody->uniqueNumber,
+					"product_type_id" => $requestBody->type,
+					"brand_id" => $requestBody->brand,
+					"model_id" => $requestBody->model,
+					"image_name" => $requestBody->imageName,
+					"price" => $requestBody->price,
+			   	]);
+
+		if ($queryResult > 0) {
+			$response->header("X-Request-Result", "Successfully updated product entry.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+		
+		$response->header("X-Request-Result", "Failed to update product.");
+		$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+		return $response;
 	}
 	
-	function deleteEntity() {
+	public function deleteEntity() {
 		return "Successfully deleted product entity";
 	}
 
-	function getTypes() {
+	public function getTypes() {
 		return "[".
 					"{\"id\":1,\"name\":\"Волан\"},".
 					"{\"id\":2,\"name\":\"Двигател\"}".
 			   "]";
 	}
 	
-	function getBrands($typeId) {
+	public function getBrands($typeId) {
 		if ($typeId === "1") {
 			return "[{\"id\":1,\"name\":\"Nissan\"}]";
 		}
 		return "[{\"id\":2,\"name\":\"Mercedes\"}]";
 	}
 	
-	function getModels($typeId, $brandId) {
+	public function getModels($typeId, $brandId) {
 		if ($typeId === "1" && $brandId === "1") {
 			return "[{\"id\":1,\"name\":\"Съзтезателен\"}]";
 		} else if ($typeId === "2" && $brandId === "2") {

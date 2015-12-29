@@ -1,11 +1,10 @@
 (function() {
 	
+	var NO_CONTENT = 204;
+	var UNPROCESSABLE_ENTITY = 422;
+	
 	var restUtil = null;
 	var destinationUtil = null;
-	
-	var headers = {
-		"Content-Type" : "application/json"
-	};
 	
 	var ProductLoader = function(RESTUtil, DestinationUtil) {
 		restUtil = RESTUtil;
@@ -15,7 +14,8 @@
 			loadProductById: loadProductById,
 			loadProductTypes: loadProductTypes,
 			loadProductBrands: loadProductBrands,
-			loadProductModels: loadProductModels
+			loadProductModels: loadProductModels,
+			loadAllProductEntries: loadAllProductEntries
 		};
 	};
 	
@@ -31,23 +31,38 @@
 		
 		return {
 			method : "GET",
-			headers : headers,
 			url : destinationUtil.Product.search + path
 		};
 	};
 	
 	var onSuccess = function(xhrResponse) {
+		if (xhrResponse.status === NO_CONTENT) {
+			this.notFound = "Не успяхме да намерим търсения от вас продукт.";
+			return;
+		}
+		
 		this.name = xhrResponse.data.name;
-		this.uniqueNumber = xhrResponse.data.uniqueNumber;
-		this.newProductType = xhrResponse.data.type;
-		this.newProductBrand = xhrResponse.data.brand;
-		this.newProductModel = xhrResponse.data.model;
 		this.price = xhrResponse.data.price;
-		this.src = xhrResponse.data.src;
+		this.src = xhrResponse.data.image_name;
+		this.uniqueNumber = xhrResponse.data.unique_id;
+		this.newProductBrand = xhrResponse.data.brands.name;
+		this.newProductModel = xhrResponse.data.models.name;
+		this.newProductType = xhrResponse.data.product_types.name;
 	};
 	
 	var onError = function(xhrResponse) {
-		this.errorMessage = "Не успяхме да заредим данните за този продукт, моля опитайте пак.";
+		if (xhrResponse.status === UNPROCESSABLE_ENTITY) {
+			this.errorMessage = "Не успяхме да заредим данните за този продукт, поради грешка възникнала " +
+				"при валидацията на входните данни, моля опитайте пак." +
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+		} else {
+			this.errorMessage = "Възникна неочаквана грешка при опит за извличане на информация за продукта, моля опитайте пак." +
+					"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+					"Информация от сървъра: [" + 
+						(typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма информация" : xhrResponse.getResponseHeader("X-Request-Result")) + 
+					"]";
+		}
 	};
 	
 	/* ============ TYPES Loading =============*/
@@ -109,6 +124,59 @@
 		this.models = [];
 		this.errorMessage = "Възникна грешка при зареждането на продуктовите модели.";
 	};
+	
+	
+	
+/* ================ Single request for retrieving all products ================ */
+	
+	var loadAllProductEntries = function($scope) {
+		var requestData = {
+			method: "GET",
+			url: destinationUtil.Product.all
+		};
+		
+		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProducts, $scope), jQuery.proxy(onFailOfLoadingProducts, $scope));
+	};
+	
+	var onSuccessfullyLoadedProducts = function(xhrResponse) {
+		var wholeProductsData = xhrResponse.data;
+		extractProductsAndAddThemToModel(wholeProductsData, this);
+	};
+	
+	var extractProductsAndAddThemToModel = function(products, $scope) {
+		$scope.types = [];
+
+		var productTypes = {};
+		products.forEach(function(product) {
+			var brandId = product.brand_id;
+			var productTypeId = product.product_type_id;
+			if (typeof productTypes[productTypeId] === "undefined") {
+				productTypes[productTypeId] = {
+					name: product.product_types.name,
+					brands: {}
+				};
+				
+				product.brands['models'] = [ product.models ];
+				productTypes[productTypeId].brands[brandId] = product.brands;
+				
+				$scope.types.push(product.product_types);
+			} else if (typeof productTypes[productTypeId].brands[brandId] === "undefined"){
+				product.brands['models'] = [ product.models ];
+				productTypes[productTypeId].brands[brandId] = product.brands;
+			} else {
+				productTypes[productTypeId].brands[brandId].models.push(product.models);
+			}
+		});
+		
+		$scope.productTypes = productTypes;
+	};
+	
+	var onFailOfLoadingProducts = function(xhrResponse) {
+		this.errorMessage = "Данните за попълването на модела не бяха извлечени успешно." +
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+	};
+	
 	
 	/* ============ Module Registration =============*/
 	

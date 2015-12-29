@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'products/api/v1'], function() {
 	
-	Route::get('/', 'ProductsController@findEntity');
+	Route::get('/', 'ProductsController@findEntities');
 	
 	Route::post('/', 'ProductsController@persistEntity');
 	

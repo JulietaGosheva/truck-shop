@@ -11,85 +11,35 @@
 		$scope.buttonText = "Създай";
 		$scope.modalText = "Резултат от изпълнението на записа";
 		
-		$scope.updateProductModels = jQuery.proxy(updateProductModels, $scope);
-		$scope.updateProductTypes = jQuery.proxy(updateProductTypes, $scope, ProductLoader);
-		$scope.updateProductBrands = jQuery.proxy(updateProductBrands, $scope, ProductLoader);
+		$scope.updateProductModels = updateProductModels;
+		$scope.updateProductTypes = updateProductTypes;
+		$scope.updateProductBrands = updateProductBrands;
 		
-		$scope.reloadBrands = jQuery.proxy(reloadBrands, $scope, ProductLoader);
-		$scope.reloadModels = jQuery.proxy(reloadModels, $scope, ProductLoader);
+		$scope.reloadBrands = jQuery.proxy(reloadBrands, $scope);
+		$scope.reloadModels = jQuery.proxy(reloadModels, $scope);
 		
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, AJAXRESTUtil, RESTUtil, DestinationUtil);
 		
-		retrieveAllProductEntries($scope, RESTUtil, DestinationUtil);
+		ProductLoader.loadAllProductEntries($scope);
 	};
 	
 	module.controller("ProductCreationController", ["$scope", "AJAXRESTUtil", "RESTUtil", "DestinationUtil", "ProductLoader", ProductCreationController]);
 
-	/* ================ Single request for retrieving all products ================ */
-	
-	var retrieveAllProductEntries = function($scope, RESTUtil, DestinationUtil) {
-		var requestData = {
-			method: "GET",
-			url: DestinationUtil.Product.all
-		};
-		
-		RESTUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProducts, $scope), jQuery.proxy(onFailOfLoadingProducts, $scope));
-	};
-	
-	var onSuccessfullyLoadedProducts = function(xhrResponse) {
-		var wholeProductsData = xhrResponse.data;
-		extractProductsAndAddThemToModel(wholeProductsData, this);
-	};
-	
-	var extractProductsAndAddThemToModel = function(products, $scope) {
-		$scope.types = [];
-
-		var productTypes = {};
-		products.forEach(function(product) {
-			var brandId = product.brand_id;
-			var productTypeId = product.product_type_id;
-			if (typeof productTypes[productTypeId] === "undefined") {
-				productTypes[productTypeId] = {
-					name: product.product_types.name,
-					brands: {}
-				};
-				
-				product.brands['models'] = [ product.models ];
-				productTypes[productTypeId].brands[brandId] = product.brands;
-				
-				$scope.types.push(product.product_types);
-			} else if (typeof productTypes[productTypeId].brands[brandId] === "undefined"){
-				product.brands['models'] = [ product.models ];
-				productTypes[productTypeId].brands[brandId] = product.brands;
-			} else {
-				productTypes[productTypeId].brands[brandId].models.push(product.models);
-			}
-		});
-		
-		$scope.productTypes = productTypes;
-	};
-	
-	var onFailOfLoadingProducts = function(xhrResponse) {
-		this.requestExecutionResult = "Данните за попълването на модела не бяха извлечени успешно." +
-				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "].";
-		$('#products-result-modal').modal({ keyboard: true });
-	};
-	
 	/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
 	
-	var updateProductTypes = function(ProductLoader) {
+	var updateProductTypes = function() {
 		setTimeout(function() {
 			$("#types").trigger("chosen:updated");
 		}, 50);
 	};
 	
-	var updateProductBrands = function(ProductLoader) {
+	var updateProductBrands = function() {
 		setTimeout(function() {
 			$("#brands").trigger("chosen:updated");
 		}, 50);
 	};
 	
-	var updateProductModels = function(ProductLoader) {
+	var updateProductModels = function() {
 		setTimeout(function() {
 			$("#models").trigger("chosen:updated");
 		}, 50);
@@ -97,7 +47,7 @@
 	
 	/* ================ Selectors onChange event handlers ================ */
 	
-	var reloadBrands = function(ProductLoader, oElement) {
+	var reloadBrands = function(oElement) {
 		this.models = [];
 		updateProductModels();
 		
@@ -105,7 +55,7 @@
 		updateProductBrands();
 	};
 	
-	var reloadModels = function(ProductLoader, oElement) {
+	var reloadModels = function(oElement) {
 		this.models = this.productTypes[oElement.existingProductType].brands[oElement.existingProductBrand].models;
 	};
 	
@@ -139,7 +89,7 @@
 	var onFailedImageUpload = function(xhrResponse) {
 		this.requestExecutionResult = "Възникна грешка при качването на снимката." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-						"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Response-Result") + "]";
+				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
 
 		$('#products-result-modal').modal({ keyboard: true });
 	};
@@ -174,7 +124,9 @@
 	var onSuccess = function(RESTUtil, DestinationUtil, xhrResponse) {
 		this.requestExecutionResult = "Успешно записани данни. Моля изчакайте страницата да бъде презаредена.";
 		
-		$('#products-result-modal').modal({ backdrop: "static"});
+		$('#products-result-modal').modal({
+			backdrop: "static"
+		});
 		
 		setTimeout(function() {
 			location.reload();
@@ -183,7 +135,8 @@
 	
 	var onError = function(xhrResponse) {
 		this.requestExecutionResult = "Данните не бяха успешно записани." +
-				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "].";
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
 		$('#products-result-modal').modal({ keyboard: true });
 	};
 	
