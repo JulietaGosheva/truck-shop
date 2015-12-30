@@ -56,12 +56,14 @@
 			this.errorMessage = "Не успяхме да заредим данните за този продукт, поради грешка възникнала " +
 				"при валидацията на входните данни, моля опитайте пак." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+				"Информация от сървъра: [" + 
+					(typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) + 
+				"]";
 		} else {
 			this.errorMessage = "Възникна неочаквана грешка при опит за извличане на информация за продукта, моля опитайте пак." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 				"Информация от сървъра: [" + 
-					(typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма информация" : xhrResponse.getResponseHeader("X-Request-Result")) + 
+					(typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) + 
 				"]";
 		}
 	};

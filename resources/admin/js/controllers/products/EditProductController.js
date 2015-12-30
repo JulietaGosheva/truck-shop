@@ -109,7 +109,7 @@
 		this.resultMessage = "Възникна грешка при качването на снимката." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 				"Информация от сървъра: [" 
-					+ (typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма данни" : xhrResponse.getResponseHeader("X-Request-Result"))
+					+ (typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма информация" : xhrResponse.getResponseHeader("X-Request-Result"))
 				+ "]";
 
 		this.doesImageUpdateSucceed = false;
@@ -162,7 +162,7 @@
 		this.resultMessage = "Данните не бяха редактирани." +
 			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 			"Информация от сървъра: [" 
-				+ (typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма данни" : xhrResponse.headers()["X-Request-Result"]) 
+				+ (typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) 
 			+ "]";
 		
 		$('#edit-products-result-modal').modal({ keyboard: true });
