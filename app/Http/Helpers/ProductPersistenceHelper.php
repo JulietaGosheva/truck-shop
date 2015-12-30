@@ -44,40 +44,51 @@ class ProductPersistenceHelper {
 	}
 	
 	public function findEntityByUniqueId(Request $request, Response $response) {
-		return "Method is not implemented";
+		$validator = Validator::make($request->all(), [
+				'uniqueNumber' => 'required|numeric'
+		]);
+	
+		if ($validator->fails()) {
+			$response->header(Constants::RESPONSE_HEADER, "\"uniqueNumber\" query parameter is required and must contain number as value.");
+			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+			
+		$uniqueNumber = $request->input("uniqueNumber");
+	
+		$product = Products::with('productTypes', 'brands', 'models')->where("unique_id", $uniqueNumber)->first();
+	
+		if ($product === null) {
+			$response->header(Constants::RESPONSE_HEADER, "Entity not found.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+	
+		$response->header(Constants::RESPONSE_HEADER, "Successfully retrieved data.");
+	
+		return $product;
 	}
 	
 	public function findEntity(Request $request, Response $response) {
-		return "[{".
-				"\"id\": 1,".
-				"\"src\": \"http://weknowyourdreams.com/images/car/car-05.jpg\",".
-				"\"name\": \"Laborghini\",".
-				"\"type\": \"Car\"".
-				"},".
-				"{".
-				"\"id\": 2,".
-				"\"src\": \"http://dreamatico.com/data_images/car/car-3.jpg\",".
-				"\"name\": \"Renault\",".
-				"\"type\": \"Car\"".
-				"},".
-				"{".
-				"\"id\": 3,".
-				"\"src\": \"http://weknowyourdreams.com/images/car/car-04.jpg\",".
-				"\"name\": \"Mustang\",".
-				"\"type\": \"Car\"".
-				"},".
-				"{".
-				"\"id\": 4,".
-				"\"src\": \"http://dreamatico.com/data_images/car/car-1.jpg\",".
-				"\"name\": \"Laborghini\",".
-				"\"type\": \"Car\"".
-				"},".
-				"{".
-				"\"id\": 5,".
-				"\"src\": \"http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg\",".
-				"\"name\": \"BMW\",".
-				"\"type\": \"Car\"".
-				"}]";
+		$queryBuilder = Products::with('productTypes', 'brands', 'models');
+		
+		if ($request->has("name")) {
+			$queryBuilder->where("name", $request->name);
+		}
+		
+		if ($request->has("type")) {
+			$queryBuilder->where("productTypes.name", $request->type);
+		}
+		
+		if ($request->has("brand")) {
+			$queryBuilder->where("brands.name", $request->brand);
+		}
+		
+		if ($request->has("model")) {
+			$queryBuilder->where("models.name", $request->model);
+		}
+		
+		return $queryBuilder->get();
 	}
 	
 	public function persistProduct(Response $response, $requestBody) {

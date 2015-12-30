@@ -104,7 +104,7 @@
 			uniqueNumber : oData.uniqueNumber,
 			type : (scope.model.typeInsertMode === true ? oData.newProductType : typesDropdown.options[typesDropdown.selectedIndex].text),
 			brand : (scope.model.brandInsertMode === true ? oData.newProductBrand : brandsDropdown.options[brandsDropdown.selectedIndex].text),
-			model : (scope.model.modelInsertMode === true ? oData.newProductModel : modelsDropdown.options[modelsDropdown.selectedIndexl].text),
+			model : (scope.model.modelInsertMode === true ? oData.newProductModel : modelsDropdown.options[modelsDropdown.selectedIndex].text),
 			price : oData.price,
 			imageName : scope.imageName
 		};

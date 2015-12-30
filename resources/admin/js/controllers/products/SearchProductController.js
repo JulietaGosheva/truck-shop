@@ -2,12 +2,57 @@
 	
 	var module = angular.module("AdminController");
 	
-	var SearchProductController = function($scope, $location, RESTUtil, DestinationUtil, EndpointHelper) {
+	var SearchProductController = function($scope, $location, RESTUtil, DestinationUtil, EndpointHelper, ProductLoader) {
 		$scope.url = constructUrl($location, EndpointHelper);
 		$scope.executeSearchRequest = jQuery.proxy(executeSearchRequest, $scope, RESTUtil, DestinationUtil);
+
+		$scope.updateProductModels = updateProductModels;
+		$scope.updateProductTypes = updateProductTypes;
+		$scope.updateProductBrands = updateProductBrands;
+		
+		$scope.reloadBrands = jQuery.proxy(reloadBrands, $scope);
+		$scope.reloadModels = jQuery.proxy(reloadModels, $scope);
+		
+		ProductLoader.loadAllProductEntries($scope);
 	};
 	
-	module.controller("SearchProductController", ["$scope", "$location", "RESTUtil", "DestinationUtil", "EndpointHelper", SearchProductController]);
+	module.controller("SearchProductController", ["$scope", "$location", "RESTUtil", "DestinationUtil", "EndpointHelper", "ProductLoader", SearchProductController]);
+	
+/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
+	
+	var updateProductTypes = function() {
+		setTimeout(function() {
+			$("#types").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateProductBrands = function() {
+		setTimeout(function() {
+			$("#brands").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateProductModels = function() {
+		setTimeout(function() {
+			$("#models").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	/* ================ Selectors onChange event handlers ================ */
+	
+	var reloadBrands = function(oElement) {
+		this.models = [];
+		updateProductModels();
+		
+		this.brands = this.productTypes[oElement.existingProductType].brands;
+		updateProductBrands();
+	};
+	
+	var reloadModels = function(oElement) {
+		this.models = this.productTypes[oElement.existingProductType].brands[oElement.existingProductBrand].models;
+	};
+	
+	/* ================ Backend AJAX requests ================ */
 	
 	var constructUrl = function($location, EndpointHelper) {
 		var hash = $location.path();
