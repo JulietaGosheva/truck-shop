@@ -41,9 +41,10 @@
 			return;
 		}
 		
+		this.id = xhrResponse.data.id;
 		this.name = xhrResponse.data.name;
 		this.price = xhrResponse.data.price;
-		this.src = xhrResponse.data.image_name;
+		this.imageName = xhrResponse.data.image_name;
 		this.uniqueNumber = xhrResponse.data.unique_id;
 		this.newProductBrand = xhrResponse.data.brands.name;
 		this.newProductModel = xhrResponse.data.models.name;
@@ -58,10 +59,10 @@
 				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
 		} else {
 			this.errorMessage = "Възникна неочаквана грешка при опит за извличане на информация за продукта, моля опитайте пак." +
-					"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-					"Информация от сървъра: [" + 
-						(typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма информация" : xhrResponse.getResponseHeader("X-Request-Result")) + 
-					"]";
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + 
+					(typeof xhrResponse.getResponseHeader("X-Request-Result") === "undefined" ? "Няма информация" : xhrResponse.getResponseHeader("X-Request-Result")) + 
+				"]";
 		}
 	};
 	
@@ -173,8 +174,8 @@
 	
 	var onFailOfLoadingProducts = function(xhrResponse) {
 		this.errorMessage = "Данните за попълването на модела не бяха извлечени успешно." +
-				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+			"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
 	};
 	
 	

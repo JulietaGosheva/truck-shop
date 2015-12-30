@@ -1,5 +1,33 @@
 (function() {
 	
+	var executeRequest = function(oData, onSuccess, onError, methodType) {
+		var xsrfToken = _extractXSRFTokenFromCookies();
+		
+		if (xsrfToken !== null) {
+			if (typeof oData.headers === 'undefined') {
+				oData.headers = {
+					"X-XSRF-TOKEN" : xsrfToken
+				};
+			} else {
+				oData.headers['X-XSRF-TOKEN'] = xsrfToken;
+			}
+		}
+		
+		$.ajax({
+	        url: oData.url,
+	        type: methodType,
+	        cache: false,
+	        data: oData.data,
+	        async: typeof oData.async === 'undefined' ? true : oData.async,
+	        dataType: 'json',
+            processData: false,
+	        headers: typeof oData.headers === 'undefined' ? {} : oData.headers,
+    		contentType: typeof oData.contentType === 'undefined' ? true : oData.contentType,
+	        success: onSuccess,
+	        error: onError
+	    });
+	};
+	
 	var _extractXSRFTokenFromCookies = function() {
 		var xsrfTokenCookieName = "XSRF-TOKEN";
 
@@ -24,43 +52,19 @@
 	
 	var AJAXRESTUtil = function() {
 		var GETRequest = function(oData, onSuccess, onError) {
-			throw new Exception("Not implemented.");
+			executeRequest(oData, onSuccess, onError, 'GET');
 		};
 		
 		var POSTRequest = function(oData, onSuccess, onError) {
-			var xsrfToken = _extractXSRFTokenFromCookies();
-			
-			if (xsrfToken !== null) {
-				if (typeof oData.headers === 'undefined') {
-					oData.headers = {
-						"X-XSRF-TOKEN" : xsrfToken
-					};
-				} else {
-					oData.headers['X-XSRF-TOKEN'] = xsrfToken;
-				}
-			}
-			
-			$.ajax({
-		        url: oData.url,
-		        type: 'POST',
-		        cache: false,
-		        data: oData.data,
-		        async: typeof oData.async === 'undefined' ? true : oData.async,
-		        dataType: 'json',
-	            processData: false,
-		        headers: typeof oData.headers === 'undefined' ? {} : oData.headers,
-        		contentType: typeof oData.contentType === 'undefined' ? true : oData.contentType,
-		        success: onSuccess,
-		        error: onError
-		    });
+			executeRequest(oData, onSuccess, onError, 'POST');
 		};
 		
 		var PUTRequest = function(oData, onSuccess, onError) {
-			throw new Exception("Not implemented.");
+			executeRequest(oData, onSuccess, onError, 'PUT');
 		};
 		
 		var DELETERequest = function(oData, onSuccess, onError) {
-			throw new Exception("Not implemented.");
+			executeRequest(oData, onSuccess, onError, 'DELETE');
 		};
 		
 		return {

@@ -29,11 +29,13 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::post('/image', 'ProductsController@uploadImage');
 	
-	Route::get('/types', 'ProductsController@getTypes');
+	Route::post('/image/{imageName}', 'ProductsController@updateImage');
 	
-	Route::get('/types/{typeId}/brands', 'ProductsController@getBrands');
+	Route::get('/types', 'ProductTypesController@getTypes');
 	
-	Route::get('/types/{typeId}/brands/{brandId}/models', 'ProductsController@getModels');
+	Route::get('/types/{typeId}/brands', 'BrandsController@getBrands');
+	
+	Route::get('/types/{typeId}/brands/{brandId}/models', 'ModelsController@getModels');
 });
 
 Route::group(['prefix' => 'orders/api/v1'], function() {

@@ -7,6 +7,7 @@
 		var PRODUCT_TYPES_ENDPOINT = PRODUCTS_ENDPOINT + "/types";
 		var PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image";
 		var PRODUCT_BRANDS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands";
+		var UPDATE_PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image/{imageName}";
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
 		return {
@@ -19,7 +20,8 @@
 				types: PRODUCT_TYPES_ENDPOINT,
 				brands: PRODUCT_BRANDS_ENDPOINT,
 				models: PRODUCT_MODELS_ENDPOINT,
-				image: PRODUCT_IMAGE_ENDPOINT
+				image: PRODUCT_IMAGE_ENDPOINT,
+				imageUpdate: UPDATE_PRODUCT_IMAGE_ENDPOINT
 			}
 		};
 	};

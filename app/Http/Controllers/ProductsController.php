@@ -18,6 +18,9 @@ use App;
 
 class ProductsController extends Controller  {
 	
+	const RESPONSE_HEADER = "X-Request-Result";
+	const IMAGE_PATH = "resources/assets/images";
+	
 	public function findEntities(Request $request, Response $response) {
 		if ($request->has("id")) {
 			return $this->findEntityById($request, $response);
@@ -36,7 +39,7 @@ class ProductsController extends Controller  {
 		]);
 		
 		if ($validator->fails()) {
-			$response->header("X-Request-Result", "\"id\" query parameter is required and must contain number as value.");
+			$response->header(self::RESPONSE_HEADER, "\"id\" query parameter is required and must contain number as value.");
 			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
 			return $response;
 		}
@@ -46,12 +49,12 @@ class ProductsController extends Controller  {
 		$product = Products::with('productTypes', 'brands', 'models')->find($id);
 
 		if ($product === null) {
-			$response->header("X-Request-Result", "Entity not found.");
+			$response->header(self::RESPONSE_HEADER, "Entity not found.");
 			$response->setStatusCode(Response::HTTP_NO_CONTENT);
 			return $response;
 		}
 		
-		$response->header("X-Request-Result", "Successfully retrieved data.");
+		$response->header(self::RESPONSE_HEADER, "Successfully retrieved data.");
 
 		return $product;
 	}
@@ -62,34 +65,34 @@ class ProductsController extends Controller  {
 	
 	private function findEntity(Request $request, Response $response) {
 		return "[{".
-				"\"id\": 1,".
-				"\"src\": \"http://weknowyourdreams.com/images/car/car-05.jpg\",".
-				"\"name\": \"Laborghini\",".
-				"\"type\": \"Car\"".
+					"\"id\": 1,".
+					"\"src\": \"http://weknowyourdreams.com/images/car/car-05.jpg\",".
+					"\"name\": \"Laborghini\",".
+					"\"type\": \"Car\"".
 				"},".
 				"{".
-				"\"id\": 2,".
-				"\"src\": \"http://dreamatico.com/data_images/car/car-3.jpg\",".
-				"\"name\": \"Renault\",".
-				"\"type\": \"Car\"".
+					"\"id\": 2,".
+					"\"src\": \"http://dreamatico.com/data_images/car/car-3.jpg\",".
+					"\"name\": \"Renault\",".
+					"\"type\": \"Car\"".
 				"},".
 				"{".
-				"\"id\": 3,".
-				"\"src\": \"http://weknowyourdreams.com/images/car/car-04.jpg\",".
-				"\"name\": \"Mustang\",".
-				"\"type\": \"Car\"".
+					"\"id\": 3,".
+					"\"src\": \"http://weknowyourdreams.com/images/car/car-04.jpg\",".
+					"\"name\": \"Mustang\",".
+					"\"type\": \"Car\"".
 				"},".
 				"{".
-				"\"id\": 4,".
-				"\"src\": \"http://dreamatico.com/data_images/car/car-1.jpg\",".
-				"\"name\": \"Laborghini\",".
-				"\"type\": \"Car\"".
+					"\"id\": 4,".
+					"\"src\": \"http://dreamatico.com/data_images/car/car-1.jpg\",".
+					"\"name\": \"Laborghini\",".
+					"\"type\": \"Car\"".
 				"},".
 				"{".
-				"\"id\": 5,".
-				"\"src\": \"http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg\",".
-				"\"name\": \"BMW\",".
-				"\"type\": \"Car\"".
+					"\"id\": 5,".
+					"\"src\": \"http://www.info2india.com/cars/car-photos/small/bmw%20i8%201.jpg\",".
+					"\"name\": \"BMW\",".
+					"\"type\": \"Car\"".
 				"}]";
 	}
 	
@@ -97,23 +100,21 @@ class ProductsController extends Controller  {
 		return Products::with('productTypes', 'brands', 'models')->get();
 	}
 	
-	public function persistEntity(Request $request) {
+	public function persistEntity(Request $request, Response $response) {
 		$rawContentBody = $request->getContent();
 		$requestBody = json_decode($rawContentBody);
 		
-		$response = $this->persistProduct($requestBody);
+		$response = $this->persistProduct($response, $requestBody);
 		
 		if ($response->isEmpty()) {
 			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-			$response->header("X-Request-Result", "Failed to create product with provided data.");
+			$response->header(self::RESPONSE_HEADER, "Failed to create product with provided data.");
 		}
 		return $response;
 	}
 	
-	private function persistProduct($requestBody) {
-		$response = new Response();
-		
-		DB::transaction(function() use(&$requestBody, &$response) {
+	private function persistProduct(Response $response, $requestBody) {
+		DB::transaction(function() use(&$response, &$requestBody) {
 			$brand = $this->persistAndRetrieveBrandEntry($requestBody);
 			$model = $this->persistAndRetrieveModelEntry($requestBody);
 			$productType = $this->persistAndRetrieveProductTypeEntry($requestBody);
@@ -132,7 +133,7 @@ class ProductsController extends Controller  {
 			]);
 			
 			$response->header("Content-Type", "application/json");
-			$response->header("X-Request-Result", "Successfully persisted entity.");
+			$response->header(self::RESPONSE_HEADER, "Successfully persisted entity.");
 			$response->setStatusCode(201);
 		});
 		
@@ -151,33 +152,89 @@ class ProductsController extends Controller  {
 		return Models::firstOrCreate(["name" => $requestBody->model]);
 	}
 	
-	public function uploadImage(Request $request) {
-		$response = new Response();
-		if ($request->hasFile("file")) {
-			$file = $request->file("file");
-			if ($file->isValid()) {
-				$imageName = round(microtime(true) * 1000) . "." . $file->getClientOriginalExtension();
-				try {
-					$file->move(base_path("resources/assets/images"), $imageName);
-				} catch (Exception $exception) {
-					$response->header("X-Request-Result", "Failed to upload image reason: [" . $exception->getMessage() . "]");
-					$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-					return $response;
-				}
-				$response->header("Content-Type", "application/json; charset=UTF-8");
-				$response->header("X-Request-Result", "Successfully uploaded image.");
-				$response->setStatusCode(Response::HTTP_CREATED);
-	
-				$response->setContent("{\"imageName\":\"" . $imageName . "\"}");
-			} else {
-				$response->header("X-Request-Result", "Uploaded file is invalid.");
-				$response->setStatusCode(Response::HTTP_BAD_REQUEST);
-			}
-		} else {
-			$response->header("X-Request-Result", "File must be specified.");
+	public function uploadImage(Request $request, Response $response) {
+		if ($request->hasFile("file") === false) {
+			$response->header(self::RESPONSE_HEADER, "File must be specified.");
 			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
 		}
+		
+		$file = $request->file("file");
+		if ($file->isValid() === false) {
+			$response->header(self::RESPONSE_HEADER, "Uploaded file is invalid.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		return $this->saveImage($response, $file);
+	}
+	
+	public function updateImage(Request $request, Response $response, $imageName) {
+		if ($request->hasFile("file") === false) {
+			$response->header(self::RESPONSE_HEADER, "File must be specified.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		$file = $request->file("file");
+		if ($file->isValid() === false) {
+			$response->header(self::RESPONSE_HEADER, "Uploaded file is invalid.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($imageName) === false) {
+			$response->header(self::RESPONSE_HEADER, "\"imageName\" parameter should be specified.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		DB::beginTransaction();
+		
+		$isFileDeleted = $this->deleteImageByName($imageName);
+		
+		if ($isFileDeleted === false) {
+			DB::rollBack();
+			
+			$response->header(self::RESPONSE_HEADER, "Failed to delete previous file.");
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
+		
+		$response = $this->saveImage($response, $file);
+		
+		if ($response->status() === Response::HTTP_CREATED) {
+			DB::commit();
+		} else {
+			DB::rollBack();
+		}
+		
 		return $response;
+	}
+	
+	private function saveImage(Response $response, $file) {
+		$imageName = round(microtime(true) * 1000) . "." . $file->getClientOriginalExtension();
+		
+		try {
+			$file->move(base_path(self::IMAGE_PATH), $imageName);
+		} catch (Exception $exception) {
+			$response->header(self::RESPONSE_HEADER, "Failed to upload image reason: [" . $exception->getMessage() . "]");
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
+		
+		$response->header("Content-Type", "application/json; charset=UTF-8");
+		$response->header(self::RESPONSE_HEADER, "Successfully uploaded image.");
+		$response->setStatusCode(Response::HTTP_CREATED);
+		
+		$response->setContent("{\"imageName\":\"" . $imageName . "\"}");
+		
+		return $response;
+	}
+	
+	private function deleteImageByName($imageName) {
+		$imagesPath = base_path(self::IMAGE_PATH);
+		return unlink($imagesPath . "/" . $imageName);
 	}
 	
 	public function updateEntity(Request $request, Response $response) {
@@ -196,12 +253,12 @@ class ProductsController extends Controller  {
 			   	]);
 
 		if ($queryResult > 0) {
-			$response->header("X-Request-Result", "Successfully updated product entry.");
+			$response->header(self::RESPONSE_HEADER, "Successfully updated product entry.");
 			$response->setStatusCode(Response::HTTP_NO_CONTENT);
 			return $response;
 		}
 		
-		$response->header("X-Request-Result", "Failed to update product.");
+		$response->header(self::RESPONSE_HEADER, "Failed to update product.");
 		$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 		return $response;
 	}
@@ -210,26 +267,4 @@ class ProductsController extends Controller  {
 		return "Successfully deleted product entity";
 	}
 
-	public function getTypes() {
-		return "[".
-					"{\"id\":1,\"name\":\"Волан\"},".
-					"{\"id\":2,\"name\":\"Двигател\"}".
-			   "]";
-	}
-	
-	public function getBrands($typeId) {
-		if ($typeId === "1") {
-			return "[{\"id\":1,\"name\":\"Nissan\"}]";
-		}
-		return "[{\"id\":2,\"name\":\"Mercedes\"}]";
-	}
-	
-	public function getModels($typeId, $brandId) {
-		if ($typeId === "1" && $brandId === "1") {
-			return "[{\"id\":1,\"name\":\"Съзтезателен\"}]";
-		} else if ($typeId === "2" && $brandId === "2") {
-			return "[{\"id\":1,\"name\":\"Бизнесменски\"}]";
-		}
-		return "[]";
-	}
 }
