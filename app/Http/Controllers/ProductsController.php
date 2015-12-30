@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
+use Validator;
 
 use App;
 use App\Products;
@@ -137,8 +138,47 @@ class ProductsController extends Controller  {
 		return $response;
 	}
 	
-	public function deleteEntity() {
-		return "Successfully deleted product entity";
+	public function deleteEntity(Request $request, Response $response) {
+		$validator = Validator::make($request->all(), [
+				'id' => 'required|numeric'
+		]);
+		
+		if ($validator->fails()) {
+			$response->header(Constants::RESPONSE_HEADER, "\"id\" query parameter is required and must contain number as value.");
+			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+			
+		$id = $request->input("id");
+		$product = Products::find($id);
+		
+		DB::beginTransaction();
+		
+		$isFileDeleted = $this->persistenceHelper->deleteImageByName($product->image_name);
+		
+		if ($isFileDeleted === false) {
+			DB::rollBack();
+				
+			$response->header(Constants::RESPONSE_HEADER, "Failed to delete previous file.");
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
+		
+		$isProductDeleted = $product->delete();
+		
+		if ($isProductDeleted === false) {
+			DB::rollBack();
+		
+			$response->header(Constants::RESPONSE_HEADER, "Failed to delete previous file.");
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+			return $response;
+		}
+		
+		DB::commit();
+		
+		$response->header(Constants::RESPONSE_HEADER, "Successfully deleted product entry.");
+		$response->setStatusCode(Response::HTTP_NO_CONTENT);
+		return $response;
 	}
 
 }

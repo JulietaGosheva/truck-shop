@@ -8,35 +8,42 @@
 	
 	module.controller("DeleteProductController", ["$scope", "$routeParams", "RESTUtil", "DestinationUtil", DeleteProductController]);
 	
-	//TODO: clarify whether or not the verification of the data will be here in the controller or at the backend
 	var executeRequest = function(routeParams, RESTUtil, DestinationUtil) {
 		var requestData = prepareRequestData(DestinationUtil, routeParams);
-		RESTUtil.DELETE(requestData, onSuccess, onError);
+		RESTUtil.DELETE(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
 	var prepareRequestData = function(DestinationUtil, routeParams) {
-		var data = {
-			id: routeParams.id
-		};
-
-		var headers = {
-			"Content-Type" : "application/json"
-		};
+		var productId = routeParams.id;
 		
 		return {
 			method : "DELETE",
-			url : DestinationUtil.Product.deletion,
-			headers : headers,
-			data : JSON.stringify(data) 
+			url : String.format(DestinationUtil.Product.deletion, productId)
 		};
 	};
 	
 	var onSuccess = function(xhrResponse) {
-		console.log("Success message : " + xhrResponse.data);
+		this.title = "Успешно изтрит продукт.";
+		this.resultMessage = "Успешно изтрит продукт. Моля изчакайте страницата да бъде презаредена.";
+		
+		$('#delete-products-result-modal').modal({
+			backdrop: "static"
+		});
+		
+		setTimeout(function() {
+			location.hash = "#/products/delete";
+		}, 1500);
 	};
 	
 	var onError = function(xhrResponse) {
-		console.log("Error message : " + xhrResponse.data);
+		this.title = "Неуспешно изтриване.";
+		this.resultMessage = "Данните не бяха изтрити." +
+			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+			"Информация от сървъра: [" 
+				+ (typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) 
+			+ "]";
+		
+		$('#delete-products-result-modal').modal({ keyboard: true });
 	};
 	
 })();
