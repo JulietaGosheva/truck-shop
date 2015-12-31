@@ -44,15 +44,15 @@
 		this.models = [];
 		updateProductModels();
 		
-		this.brands = this.productTypes[oElement.existingProductType].brands;
+		this.brands = this.productTypes[oElement.type].brands;
 		updateProductBrands();
 	};
 	
 	var reloadModels = function(oElement) {
-		this.models = this.productTypes[oElement.existingProductType].brands[oElement.existingProductBrand].models;
+		this.models = this.productTypes[oElement.type].brands[oElement.brand].models;
 	};
 	
-	/* ================ Backend AJAX requests ================ */
+	/* ================ Helper functions ================ */
 	
 	var constructUrl = function($location, EndpointHelper) {
 		var hash = $location.path();
@@ -64,17 +64,36 @@
 		return EndpointHelper.products.details;
 	};
 	
+	/* ================ Backend AJAX requests ================ */
+	
 	var executeSearchRequest = function(RESTUtil, DestinationUtil, oData) {
+		//clearPreviousSearchResultIfExists();
+		
 		var requestData = prepareRequestData(oData, DestinationUtil, this);
 		RESTUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
+	var clearPreviousSearchResultIfExists = function() {
+		$("#productList").empty();
+	};
+	
 	var prepareRequestData = function(oData, DestinationUtil, scope) {
 		var path = "?";
+		var typesDropdown = $("#types")[0];
+		var brandsDropdown = $("#brands")[0];
+		var modelsDropdown = $("#models")[0];
 		
 		for (key in oData) {
 			if (typeof oData[key] !== "undefined" && oData[key] !== "") {
-				path += key + "=" + oData[key] + "&";
+				if (key === "type") {
+					path += key + "=" + typesDropdown.options[typesDropdown.selectedIndex].text + "&";
+				} else if (key === "brand") {
+					path += key + "=" + brandsDropdown.options[brandsDropdown.selectedIndex].text + "&";
+				} else if (key === "model") {
+					path += key + "=" + modelsDropdown.options[modelsDropdown.selectedIndex].text + "&";
+				} else {
+					path += key + "=" + oData[key] + "&";
+				}
 			}
 		}
 		
@@ -90,7 +109,11 @@
 	};
 	
 	var onSuccess = function(xhrResponse) {
-		this.products = xhrResponse.data;
+		if (Array.isArray(xhrResponse.data)) {
+			this.products = xhrResponse.data;
+		} else {
+			this.products = [xhrResponse.data];
+		}
 		console.log("Success message : " + xhrResponse.data);
 	};
 	

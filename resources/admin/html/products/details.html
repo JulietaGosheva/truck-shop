@@ -1,10 +1,13 @@
 <div>
    <div class="col-sm-6 pull-left">
-       <img class="img-thumbnail pull-right" ng-src="{{ src }}" style="max-width: 400px; max-height: 400px;">
+       <img class="img-thumbnail pull-right" ng-src="../../resources/assets/images/{{ imageName }}" style="min-width: 400px; max-width: 400px; min-height: 400px; max-height: 400px;">
    </div>
    <div class="col-sm-4" style="text-font: 25px; position: relative; height: 100%">
        <h3>Име : {{ name }} </h3> <br>
-       <p>Тип : {{ type }} </p><br>
+       <p>Уникален номер : {{ uniqueNumber }} </p><br>
+       <p>Тип : {{ newProductType }} </p><br>
+       <p>Производител : {{ newProductBrand }} </p><br>
+       <p>Модел : {{ newProductModel }} </p><br>
        <p>Цена : {{ price }} </p>
    </div>
 </div>

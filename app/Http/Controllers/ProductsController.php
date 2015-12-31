@@ -28,7 +28,7 @@ class ProductsController extends Controller  {
 			return $this->persistenceHelper->findEntityById($request, $response);
 		}
 		
-		if ($request->has("uniqueid")) {
+		if ($request->has("uniqueNumber")) {
 			return $this->persistenceHelper->findEntityByUniqueId($request, $response);
 		}
 		

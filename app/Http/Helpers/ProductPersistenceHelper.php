@@ -73,18 +73,21 @@ class ProductPersistenceHelper {
 		$queryBuilder = Products::with('productTypes', 'brands', 'models');
 		
 		if ($request->has("name")) {
-			$queryBuilder->where("name", $request->name);
+			$queryBuilder->where("products.name", $request->name);
 		}
 		
 		if ($request->has("type")) {
-			$queryBuilder->where("productTypes.name", $request->type);
+			$queryBuilder->join('product_types', 'product_types.id', '=', 'products.product_type_id');
+			$queryBuilder->where("product_types.name", $request->type);
 		}
 		
 		if ($request->has("brand")) {
+			$queryBuilder->join('brands', 'brands.id', '=', 'products.brand_id');
 			$queryBuilder->where("brands.name", $request->brand);
 		}
 		
 		if ($request->has("model")) {
+			$queryBuilder->join('models', 'models.id', '=', 'products.model_id');
 			$queryBuilder->where("models.name", $request->model);
 		}
 		
