@@ -2,14 +2,14 @@
 	<div class="form-group">
 		<label class="col-sm-3 control-label">Емайл</label>
 		<div class="col-sm-9">
-			<input type="email" class="form-control" name="email" placeholder="Емайл на потребителя">
+			<input type="email" id="email" class="form-control" name="email" placeholder="Емайл на потребителя">
 		</div>
 	</div>
 	
 	<div class="form-group">
         <label class="col-sm-3 control-label">Парола</label>
         <div class="col-sm-9">
-            <input type="password" class="form-control" name="password" placeholder="Потребителска парола">
+            <input type="password" id="password" class="form-control" name="password" placeholder="Потребителска парола">
         </div>
     </div>
 
@@ -35,3 +35,21 @@
 		</div>
 	</div>
 </form>
+
+<script>
+
+    (function() {
+    	 
+    	setTimeout(function() {
+    		var emailField = $("#email");
+    		emailField.val("");
+    		emailField.removeClass("-webkit-autofill");
+    	    
+    	    var password = $("#password");
+    	    password.val("");
+    	    password.removeClass("-webkit-autofill");
+    	}, 100);
+
+    })();
+
+</script>
