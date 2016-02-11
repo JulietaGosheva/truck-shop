@@ -48,9 +48,15 @@ Route::group(['prefix' => 'orders/api/v1'], function() {
 	// Add method for searching between two dates
 });
 
-Route::get("/administration",  ['middleware' => 'auth', function() {
+Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
 	return view("admin.management");
 }]);
+
+Route::get("/registration", function() {
+	return view("registration");
+});
+
+Route::post("/registration", ['middleware' => 'registration', 'AuthController@create']);
 
 Route::get("/authentication", function() {
 	return view("authentication");

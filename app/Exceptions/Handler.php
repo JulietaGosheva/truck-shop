@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
+use Log;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -16,7 +16,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        HttpException::class,
         ModelNotFoundException::class,
     ];
 
@@ -28,9 +27,15 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(Exception $exception)
     {
-        return parent::report($e);
+    	if ($exception instanceof HttpException) {
+	    	Log::error("Exception occured with status code: [" . $exception->getStatusCode() . "]. Error message: [" . $exception->getMessage() . "].");
+    	} else {
+    		Log::error("Unexpected exception occured with message: [" . $exception->getMessage() . "]");
+    	}
+    	
+        return parent::report($exception);
     }
 
     /**
@@ -40,7 +45,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+	public function render($request, Exception $e)
     {
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
