@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::group(['prefix' => 'products/api/v1'], function() {
+Route::group(['prefix' => 'products/api/v1', 'middleware' => 'auth'], function() {
 	
 	Route::get('/', 'ProductsController@findEntities');
 	
@@ -39,17 +39,19 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 });
 
 Route::group(['prefix' => 'orders/api/v1'], function() {
-	Route::get('products', 'ProductsController@getBrands');
+	Route::get('/', 'ProductsController@getBrands');
 	
-	Route::get('users/{email}', 'ProductsController@getBrands');
+	Route::get('/users/{email}', 'ProductsController@getBrands');
 
-	Route::get('products/{product}', 'ProductsController@getBrands');
+	Route::get('/products/{product}', 'ProductsController@getBrands');
 	
 	// Add method for searching between two dates
 });
 
-
-Route::get("/administration", function() {
+Route::get("/administration",  ['middleware' => 'auth', function() {
 	return view("admin.management");
-});
+}]);
 
+Route::get("/authentication", function() {
+	return view("authentication");
+});
