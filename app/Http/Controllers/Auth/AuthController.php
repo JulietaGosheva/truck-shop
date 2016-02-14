@@ -2,44 +2,29 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use Auth;
 use Validator;
+
+use App\User;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
+    public $loginPath = '/authentication';
+    public $redirectAfterLogout = "/";
+    
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function validator(array $data)
     {
         return Validator::make($data, [
             'email' => 'required|email|max:255|unique:users',
@@ -50,13 +35,7 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
+    public function create(array $data)
     {
         return User::create([
             'email' => $data['email'],
@@ -66,4 +45,13 @@ class AuthController extends Controller
         	'role_id' => $data['roleId']
         ]);
     }
+    
+    public function authenticate(Request $request)
+    {
+    	if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+    		return redirect()->intended('index');
+    	}
+    	return redirect('/');
+    }
+    
 }

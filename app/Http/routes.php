@@ -1,15 +1,13 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+ |--------------------------------------------------------------------------
+ | Application Routes
+ |--------------------------------------------------------------------------
+ | 
+ | This routes are used by application for data management. 
+ |
+ */
 
 Route::get('/', function () {
     return view('index');
@@ -45,19 +43,29 @@ Route::group(['prefix' => 'orders/api/v1'], function() {
 
 	Route::get('/products/{product}', 'ProductsController@getBrands');
 	
-	// Add method for searching between two dates
+	//TODO: Add method for searching between two dates
 });
 
 Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
 	return view("admin.management");
 }]);
 
-Route::get("/registration", function() {
-	return view("registration");
-});
+/*
+ |--------------------------------------------------------------------------
+ | Login/Logout/Registration Routes
+ |--------------------------------------------------------------------------
+ |
+ | This routes are used for login, logout and registration.
+ |
+ */
 
-Route::post("/registration", ['middleware' => 'registration', 'AuthController@create']);
+Route::get('/logout', 'Auth\AuthController@getLogout');
 
-Route::get("/authentication", function() {
-	return view("authentication");
-});
+Route::post("/authentication", "Auth\AuthController@authenticate");
+
+Route::get("/authentication", function() { return view("authentication"); });
+
+Route::get("/registration", function() { return view("registration"); });
+
+Route::post("/registration", ['middleware' => 'registration', 'Auth\AuthController@create']);
+
