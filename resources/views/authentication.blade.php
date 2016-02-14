@@ -20,23 +20,27 @@
 			<div class="single-view-content">
 				<div class="container">
 				    <div class="page-header" style="text-align: center;">
-				        <h1>Поръчай лесно и бързо</h1>
+				        <h1>Вход към администраторският панел</h1>
 				    </div>
 				    <form class="form-horizontal" method="POST" action="">
+				    	{!! csrf_field() !!}
+
 				        <div class="has-error"></div>
 				        <div class="form-group">
 				            <label for="email" class="col-sm-4 control-label">Електронна поща</label>
-				            <div class="col-sm-6">
+				            <div class="col-sm-5">
 				                <input type="email" class="form-control" name="email" id="email" placeholder="Електронна поща">
 				            </div>
 				        </div>
+				        
 				        <div class="has-error"></div>
 				        <div class="form-group">
 				            <label for="password" class="col-sm-4 control-label">Парола</label>
-				            <div class="col-sm-6">
+				            <div class="col-sm-5">
 				                <input type="password" class="form-control" name="password" id="password" placeholder="Парола">
 				            </div>
 				        </div>
+				        
 				        <div class="form-group">
 				            <div class="col-sm-offset-4 col-sm-8">
 				                <button type="submit" class="btn btn-default">Вход</button>
