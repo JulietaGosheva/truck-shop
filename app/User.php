@@ -16,29 +16,30 @@ class User extends Model implements AuthenticatableContract,
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-    protected $timestamps = false;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['email', 'password', 'first_name', 'last_name', 'role_id'];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'role_id'];
+    public $table = 'users';
+    public $timestamps = false;
+    public $hidden = ['password', 'role_id'];
+    public $fillable = ['email', 'password', 'first_name', 'last_name', 'role_id'];
     
     public function role() {
     	return $this->belongsTo("App\Roles", "role_id");
+    }
+    
+    /* @Override */
+    public function getRememberToken()
+    {
+    	return null;
+    }
+    
+    /* @Override */
+    public function setRememberToken($value)
+    {
+		//do nothing
+    }
+    
+    /* @Override */
+    public function getRememberTokenName()
+    {
+    	return null;
     }
 }
