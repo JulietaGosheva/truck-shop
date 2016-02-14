@@ -4,13 +4,13 @@
 		<meta charset="utf-8" />
 		<title>Администрация</title>
 		
-        <script src="../../resources/dependencies/js/jquery-2.1.3.min.js"></script>
-	    <script src="../../resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
+        <script src="resources/dependencies/js/jquery-2.1.3.min.js"></script>
+	    <script src="resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
         
-		<link rel="stylesheet" href="../../resources/dependencies/css/bootstrap.min.css"></link>
-        <link rel="stylesheet" href="../../resources/dependencies/css/bootstrap-theme.css"></link>
+		<link rel="stylesheet" href="resources/dependencies/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="resources/dependencies/css/bootstrap-theme.css"></link>
         
-        <link rel="stylesheet" href="../../resources/common/css/application.css"></link>
+        <link rel="stylesheet" href="resources/common/css/application.css"></link>
 	</head>
 	<body>
 		<div class="application-content">
@@ -49,8 +49,6 @@
 				    </form>
 				</div>
 			</div>
-			
-			<?php include base_path("resources/assets/html/templates/footer.html"); ?>
 
 		</div>
 	</body>
