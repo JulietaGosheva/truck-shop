@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class AuthController extends Controller
 {
@@ -51,7 +52,7 @@ class AuthController extends Controller
     	if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
     		return redirect()->intended('index');
     	}
-    	return redirect('/');
+    	throw new UnauthorizedHttpException("Wrong email or password.");
     }
     
 }

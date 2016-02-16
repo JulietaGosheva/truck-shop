@@ -6,5 +6,6 @@
 	</head>
 	<body>
 		Възникнала грешка: {{ $excpetionMessage }}. Статус на грешката: {{ $statusCode }}.
+		Път към началната страница: {!! $baseUrl !!}.
 	</body>
 </html>
