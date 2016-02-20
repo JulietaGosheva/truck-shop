@@ -4,23 +4,21 @@ namespace App\Http\Middleware;
 
 use Auth;
 use Closure;
-use App\Roles;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Http\Response;
+
+use App\Roles;
+use App\Http\Helpers\Constants;
+
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class RegistrationMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
+
+	public function handle($request, Closure $next)
     {
+    	$response = new Response();
+    	
     	if (Auth::check() === false) {
     		$request->request->set('roleId', $this->retrieveRoleIdByName('Customer'));
     		return $next($request);
@@ -28,25 +26,37 @@ class RegistrationMiddleware
     	
     	$user = Auth::user();
     	if ($user === null) {
-    		throw new HttpException(500, "Failed to retrieve authenticated user.");
+    		$response->header(Constants::RESPONSE_HEADER, "Failed to retrieve authenticated user.");
+    		$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+    		return $response;
     	}
     	
-    	if ($user->role !== "Administrator") {
-    		throw new AccessDeniedHttpException("Permission are required for performing registration operation.");
-    	}
+    	$role = Roles::where('id', $user->role_id)->firstOrFail();
     	
-    	$roleName = $request->get('roleName');
-		if ($roleName === null) {
-			$request->request->set('roleId', 'Customer');
-		} else {
-			$request->request->set('roleId', $this->retrieveRoleIdByName($roleName));
-		}
+    	if ($role->name !== "Administrator") {
+    		$response->header(Constants::RESPONSE_HEADER, "Permission are required for performing registration operation.");
+    		$response->setStatusCode(Response::HTTP_FORBIDDEN);
+    		return $response;
+    	}
+
+    	try {
+	    	$roleName = $request->get('roleName');
+			if ($roleName === null) {
+				$request->request->set('roleId', $this->retrieveRoleIdByName('Customer'));
+			} else {
+				$request->request->set('roleId', $this->retrieveRoleIdByName($roleName));
+			}
+    	} catch (Exception $exception) {
+    		$response->header(Constants::RESPONSE_HEADER, $exception->getMessage());
+    		$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+    		return $response;
+    	}
 		
         return $next($request);
     }
     
     private function retrieveRoleIdByName($roleName) {
-    	$role = Roles::with("id")->where("name", $roleName)->first();
+    	$role = Roles::where("name", $roleName)->first();
     	if ($role === null) {
     		throw new BadRequestHttpException("Provided role does not exists.");
     	}

@@ -2,42 +2,27 @@
 
 namespace App\Http\Middleware;
 
+use Auth;
 use Closure;
+
+use App\Roles;
+
 use Illuminate\Contracts\Auth\Guard;
 
-class RedirectIfAuthenticated
-{
-    /**
-     * The Guard implementation.
-     *
-     * @var Guard
-     */
+class RedirectIfAuthenticated {
     protected $auth;
 
-    /**
-     * Create a new filter instance.
-     *
-     * @param  Guard  $auth
-     * @return void
-     */
-    public function __construct(Guard $auth)
-    {
+    public function __construct(Guard $auth) {
         $this->auth = $auth;
     }
 
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
+    public function handle($request, Closure $next) {
         if ($this->auth->check()) {
         	$user = Auth::user();
-        	if ($user->role->name === "Administrator") {
-        		return redirect()->intended('/administrator');
+
+        	$role = Roles::where('id', $user->role_id)->firstOrFail();
+        	if ($role->name === "Administrator") {
+        		return redirect()->intended('/administration');
         	}
             return redirect()->intended('/');
         }

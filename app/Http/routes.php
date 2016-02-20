@@ -67,5 +67,5 @@ Route::get("/authentication", function() { return view("authentication"); });
 
 Route::get("/registration", function() { return view("registration"); });
 
-Route::post("/registration", ['middleware' => 'registration', 'Auth\AuthController@create']);
+Route::post("/registration", ['middleware' => ['registration'], 'uses' => 'Auth\AuthController@createUser']);
 
