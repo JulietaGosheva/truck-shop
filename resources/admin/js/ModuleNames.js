@@ -34,5 +34,5 @@ com.rs.module.ModuleNames.prototype.getHashHelperName = function() {
 }
 
 com.rs.module.ModuleNames.prototype.getProductRetrieverName = function() {
-	return "ProductLoader";
+	return "ProductRetriever";
 }
