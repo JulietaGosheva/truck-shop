@@ -13,7 +13,11 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::group(['prefix' => 'products/api/v1', 'middleware' => 'auth'], function() {
+Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
+	return view("admin.management");
+}]);
+
+Route::group(['prefix' => 'products/api/v1', 'middleware' => ['auth', 'role']], function() {
 	
 	Route::get('/', 'ProductsController@findEntities');
 	
@@ -36,19 +40,19 @@ Route::group(['prefix' => 'products/api/v1', 'middleware' => 'auth'], function()
 	Route::get('/types/{typeId}/brands/{brandId}/models', 'ModelsController@getModels');
 });
 
-Route::group(['prefix' => 'orders/api/v1'], function() {
-	Route::get('/', 'ProductsController@getBrands');
+Route::group(['prefix' => 'users/api/v1', 'middleware' => ['auth', 'role']], function() {
+	Route::get('/', 'UsersController@findUsers');
 	
-	Route::get('/users/{email}', 'ProductsController@getBrands');
-
-	Route::get('/products/{product}', 'ProductsController@getBrands');
+	Route::post('/', ['middleware' => 'registration', 'uses' => 'Auth\AuthController@createUser']);
 	
-	//TODO: Add method for searching between two dates
+	Route::put('/', 'UsersController@editUser');
+	
+	Route::delete('/', 'UsersController@deleteUser');
 });
 
-Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
-	return view("admin.management");
-}]);
+Route::group(['prefix' => 'orders/api/v1'], function() {
+	//TODO: Add method for searching between two dates
+});
 
 /*
  |--------------------------------------------------------------------------

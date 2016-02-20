@@ -9,8 +9,13 @@
 	var DestinationUtil = function() {
 		var SERVER_URL = "http://localhost/truck-shop/";
 		
+		var USERS_ENDPOINT = SERVER_URL + "users/api/v1";
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
-		var ALL_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT + "/all";
+
+		var CREATE_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
+		var MODIFY_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
+		var SEARCH_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
+		var LIST_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT + "/all";
 		var PRODUCT_TYPES_ENDPOINT = PRODUCTS_ENDPOINT + "/types";
 		var PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image";
 		var DELETE_PRODUCT_ENDPOINT = PRODUCTS_ENDPOINT + "?id={productId}";
@@ -18,21 +23,28 @@
 		var UPDATE_PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image/{imageName}";
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
+		var CREATE_USER_ENDPOINT = USERS_ENDPOINT;
+		var MODIFY_USER_ENDPOINT = USERS_ENDPOINT;
+		var DELETE_USER_ENDPOINT = USERS_ENDPOINT + "?id={userId}";
+		var SEARCH_USERS_ENDPOINT = USERS_ENDPOINT;
+		
+		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "/registration";
+		
 		return {
 			getProductListEndpoint: function() {
-				return ALL_PRODUCTS_ENDPOINT;
+				return LIST_PRODUCTS_ENDPOINT;
 			},
 			getProductCreationEndpoint: function() {
-				return PRODUCTS_ENDPOINT;
+				return CREATE_PRODUCTS_ENDPOINT;
 			},
 			getProductModificationEndpoint: function() {
-				return PRODUCTS_ENDPOINT;
+				return MODIFY_PRODUCTS_ENDPOINT;
 			},
 			getProductDeletionEndpoint: function() {
 				return DELETE_PRODUCT_ENDPOINT;
 			},
 			getProductSearchingEndpoint: function() {
-				return PRODUCTS_ENDPOINT;
+				return SEARCH_PRODUCTS_ENDPOINT;
 			},
 			getProductTypesEndpoint: function() {
 				return PRODUCT_TYPES_ENDPOINT;
@@ -49,8 +61,20 @@
 			getProductPhotoModificationEndpoint: function() {
 				return UPDATE_PRODUCT_IMAGE_ENDPOINT;
 			},
-			getUserCreationEndpoint : function() {
-				return SERVER_URL + "/registration";
+			getUserRegistrationEndpoint : function() {
+				return USER_REGISTRATION_ENDPOINT;
+			},
+			getUserCreationEndpoint: function() {
+				return CREATE_USER_ENDPOINT;
+			},
+			getUserModificationEndpoint: function() {
+				return MODIFY_USER_ENDPOINT;
+			},
+			getUserDeletionEndpoint: function() {
+				return DELETE_USER_ENDPOINT;
+			},
+			getUserSearchingEndpoint: function() {
+				return SEARCH_USERS_ENDPOINT;
 			}
 		};
 	};

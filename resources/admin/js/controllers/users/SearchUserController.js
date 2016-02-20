@@ -1,62 +1,96 @@
 (function() {
 
-	var module = angular.module("AdminController");
+	/* ============ Variables and Constructor ============= */
 	
-	var SearchUserController = function($scope, $sce, $location, EndpointHelper) {
+	var RestUtil = null;
+	var DestinationUtil = null;
+	var HeaderUtil = null;
+	var HashHelper = null;
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var restUtilName = moduleNames.getRestUtilName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	var headerUtilName = moduleNames.getHeaderUtilName();
+	var hashHelperName = moduleNames.getHashHelperName();
+	
+	var module = angular.module(adminControllerName);
+	
+	var SearchUserController = function($scope, $sce, $location, RUtil, DUtil, HUtil, HHelper) {
+		RestUtil = RUtil;
+		DestinationUtil = DUtil;
+		HeaderUtil = HUtil;
+		HashHelper = HHelper;
+		
 		$scope.buttonStyle = "primary";
 		$scope.buttonText = $sce.trustAsHtml("<span class='glyphicon glyphicon-search'></span>");
 		
-		$scope.url = constructUrl($location, EndpointHelper);
+		$scope.url = constructUrl($location);
 		
 		$scope.model = $scope;
-		$scope.executeRequest = findSearchedUsers;
+		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 	};
 	
-	module.controller("SearchUserController", ["$scope", "$sce", "$location", "EndpointHelper", SearchUserController]);
+	module.controller("SearchUserController", ["$scope", "$sce", "$location", restUtilName, destinationUtilName, headerUtilName, hashHelperName, SearchUserController]);
+	
+	/* ================ Helper functions ================ */
 	
 	var constructUrl = function($location, EndpointHelper) {
 		var hash = $location.path();
 		if (hash.indexOf("edit") !== -1) {
-			return EndpointHelper.users.edit;
+			return HashHelper.getUserModificationHash();
 		} else if (hash.indexOf("delete") !== -1) {
-			return EndpointHelper.users.deletion;
+			return HashHelper.getUserDeletionHash();
 		}
 		return hash;
 	};
 	
-	var findSearchedUsers = function($scope, oData) {
-		$scope.users = [
-	   		   {
-	   			   id: 1,
-	   			   email: "kiril@abv.bg",
-	   			   firstname: "Kiril",
-	   			   lastname: "Kirilov"
-			   },
-			   {
-				   id: 2,
-				   email: "petyr@abv.bg",
-				   firstname: "Petyr",
-				   lastname: "Petrov"
-			   },
-			   {
-				   id: 3,
-				   email: "stoqn@abv.bg",
-				   firstname: "Stoqn",
-				   lastname: "Stoqnov"
-			   },
-			   {
-				   id: 4,
-				   email: "milen@abv.bg",
-				   firstname: "Milen",
-				   lastname: "Milenov"
-			   },
-			   {
-				   id: 5,
-				   email: "marko@abv.bg",
-				   firstname: "Marko",
-				   lastname: "Markov"
-			   }
-        ];
+	/* ================ Backend AJAX requests ================ */
+	
+	var executeRequest = function(oData) {
+		var requestData = prepareRequestData(oData, this);
+		RestUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
+	};
+	
+	var prepareRequestData = function(oData, scope) {
+		var path = "?";
+		
+		for (key in oData) {
+			if (typeof oData[key] !== "undefined" && oData[key] !== "") {
+				path += key + "=" + oData[key] + "&";
+			}
+		}
+		
+		var headers = {
+			"Content-Type" : "application/json"
+		};
+		
+		return {
+			method : "GET",
+			url : DestinationUtil.getUserSearchingEndpoint() + path,
+			headers : headers
+		};
+	};
+	
+	var onSuccess = function(xhrResponse) {
+		if (Array.isArray(xhrResponse.data)) {
+			this.users = xhrResponse.data;
+		} else {
+			this.users = [xhrResponse.data];
+		}
+	};
+	
+	var onError = function(xhrResponse) {
+		this.users = [];
+		
+		this.modalText = "Възникна проблем при търсене на потребители по зададените критерии.";
+		this.requestExecutionResult = "Данни не бяха намерени." +
+			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+			"Информация от сървъра: [" + 
+				HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+			+ "]";
+		
+		$('#result-modal').modal({ keyboard: true });
 	};
 	
 })();

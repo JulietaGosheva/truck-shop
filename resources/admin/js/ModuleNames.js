@@ -31,8 +31,12 @@ com.rs.module.ModuleNames.prototype.getApplicationName = function() {
 
 com.rs.module.ModuleNames.prototype.getHashHelperName = function() {
 	return "HashHelper";
-}
+};
 
 com.rs.module.ModuleNames.prototype.getProductRetrieverName = function() {
 	return "ProductRetriever";
-}
+};
+
+com.rs.module.ModuleNames.prototype.getUserRetrieverName = function() {
+	return "UserRetriever";
+};

@@ -91,7 +91,7 @@
 	var executeSearchRequest = function(oData) {
 		//clearPreviousSearchResultIfExists();
 		
-		var requestData = prepareRequestData(oData, DestinationUtil, this);
+		var requestData = prepareRequestData(oData, this);
 		RestUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
@@ -99,7 +99,7 @@
 		$("#productList").empty();
 	};
 	
-	var prepareRequestData = function(oData, DestinationUtil, scope) {
+	var prepareRequestData = function(oData, scope) {
 		var path = "?";
 		var typesDropdown = $("#types")[0];
 		var brandsDropdown = $("#brands")[0];
@@ -141,7 +141,8 @@
 	var onError = function(xhrResponse) {
 		this.products = [];
 		
-		this.requestExecutionResult = "Данните не бяха успешно записани." +
+		this.modalText = "Възникна проблем при търсене на продукти по зададените критерии.";
+		this.requestExecutionResult = "Данни не бяха намерени." +
 			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 			"Информация от сървъра: [" + 
 				HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")

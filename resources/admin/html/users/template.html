@@ -5,6 +5,11 @@
             'firstname': firstname,
             'lastname': lastname
        })">
+    
+    <!-- Ugly work arround for preventin autofill forms --> 
+    <input style="display:none" type="email" name="fakeusernameremembered"/>
+    <input style="display:none" type="password" name="fakeusernameremembered"/>
+    
 	<div class="form-group">
 		<label class="col-sm-3 control-label">Емайл</label>
 		<div class="col-sm-9">
@@ -12,6 +17,10 @@
 		</div>
 	</div>
 	
+	<!-- Ugly work arround for preventin autofill forms --> 
+    <input style="display:none" type="email" name="fakeusernameremembered"/>
+    <input style="display:none" type="password" name="fakeusernameremembered"/>
+    
 	<div class="form-group">
         <label class="col-sm-3 control-label">Парола</label>
         <div class="col-sm-9">
@@ -55,21 +64,3 @@
         </div>
     </div>
 </div>
-    
-<script>
-
-    (function() {
-    	 
-    	setTimeout(function() {
-    		var emailField = $("#email");
-    		emailField.val("");
-    		emailField.removeClass("-webkit-autofill");
-    	    
-    	    var password = $("#password");
-    	    password.val("");
-    	    password.removeClass("-webkit-autofill");
-    	}, 100);
-
-    })();
-
-</script>

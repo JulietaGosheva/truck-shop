@@ -118,7 +118,7 @@ class ProductPersistenceHelper {
 			$response->setStatusCode(201);
 		});
 	
-			return $response;
+		return $response;
 	}
 	
 	public function persistAndRetrieveProductTypeEntry($requestBody) {
