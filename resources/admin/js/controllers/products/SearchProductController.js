@@ -1,10 +1,32 @@
 (function() {
 	
-	var module = angular.module("AdminController");
+	/* ============ Variables and Constructor ============= */
 	
-	var SearchProductController = function($scope, $location, RESTUtil, DestinationUtil, EndpointHelper, ProductLoader) {
-		$scope.url = constructUrl($location, EndpointHelper);
-		$scope.executeSearchRequest = jQuery.proxy(executeSearchRequest, $scope, RESTUtil, DestinationUtil);
+	var RestUtil = null;
+	var DestinationUtil = null;
+	var HashHelper = null;
+	var ProductRetriever = null;
+	var HeaderUtil = null;
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var restUtilName = moduleNames.getRestUtilName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	var hashHelperName = moduleNames.getHashHelperName();
+	var productRetrieverName = moduleNames.getProductRetrieverName();
+	var headerUtilName = moduleNames.getHeaderUtilName();
+	
+	var module = angular.module(adminControllerName);
+	
+	var SearchProductController = function($scope, $location, RUtil, DUtil, HHelper, PRetriever, HUtil) {
+		RestUtil = RUtil;
+		DestinationUtil = DUtil;
+		HashHelper = HHelper;
+		ProductRetriever = PRetriever;
+		HeaderUtil = HUtil;
+		
+		$scope.url = constructUrl($location);
+		$scope.executeSearchRequest = jQuery.proxy(executeSearchRequest, $scope);
 
 		$scope.updateProductModels = updateProductModels;
 		$scope.updateProductTypes = updateProductTypes;
@@ -13,10 +35,10 @@
 		$scope.reloadBrands = jQuery.proxy(reloadBrands, $scope);
 		$scope.reloadModels = jQuery.proxy(reloadModels, $scope);
 		
-		ProductLoader.loadAllProductEntries($scope);
+		ProductRetriever.loadAllProductEntries($scope);
 	};
 	
-	module.controller("SearchProductController", ["$scope", "$location", "RESTUtil", "DestinationUtil", "EndpointHelper", "ProductLoader", SearchProductController]);
+	module.controller("SearchProductController", ["$scope", "$location", restUtilName, destinationUtilName, hashHelperName, productRetrieverName, headerUtilName, SearchProductController]);
 	
 /* ================ ngCustomRepeatWatcher directive callback handlers ================ */
 	
@@ -54,23 +76,23 @@
 	
 	/* ================ Helper functions ================ */
 	
-	var constructUrl = function($location, EndpointHelper) {
+	var constructUrl = function($location) {
 		var hash = $location.path();
 		if (hash.indexOf("edit") !== -1) {
-			return EndpointHelper.products.edit;
+			return HashHelper.getProductModificationHash();
 		} else if (hash.indexOf("delete") !== -1) {
-			return EndpointHelper.products.deletion;
+			return HashHelper.getProductDeletionHash();
 		}
-		return EndpointHelper.products.details;
+		return HashHelper.getProductDetailsHash();
 	};
 	
 	/* ================ Backend AJAX requests ================ */
 	
-	var executeSearchRequest = function(RESTUtil, DestinationUtil, oData) {
+	var executeSearchRequest = function(oData) {
 		//clearPreviousSearchResultIfExists();
 		
 		var requestData = prepareRequestData(oData, DestinationUtil, this);
-		RESTUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
 	var clearPreviousSearchResultIfExists = function() {
@@ -103,7 +125,7 @@
 		
 		return {
 			method : "GET",
-			url : DestinationUtil.Product.search + path,
+			url : DestinationUtil.getProductSearchingEndpoint() + path,
 			headers : headers
 		};
 	};
@@ -114,12 +136,18 @@
 		} else {
 			this.products = [xhrResponse.data];
 		}
-		console.log("Success message : " + xhrResponse.data);
 	};
 	
 	var onError = function(xhrResponse) {
 		this.products = [];
-		console.log("Error message : " + xhrResponse.data);
+		
+		this.requestExecutionResult = "Данните не бяха успешно записани." +
+			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+			"Информация от сървъра: [" + 
+				HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+			+ "]";
+		
+		$('#products-result-modal').modal({ keyboard: true });
 	};
 	
 })();

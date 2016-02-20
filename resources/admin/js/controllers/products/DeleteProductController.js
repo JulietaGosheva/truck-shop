@@ -1,24 +1,42 @@
 (function() {
 	
-	var module = angular.module("AdminController");
+	/* ============ Variables and Constructor ============= */
 	
-	var DeleteProductController = function($scope, $routeParams, RESTUtil, DestinationUtil) {
-		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, $routeParams, RESTUtil, DestinationUtil);
+	var RestUtil = null;
+	var DestinationUtil = null;
+	var HeaderUtil = null;
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var restUtilName = moduleNames.getRestUtilName();
+	var headerUtilName = moduleNames.getHeaderUtilName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	
+	var module = angular.module(adminControllerName);
+	
+	var DeleteProductController = function($scope, $routeParams, RUtil, DUtil, HUtil) {
+		RestUtil = RUtil;
+		DestinationUtil = DUtil;
+		HeaderUtil = HUtil;
+		
+		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, $routeParams);
 	};
 	
-	module.controller("DeleteProductController", ["$scope", "$routeParams", "RESTUtil", "DestinationUtil", DeleteProductController]);
+	module.controller("DeleteProductController", ["$scope", "$routeParams", restUtilName, destinationUtilName, headerUtilName, DeleteProductController]);
 	
-	var executeRequest = function(routeParams, RESTUtil, DestinationUtil) {
-		var requestData = prepareRequestData(DestinationUtil, routeParams);
-		RESTUtil.DELETE(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
+	/* ============ Function declaration ============= */
+	
+	var executeRequest = function(routeParams) {
+		var requestData = prepareRequestData(routeParams);
+		RestUtil.DELETE(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
-	var prepareRequestData = function(DestinationUtil, routeParams) {
+	var prepareRequestData = function(routeParams) {
 		var productId = routeParams.id;
 		
 		return {
 			method : "DELETE",
-			url : String.format(DestinationUtil.Product.deletion, productId)
+			url : String.format(DestinationUtil.getProductDeletionEndpoint(), productId)
 		};
 	};
 	
@@ -26,9 +44,7 @@
 		this.title = "Успешно изтрит продукт.";
 		this.resultMessage = "Успешно изтрит продукт. Моля изчакайте страницата да бъде презаредена.";
 		
-		$('#delete-products-result-modal').modal({
-			backdrop: "static"
-		});
+		$('#delete-products-result-modal').modal({ backdrop: "static" });
 		
 		setTimeout(function() {
 			location.hash = "#/products/delete";
@@ -40,7 +56,7 @@
 		this.resultMessage = "Данните не бяха изтрити." +
 			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 			"Информация от сървъра: [" 
-				+ (typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) 
+				+ HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result") 
 			+ "]";
 		
 		$('#delete-products-result-modal').modal({ keyboard: true });

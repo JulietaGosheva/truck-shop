@@ -1,10 +1,15 @@
 (function() {
 	
-	var module = angular.module("AdminController");
+	var moduleNames = new com.rs.module.ModuleNames();
 	
-	var ProductDetailsController = function($scope, $routeParams, ProductLoader) {
-		ProductLoader.loadProductById($routeParams.id, $scope);
+	var adminControllerName = moduleNames.getApplicationName();
+	var productRetrieverName = moduleNames.getProductRetrieverName();
+	
+	var module = angular.module(adminControllerName);
+	
+	var ProductDetailsController = function($scope, $routeParams, ProductRetriever) {
+		ProductRetriever.loadProductById($routeParams.id, $scope);
 	};
 	
-	module.controller("ProductDetailsController", ["$scope", "$routeParams", "ProductLoader", ProductDetailsController]);
+	module.controller("ProductDetailsController", ["$scope", "$routeParams", productRetrieverName, ProductDetailsController]);
 })();

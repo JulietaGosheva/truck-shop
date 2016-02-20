@@ -1,8 +1,30 @@
 (function() {
 	
-	var module = angular.module("AdminController");
+	/* ============ Variables and Constructor ============= */
 	
-	var ProductCreationController = function($scope, AJAXRESTUtil, RESTUtil, DestinationUtil, ProductLoader) {
+	var AjaxUtil = null;
+	var RestUtil = null;
+	var DestinationUtil = null;
+	var ProductRetriever = null;
+	var HeaderUtil = null;
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var ajaxUtilName = moduleNames.getAjaxUtilName();
+	var restUtilName = moduleNames.getRestUtilName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	var productRetrieverName = moduleNames.getProductRetrieverName();
+	var headerUtilName = moduleNames.getHeaderUtilName();
+	
+	var module = angular.module(adminControllerName);
+	
+	var ProductCreationController = function($scope, AUtil, RUtil, DUtil, PRetriever, HUtil) {
+		AjaxUtil = AUtil;
+		RestUtil = RUtil;
+		DestinationUtil = DUtil;
+		ProductRetriever = PRetriever;
+		HeaderUtil = HUtil;
+		
 		$scope.model = {};
 		$scope.model.typeInsertMode = true;
 		$scope.model.modelInsertMode = true;
@@ -18,12 +40,12 @@
 		$scope.reloadBrands = jQuery.proxy(reloadBrands, $scope);
 		$scope.reloadModels = jQuery.proxy(reloadModels, $scope);
 		
-		$scope.executeRequest = jQuery.proxy(executeRequest, $scope, AJAXRESTUtil, RESTUtil, DestinationUtil);
+		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 		
-		ProductLoader.loadAllProductEntries($scope);
+		ProductRetriever.loadAllProductEntries($scope);
 	};
 	
-	module.controller("ProductCreationController", ["$scope", "AJAXRESTUtil", "RESTUtil", "DestinationUtil", "ProductLoader", ProductCreationController]);
+	module.controller("ProductCreationController", ["$scope", ajaxUtilName, restUtilName, destinationUtilName, productRetrieverName, headerUtilName, ProductCreationController]);
 
 	/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
 	
@@ -61,40 +83,42 @@
 	
 	/* ================ Backend AJAX requests ================ */
 
-	var executeRequest = function(AJAXRESTUtil, RESTUtil, DestinationUtil, oData) {
-		var requestData = prepareImageUploadRequestData(DestinationUtil, this);
-		AJAXRESTUtil.POST(requestData, jQuery.proxy(onSuccessfullyUploadedImage, this, RESTUtil, DestinationUtil, oData), jQuery.proxy(onFailedImageUpload, this));
+	var executeRequest = function(oData) {
+		var requestData = prepareImageUploadRequestData(this);
+		AjaxUtil.POST(requestData, jQuery.proxy(onSuccessfullyUploadedImage, this, oData), jQuery.proxy(onFailedImageUpload, this));
 	};
 	
-	var prepareImageUploadRequestData = function(DestinationUtil, $scope) {
+	var prepareImageUploadRequestData = function($scope) {
 		var formData = new FormData();
 		var fileToUpload = $("#file")[0].files[0];
 		formData.append("file", fileToUpload);
 		
 		return {
-			url: DestinationUtil.Product.image,
+			url: DestinationUtil.getProductPhotoEndpoint(),
 			data: formData,
             contentType: false
 		};
 	};
 	
-	var onSuccessfullyUploadedImage = function(RESTUtil, DestinationUtil, oData, xhrResponse) {
+	var onSuccessfullyUploadedImage = function(oData, xhrResponse) {
 		var responseBody = xhrResponse;
 		this.imageName = responseBody.imageName;
 		
-		var requestData = prepareRequestData(oData, DestinationUtil, this);
-		RESTUtil.POST(requestData, jQuery.proxy(onSuccess, this, RESTUtil, DestinationUtil), jQuery.proxy(onError, this));
+		var requestData = prepareRequestData(oData, this);
+		RestUtil.POST(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
 	var onFailedImageUpload = function(xhrResponse) {
 		this.requestExecutionResult = "Възникна грешка при качването на снимката." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+				"Информация от сървъра: [" + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+				+ "]";
 
 		$('#products-result-modal').modal({ keyboard: true });
 	};
 	
-	var prepareRequestData = function(oData, DestinationUtil, scope) {
+	var prepareRequestData = function(oData, scope) {
 		var typesDropdown = $("#types")[0];
 		var brandsDropdown = $("#brands")[0];
 		var modelsDropdown = $("#models")[0];
@@ -115,18 +139,16 @@
 		
 		return {
 			method : "POST",
-			url : DestinationUtil.Product.creation,
+			url : DestinationUtil.getProductCreationEndpoint(),
 			headers : headers,
 			data : JSON.stringify(data) 
 		};
 	};
 	
-	var onSuccess = function(RESTUtil, DestinationUtil, xhrResponse) {
+	var onSuccess = function(xhrResponse) {
 		this.requestExecutionResult = "Успешно записани данни. Моля изчакайте страницата да бъде презаредена.";
 		
-		$('#products-result-modal').modal({
-			backdrop: "static"
-		});
+		$('#products-result-modal').modal({ backdrop: "static" });
 		
 		setTimeout(function() {
 			location.reload();
@@ -136,7 +158,9 @@
 	var onError = function(xhrResponse) {
 		this.requestExecutionResult = "Данните не бяха успешно записани." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-				"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+				"Информация от сървъра: [" + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+				+ "]";
 		$('#products-result-modal').modal({ keyboard: true });
 	};
 	

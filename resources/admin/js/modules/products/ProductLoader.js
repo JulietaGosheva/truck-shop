@@ -1,14 +1,27 @@
 (function() {
 	
+	/* ============ Constants ============= */
+	
 	var NO_CONTENT = 204;
 	var UNPROCESSABLE_ENTITY = 422;
 	
-	var restUtil = null;
-	var destinationUtil = null;
+	/* ============ Variables and Constructor ============= */
 	
-	var ProductLoader = function(RESTUtil, DestinationUtil) {
-		restUtil = RESTUtil;
-		destinationUtil = DestinationUtil;
+	var RestUtil = null;
+	var HeaderUtil = null;
+	var DestinationUtil = null;
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var restUtilName = moduleNames.getRestUtilName();
+	var headerUtilName = moduleNames.getHeaderUtilName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	var productRetrieverName = moduleNames.getProductRetrieverName();
+	
+	var ProductLoader = function(RUtil, DUtil, HUtil) {
+		RestUtil = RUtil;
+		DestinationUtil = DUtil;
+		HeaderUtil = HUtil;
 
 		return {
 			loadProductById: loadProductById,
@@ -19,11 +32,11 @@
 		};
 	};
 	
-	/* ============ Product Loading by ID =============*/
+	/* ============ Product Loading by ID ============= */
 	
 	var loadProductById = function(productId, $scope) {
 		var requestData = prepareRequestData(productId, $scope);
-		restUtil.GET(requestData, jQuery.proxy(onSuccess, $scope), jQuery.proxy(onError, $scope));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccess, $scope), jQuery.proxy(onError, $scope));
 	};
 	
 	var prepareRequestData = function(productId, $scope) {
@@ -31,7 +44,7 @@
 		
 		return {
 			method : "GET",
-			url : destinationUtil.Product.search + path
+			url : DestinationUtil.getProductSearchingEndpoint() + path
 		};
 	};
 	
@@ -57,26 +70,26 @@
 				"при валидацията на входните данни, моля опитайте пак." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 				"Информация от сървъра: [" + 
-					(typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result") + 
 				"]";
 		} else {
 			this.errorMessage = "Възникна неочаквана грешка при опит за извличане на информация за продукта, моля опитайте пак." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 				"Информация от сървъра: [" + 
-					(typeof xhrResponse.headers()["X-Request-Result"] === "undefined" ? "Няма информация" : xhrResponse.headers()["X-Request-Result"]) + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result") + 
 				"]";
 		}
 	};
 	
-	/* ============ TYPES Loading =============*/
+	/* ============ TYPES Loading ============= */
 	
 	var loadProductTypes = function($scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
-			url: destinationUtil.Product.types
+			url: DestinationUtil.getProductTypesEndpoint()
 		};
-		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductTypes, $scope), jQuery.proxy(onFailingOfLoadingProductTypes, $scope));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductTypes, $scope), jQuery.proxy(onFailingOfLoadingProductTypes, $scope));
 	};
 	
 	var onSuccessfullyLoadedProductTypes = function(xhrResponse) {
@@ -88,15 +101,15 @@
 		this.errorMessage = "Възникна грешка при зареждането на продуктовите типовете.";
 	};
 	
-	/* ============ BRANDS Loading =============*/
+	/* ============ BRANDS Loading ============= */
 	
 	var loadProductBrands = function(typeId, $scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
-			url: String.format(destinationUtil.Product.brands, typeId)
+			url: String.format(DestinationUtil.getProductBrandsEndpoint(), typeId)
 		};
-		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductBrands, $scope), jQuery.proxy(onFailingOfLoadingProductBrands, $scope));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductBrands, $scope), jQuery.proxy(onFailingOfLoadingProductBrands, $scope));
 	};
 	
 	var onSuccessfullyLoadedProductBrands = function(xhrResponse) {
@@ -108,15 +121,15 @@
 		this.errorMessage = "Възникна грешка при зареждането на продуктовите производители.";
 	};
 	
-	/* ============ MODELS Loading =============*/
+	/* ============ MODELS Loading ============= */
 	
 	var loadProductModels = function(typeId, brandId, $scope) {
 		var requestData = {
 			method : "GET",
 			headers: headers,
-			url: String.format(destinationUtil.Product.models, typeId, brandId)
+			url: String.format(DestinationUtil.getProductModelsEndpoint(), typeId, brandId)
 		};
-		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductModels, $scope), jQuery.proxy(onFailingOfLoadingProductModels, $scope));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductModels, $scope), jQuery.proxy(onFailingOfLoadingProductModels, $scope));
 	};
 	
 	var onSuccessfullyLoadedProductModels = function(xhrResponse) {
@@ -135,10 +148,10 @@
 	var loadAllProductEntries = function($scope) {
 		var requestData = {
 			method: "GET",
-			url: destinationUtil.Product.all
+			url: DestinationUtil.getProductListEndpoint()
 		};
 		
-		restUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProducts, $scope), jQuery.proxy(onFailOfLoadingProducts, $scope));
+		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProducts, $scope), jQuery.proxy(onFailOfLoadingProducts, $scope));
 	};
 	
 	var onSuccessfullyLoadedProducts = function(xhrResponse) {
@@ -177,13 +190,15 @@
 	var onFailOfLoadingProducts = function(xhrResponse) {
 		this.errorMessage = "Данните за попълването на модела не бяха извлечени успешно." +
 			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-			"Информация от сървъра: [" + xhrResponse.getResponseHeader("X-Request-Result") + "]";
+			"Информация от сървъра: [" +
+				HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+			+ "]";
 	};
 	
 	
-	/* ============ Module Registration =============*/
+	/* ============ Module Registration ============= */
 	
-	var module = angular.module("AdminController");
-	module.factory("ProductLoader", ["RESTUtil", "DestinationUtil", ProductLoader]);
+	var module = angular.module(adminControllerName);
+	module.factory(productRetrieverName, [restUtilName, destinationUtilName, headerUtilName, ProductLoader]);
 
 })();

@@ -16,10 +16,11 @@
 		<script src="resources/dependencies/js/angular-route.min.js"></script>
 		<script src="resources/dependencies/js/angular-sanitize.min.js"></script>
         <script src="resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
-
         
         <script src="resources/admin/js/AdminController.js"></script>
+        <script src="resources/admin/js/ModuleNames.js"></script>
         <script src="resources/common/js/FunctionDefinition.js"></script>
+        <script src="resources/common/js/modules/HeaderUtil.js"></script>
         
         <script src="resources/admin/js/controllers/products/ProductCreationController.js"></script>
 		<script src="resources/admin/js/controllers/products/DeleteProductController.js"></script>
@@ -39,11 +40,11 @@
         <script src="resources/admin/js/controllers/OrdersController.js"></script>
         <script src="resources/admin/js/controllers/PromotionController.js"></script>
         
-        <script src="resources/common/js/modules/RESTUtil.js"></script>
-        <script src="resources/common/js/modules/AJAXRESTUtil.js"></script>
+        <script src="resources/common/js/modules/RestUtil.js"></script>
+        <script src="resources/common/js/modules/AjaxUtil.js"></script>
         <script src="resources/common/js/modules/DestinationUtil.js"></script>
         
-        <script src="resources/admin/js/modules/EndpointHelper.js"></script>
+        <script src="resources/admin/js/modules/HashHelper.js"></script>
         <script src="resources/admin/js/modules/products/ProductLoader.js"></script>
         
 		<link rel="stylesheet" href="resources/dependencies/css/bootstrap.min.css"></link>

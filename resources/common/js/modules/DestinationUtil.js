@@ -1,6 +1,13 @@
 (function() {
+	
+	/* ============ Variables and Constructor ============= */
+	
+	var moduleNames = new com.rs.module.ModuleNames();
+	var adminControllerName = moduleNames.getApplicationName();
+	var destinationUtilName = moduleNames.getDestinationUtilName();
+	
 	var DestinationUtil = function() {
-		var SERVER_URL = "http://localhost/truck-shop/public/index.php/";
+		var SERVER_URL = "http://localhost/truck-shop/";
 		
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
 		var ALL_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT + "/all";
@@ -12,32 +19,55 @@
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
 		return {
-			Product : {
-				all: ALL_PRODUCTS_ENDPOINT,
-				creation: PRODUCTS_ENDPOINT,
-				edit: PRODUCTS_ENDPOINT,
-				deletion: DELETE_PRODUCT_ENDPOINT,
-				search: PRODUCTS_ENDPOINT,
-				types: PRODUCT_TYPES_ENDPOINT,
-				brands: PRODUCT_BRANDS_ENDPOINT,
-				models: PRODUCT_MODELS_ENDPOINT,
-				image: PRODUCT_IMAGE_ENDPOINT,
-				imageUpdate: UPDATE_PRODUCT_IMAGE_ENDPOINT
+			getProductListEndpoint: function() {
+				return ALL_PRODUCTS_ENDPOINT;
+			},
+			getProductCreationEndpoint: function() {
+				return PRODUCTS_ENDPOINT;
+			},
+			getProductModificationEndpoint: function() {
+				return PRODUCTS_ENDPOINT;
+			},
+			getProductDeletionEndpoint: function() {
+				return DELETE_PRODUCT_ENDPOINT;
+			},
+			getProductSearchingEndpoint: function() {
+				return PRODUCTS_ENDPOINT;
+			},
+			getProductTypesEndpoint: function() {
+				return PRODUCT_TYPES_ENDPOINT;
+			},
+			getProductBrandsEndpoint: function() {
+				return PRODUCT_BRANDS_ENDPOINT;
+			},
+			getProductModelsEndpoint: function() {
+				return PRODUCT_MODELS_ENDPOINT;
+			},
+			getProductPhotoEndpoint: function() {
+				return PRODUCT_IMAGE_ENDPOINT;
+			},
+			getProductPhotoModificationEndpoint: function() {
+				return UPDATE_PRODUCT_IMAGE_ENDPOINT;
+			},
+			getUserCreationEndpoint : function() {
+				return SERVER_URL + "/registration";
 			}
 		};
 	};
 	
+	/* ============ Module Registration ============= */
+	
 	var module = undefined;
 	try {
 		module = angular.module("AngularApplication");
-		module.factory("DestinationUtil", [DestinationUtil]);
+		module.factory(destinationUtilName, [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		module = angular.module("AdminController");
-		module.factory("DestinationUtil", [DestinationUtil]);
+		module = angular.module(adminControllerName);
+		module.factory(destinationUtilName, [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
