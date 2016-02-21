@@ -9,24 +9,28 @@
 	var RESTUtil = function($http) {
 		
 		var GETRequest = function(oData, onSuccess, onError) {
+			setMandatoryHeaders(oData);
 			ValidationUtil.validateUrl(oData);
 			ValidationUtil.validateGETMethodType(oData);
 			$http(oData).then(onSuccess, onError);
 		};
 		
 		var POSTRequest = function(oData, onSuccess, onError) {
+			setMandatoryHeaders(oData);
 			ValidationUtil.validateUrl(oData);
 			ValidationUtil.validatePOSTMethodType(oData);
 			$http(oData).then(onSuccess, onError);
 		};
 
 		var PUTRequest = function(oData, onSuccess, onError) {
+			setMandatoryHeaders(oData);
 			ValidationUtil.validateUrl(oData);
 			ValidationUtil.validatePUTMethodType(oData);
 			$http(oData).then(onSuccess, onError);
 		};
 		
 		var DELETERequest = function(oData, onSuccess, onError) {
+			setMandatoryHeaders(oData);
 			ValidationUtil.validateUrl(oData);
 			ValidationUtil.validateDELETEMethodType(oData);
 			$http(oData).then(onSuccess, onError);
@@ -41,6 +45,13 @@
 	};
 	
 	/* ============ Function declaration ============= */
+	
+	var setMandatoryHeaders = function(oData) {
+		if (typeof oData.headers === "undefined") {
+			oData.headers = {};
+		}
+		oData.headers["X-Requested-With"] = "XMLHttpRequest";
+	};
 	
 	var ValidationUtil = {
 		validateUrl: function(oData) {

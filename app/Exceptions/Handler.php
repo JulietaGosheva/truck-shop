@@ -4,16 +4,17 @@ namespace App\Exceptions;
 
 use Log;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use Illuminate\Http\Response;
+use App\Http\Helpers\Constants;
+
 use Symfony\Component\HttpKernel\Exception\HttpException;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
-
-	protected $dontReport = [
-        ModelNotFoundException::class,
-    ];
 
     public function report(Exception $exception) {
     	if ($exception instanceof HttpException) {
@@ -28,6 +29,20 @@ class Handler extends ExceptionHandler
 
 	public function render($request, Exception $exception) {
 		$baseUrl = "<a href='".$request->getBaseUrl()."'>начална страница</a>";
+		
+		if ($request->ajax()) {
+			$response = Response::create();
+			
+			if ($exception instanceof HttpException) {
+				$response->header(Constants::RESPONSE_HEADER, $exception->getMessage());
+				$response->setStatusCode($exception->getStatusCode());
+				return $response;
+			}
+			
+			$response->header(Constants::RESPONSE_HEADER, $exception->getMessage());
+			$response->setStatusCode($exception->getCode());
+			return $response;
+		}
 		
 		if ($exception instanceof HttpException) {
 			return response()->view("errors", ["statusCode" => $exception->getStatusCode(), "excpetionMessage" => $exception->getMessage(), "baseUrl" => $baseUrl]);

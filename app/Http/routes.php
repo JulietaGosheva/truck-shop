@@ -50,6 +50,16 @@ Route::group(['prefix' => 'users/api/v1', 'middleware' => ['auth', 'role']], fun
 	Route::delete('/', 'UsersController@deleteUser');
 });
 
+Route::group(['prefix' => 'navigation/api/v1', 'middleware' => ['auth', 'role']], function() {
+	Route::get('/', 'NavigationController@findItem');
+
+	Route::post('/', 'NavigationController@createItem');
+
+	Route::put('/', 'NavigationController@editItem');
+
+	Route::delete('/', 'NavigationController@deleteItem');
+});
+
 Route::group(['prefix' => 'orders/api/v1'], function() {
 	//TODO: Add method for searching between two dates
 });

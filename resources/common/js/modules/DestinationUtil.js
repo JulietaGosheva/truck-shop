@@ -11,6 +11,7 @@
 		
 		var USERS_ENDPOINT = SERVER_URL + "users/api/v1";
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
+		var NAVIGATION_ITEM_ENDPOINT = SERVER_URL + "navigation/api/v1";
 
 		var CREATE_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
 		var MODIFY_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
@@ -28,9 +29,15 @@
 		var DELETE_USER_ENDPOINT = USERS_ENDPOINT + "?id={userId}";
 		var SEARCH_USERS_ENDPOINT = USERS_ENDPOINT;
 		
+		var CREATE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
+		var MODIFY_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
+		var DELETE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "?id={navigationItemId}";
+		var SEARCH_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
+		
 		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "/registration";
 		
 		return {
+					/* Product APIs */
 			getProductListEndpoint: function() {
 				return LIST_PRODUCTS_ENDPOINT;
 			},
@@ -61,6 +68,7 @@
 			getProductPhotoModificationEndpoint: function() {
 				return UPDATE_PRODUCT_IMAGE_ENDPOINT;
 			},
+					/* User APIs */
 			getUserRegistrationEndpoint : function() {
 				return USER_REGISTRATION_ENDPOINT;
 			},
@@ -75,6 +83,19 @@
 			},
 			getUserSearchingEndpoint: function() {
 				return SEARCH_USERS_ENDPOINT;
+			},
+					/* Navigation Item APIs */
+			getNavigationItemCreationEndpoint: function() {
+				return CREATE_NAVIGATION_ITEM_ENDPOINT;
+			},
+			getNavigationItemModificationEndpoint: function() {
+				return MODIFY_NAVIGATION_ITEM_ENDPOINT;
+			},
+			getNavigationItemDeletionEndpoint: function() {
+				return DELETE_NAVIGATION_ITEM_ENDPOINT;
+			},
+			getNavigationItemSearchingEndpoint: function() {
+				return SEARCH_NAVIGATION_ITEM_ENDPOINT;
 			}
 		};
 	};

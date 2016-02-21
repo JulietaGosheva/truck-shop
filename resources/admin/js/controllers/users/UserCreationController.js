@@ -65,6 +65,7 @@
 	};
 	
 	var onError = function(xhrResponse) {
+		this.modalText = "Неуспешен запис";
 		this.requestExecutionResult = "Данните не бяха успешно записани." +
 				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
 				"Информация от сървъра: [" 

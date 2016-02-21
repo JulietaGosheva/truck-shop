@@ -44,11 +44,12 @@
 		if (xsrfToken !== null) {
 			if (typeof oData.headers === 'undefined') {
 				oData.headers = {
-					"X-XSRF-TOKEN" : xsrfToken
+					'X-XSRF-TOKEN' : xsrfToken
 				};
 			} else {
 				oData.headers['X-XSRF-TOKEN'] = xsrfToken;
 			}
+			oData.headers['X-Requested-With'] = 'XMLHttpRequest';
 		}
 		
 		$.ajax({
