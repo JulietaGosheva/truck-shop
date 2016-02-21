@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App;
+use Validator;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Http\Helpers\Constants;
 use App\Http\Helpers\NavigationItemPersistenceHelper;
+
 use App\Http\Controllers\Controller;
+use App\NavigationItems;
 
 class NavigationController extends Controller  {
 
@@ -52,10 +55,10 @@ class NavigationController extends Controller  {
 		}
 
 		if (isset($requestBody->parentId) === false) {
-			$request->request->set("parentId", 1);
+			$requestBody->parentId = 1;
 		}
 		
-		return $this->persistenceHelper->persistItem();
+		return $this->persistenceHelper->persistItem($response, $requestBody);
 	}
 	
 	public function editItem(Request $request, Response $response) {
@@ -66,8 +69,18 @@ class NavigationController extends Controller  {
 		
 	}
 	
-	public function addInternationalItem(Request $request, Response $response) {
+	public function getRootItems(Request $request, Response $response) {
+		$navigationItems = $this->persistenceHelper->findItemByParentId(1);
 		
+		if ($navigationItems === null) {
+			$response->header(Constants::RESPONSE_HEADER, "Entity not found.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+		
+		$response->header(Constants::RESPONSE_HEADER, "Successfully retrieved data.");
+		
+		return $navigationItems;
 	}
 	
 }

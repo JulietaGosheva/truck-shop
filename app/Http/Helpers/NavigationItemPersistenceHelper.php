@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 
 class NavigationItemPersistenceHelper {
 	
-	public function persistProduct(Response $response, $requestBody) {
+	public function persistItem(Response $response, $requestBody) {
 		$parentName = $this->getParentNameById($requestBody->parentId);
-		$location = "#/articals/" + $parentName + "/" + $requestBody->name;
-		
+		$location = "#/articals" . $parentName . "/" . $requestBody->name;
+
 		DB::transaction(function() use(&$response, &$requestBody, &$location) {
 			
 			$navigationItem = NavigationItems::create([
@@ -51,7 +51,11 @@ class NavigationItemPersistenceHelper {
 			return "";
 		}
 		
-		return $navigationItem->name;
+		return "/" . $navigationItem->name;
+	}
+	
+	public function findItemByParentId($parentId) {
+		return NavigationItems::with("navigationItemI18N")->where("parent_id", $parentId)->get();
 	}
 	
 }

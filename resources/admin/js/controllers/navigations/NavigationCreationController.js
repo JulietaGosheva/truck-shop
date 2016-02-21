@@ -5,27 +5,32 @@
 	var RestUtil = null;
 	var DestinationUtil = null;
 	var HeaderUtil = null;
+	var NavigationItemRetriever = null;
 	
 	var moduleNames = new com.rs.module.ModuleNames();
 	var adminControllerName = moduleNames.getApplicationName();
 	var restUtilName = moduleNames.getRestUtilName();
 	var destinationUtilName = moduleNames.getDestinationUtilName();
 	var headerUtilName = moduleNames.getHeaderUtilName();
+	var navigationItemRetrieverName = moduleNames.getNavigationItemRetrieverName();
 	
 	var module = angular.module(adminControllerName);
 	
-	var NavigationCreationController = function($scope, RUtil, DUtil, HUtil) {
+	var NavigationCreationController = function($scope, RUtil, DUtil, HUtil, NIRetriever) {
 		RestUtil = RUtil;
 		DestinationUtil = DUtil;
 		HeaderUtil = HUtil;
+		NavigationItemRetriever = NIRetriever;
 		
 		$scope.menuInsertMode = true;
 		$scope.subMenuInsertMode = true;
 		
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
+		
+		NavigationItemRetriever.loadRootItems($scope);
 	};
 	
-	module.controller("NavigationCreationController", ["$scope", restUtilName, destinationUtilName, headerUtilName, NavigationCreationController]);
+	module.controller("NavigationCreationController", ["$scope", restUtilName, destinationUtilName, headerUtilName, navigationItemRetrieverName, NavigationCreationController]);
 	
 	/* ================ Backend AJAX requests ================ */
 	

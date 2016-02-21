@@ -50,14 +50,16 @@ Route::group(['prefix' => 'users/api/v1', 'middleware' => ['auth', 'role']], fun
 	Route::delete('/', 'UsersController@deleteUser');
 });
 
-Route::group(['prefix' => 'navigation/api/v1', 'middleware' => ['auth', 'role']], function() {
+Route::group(['prefix' => 'navigation/api/v1'], function() {
 	Route::get('/', 'NavigationController@findItem');
+	
+	Route::post('/', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@createItem']);
 
-	Route::post('/', 'NavigationController@createItem');
+	Route::put('/', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@editItem']);
 
-	Route::put('/', 'NavigationController@editItem');
+	Route::delete('/', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@deleteItem']);
 
-	Route::delete('/', 'NavigationController@deleteItem');
+	Route::get('/root', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@getRootItems']);
 });
 
 Route::group(['prefix' => 'orders/api/v1'], function() {

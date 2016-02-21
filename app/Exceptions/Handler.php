@@ -34,13 +34,12 @@ class Handler extends ExceptionHandler
 			$response = Response::create();
 			
 			if ($exception instanceof HttpException) {
-				$response->header(Constants::RESPONSE_HEADER, $exception->getMessage());
 				$response->setStatusCode($exception->getStatusCode());
+				$response->headers->set(Constants::RESPONSE_HEADER, $exception->getMessage());
 				return $response;
 			}
-			
-			$response->header(Constants::RESPONSE_HEADER, $exception->getMessage());
-			$response->setStatusCode($exception->getCode());
+			$response->headers->set(Constants::RESPONSE_HEADER, $exception->getMessage());
+			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
 			return $response;
 		}
 		

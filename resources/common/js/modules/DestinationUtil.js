@@ -33,6 +33,7 @@
 		var MODIFY_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
 		var DELETE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "?id={navigationItemId}";
 		var SEARCH_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
+		var ROOT_NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/root";
 		
 		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "/registration";
 		
@@ -96,6 +97,9 @@
 			},
 			getNavigationItemSearchingEndpoint: function() {
 				return SEARCH_NAVIGATION_ITEM_ENDPOINT;
+			},
+			getRootNavigationItemsEndpoint: function() {
+				return ROOT_NAVIGATION_ITEMS_ENDPOINT;
 			}
 		};
 	};

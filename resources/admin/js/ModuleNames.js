@@ -40,3 +40,7 @@ com.rs.module.ModuleNames.prototype.getProductRetrieverName = function() {
 com.rs.module.ModuleNames.prototype.getUserRetrieverName = function() {
 	return "UserRetriever";
 };
+
+com.rs.module.ModuleNames.prototype.getNavigationItemRetrieverName = function() {
+	return "NavigationItemRetriever";
+};
