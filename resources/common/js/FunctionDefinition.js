@@ -15,6 +15,22 @@
 		}
 	}
 	
+	if(!Object.toArray) {
+		Object.toArray = function(object){
+		    if (object !== Object(object)) {
+		    	throw new TypeError('Object.keys called on non-object');
+		    }
+	
+		    var keys = []
+		    for(var key in object) {
+		    	if(Object.prototype.hasOwnProperty.call(object,key)) {
+		    		keys.push(object[key]);
+		    	}
+		    }
+		    return keys;
+		}
+	}
+	
 	if (!String.format) {
 		String.format = function(format) {
 			var formatedString = format;

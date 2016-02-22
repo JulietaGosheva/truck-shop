@@ -10,7 +10,6 @@ use App\Http\Helpers\Constants;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -24,7 +23,6 @@ class Handler extends ExceptionHandler
     	}
     	
     	Log::error("Exception stacktrace: [" . $exception->getTraceAsString() . "]");
-        return parent::report($exception);
     }
 
 	public function render($request, Exception $exception) {

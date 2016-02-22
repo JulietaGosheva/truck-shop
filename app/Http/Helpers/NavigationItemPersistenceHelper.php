@@ -3,10 +3,10 @@
 namespace App\Http\Helpers;
 
 use App;
+use Log;
+use Exception;
 use App\NavigationItems;
 use App\NavigationItemsI18N;
-
-use App\Http\Helpers\Constants;
 
 use Illuminate\Http\Response;
 
@@ -18,30 +18,35 @@ class NavigationItemPersistenceHelper {
 		$parentName = $this->getParentNameById($requestBody->parentId);
 		$location = "#/articals" . $parentName . "/" . $requestBody->name;
 
-		DB::transaction(function() use(&$response, &$requestBody, &$location) {
-			
+		DB::beginTranscation();
+		
+		try {
 			$navigationItem = NavigationItems::create([
 				"name" => $requestBody->name,
 				"href" => strtolower($location),
 				"parent_id" => $requestBody->parentId
 			]);
 			
+			Log::debug("Created navigation item: [" . json_encode($navigationItem) . "]");
+		} catch (Exception $exception) {
+			DB::rollBack();
+			throw new Exception("Failed to create navigation item. Transaction rolled back.");
+		}
+		
+		try {
 			$navigationItemI18N = NavigationItemsI18N::create([
 				"language" => $requestBody->language,
 				"display_name" => $requestBody->displayName,
 				"navigation_item_id" => $navigationItem->id
 			]);
-			
-			$response->header(Constants::RESPONSE_HEADER, "Successfully persisted navigation item.");
-			$response->setStatusCode(Response::HTTP_CREATED);
-		});
-
-		if ($response->isEmpty()) {
-			$response->header(Constants::RESPONSE_HEADER, "Failed to persist navigation item.");
-			$response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+				
+			Log::debug("Created navigation item I18N model: [" . json_encode($navigationItemI18N) . "]");
+		} catch (Exception $exception) {
+			DB::rollBack();
+			throw new Exception("Failed to create I18N model. Transaction rolled back.");
 		}
 		
-		return $response;
+		DB::commit();
 	}
 	
 	private function getParentNameById($parentId) {
@@ -52,6 +57,10 @@ class NavigationItemPersistenceHelper {
 		}
 		
 		return "/" . $navigationItem->name;
+	}
+	
+	public function getAllItems() {
+		return NavigationItems::with("navigationItemI18N")->get();
 	}
 	
 	public function findItemByParentId($parentId) {

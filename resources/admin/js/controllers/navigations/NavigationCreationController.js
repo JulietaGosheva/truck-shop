@@ -22,15 +22,38 @@
 		HeaderUtil = HUtil;
 		NavigationItemRetriever = NIRetriever;
 		
-		$scope.menuInsertMode = true;
-		$scope.subMenuInsertMode = true;
+		$scope.itemCreation = true;
+		$scope.subItemCreation = true;
 		
+		$scope.updateItems = updateItems;
+		$scope.updateSubItems = updateSubItems;
+		$scope.reloadSubItems = jQuery.proxy(reloadSubItems, $scope);
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 		
-		NavigationItemRetriever.loadRootItems($scope);
+		NavigationItemRetriever.loadItems($scope);
 	};
 	
 	module.controller("NavigationCreationController", ["$scope", restUtilName, destinationUtilName, headerUtilName, navigationItemRetrieverName, NavigationCreationController]);
+	
+	/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
+	
+	var updateItems = function() {
+		setTimeout(function() {
+			$("#itemNames").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateSubItems = function() {
+		setTimeout(function() {
+			$("#subItemNames").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	/* ================ Selectors onChange event handlers ================ */
+	
+	var reloadSubItems = function(oElement) {
+		this.subItems = this.items[1];
+	};
 	
 	/* ================ Backend AJAX requests ================ */
 	

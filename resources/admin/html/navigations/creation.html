@@ -2,7 +2,8 @@
 
 <form class="form-horizontal col-sm-10"
       ng-submit="executeRequest({
-           'name': name,
+           'newItemName': newItemName,
+           'existingItemId': existingItemId,
            'parentId': parentId,
            'displayName': displayName,
            'language': language
@@ -12,11 +13,16 @@
         <div class="col-sm-8">
             <div class="input-group">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="menuInsertMode">
+                    <input type="checkbox" ng-model="itemCreation">
                 </span>
-                <input type="text" class="form-control" name="name" ng-show="menuInsertMode" placeholder="Име на менюто" ng-model="name">
-                <div ng-show="menuInsertMode == false">
-                   <select class="form-control chosen-select" name="name" ng-model="name"></select>
+                <input type="text" class="form-control" name="newItemName" ng-show="itemCreation" placeholder="Име на менюто" ng-model="newItemName">
+                <div ng-hide="itemCreation">
+                   <select class="form-control chosen-select" name="existingItemId" id="itemNames" 
+                        ng-model="existingItemId" ng-change="reloadSubItems(this)">
+                        <option value=""></option>
+                        <option ng-repeat="item in items" value="{{ item.id }}"
+                            ng-custom-repeat-watcher="updateItems">{{ item.name }}</option>
+                    </select>
                </div>
             </div>
         </div>
@@ -27,12 +33,17 @@
         <div class="col-sm-8">
             <div class="input-group">
                 <span class="input-group-addon">
-                    <input type="checkbox" ng-model="subMenuInsertMode">
+                    <input type="checkbox" ng-model="subItemCreation">
                 </span>
-                <input type="text" class="form-control" name="parentId" ng-show="subMenuInsertMode" placeholder="Име на под менюто" ng-model="parentId">
-                <div ng-show="subMenuInsertMode == false">
-                   <select class="form-control chosen-select" name="parentId"></select>
-               </div>
+                <p ng-show="itemCreation" style="padding-left: 15px; padding-top: 4px;">Не може да избирате или създавате под меню докато създавате главно меню</p>
+                <input type="text" class="form-control" name="newSubItemName" ng-hide="itemCreation || subItemCreation == false" placeholder="Име на под менюто" ng-model="newSubItemName">
+                <div ng-hide="itemCreation || subItemCreation">
+                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames" ng-model="parentId">
+	                    <option value=""></option>
+	                    <option ng-repeat="subItem in subItems" value="{{ subItem.id }}"
+	                        ng-custom-repeat-watcher="updateSubItems">{{ subItem.name }}</option>
+	                </select>
+                </div>
             </div>
         </div>
     </div>
@@ -40,7 +51,7 @@
     <div class="form-group">
            <label class="col-sm-4 control-label">Име което ще виждат потребителите</label>
            <div class="col-sm-8">
-               <input type="text" class="form-control" name="displayName" placeholder="Новото име на менюто" ng-model="displayName">
+               <input type="text" class="form-control" name="displayName" placeholder="Име на менюто" ng-model="displayName">
            </div>
        </div>
        

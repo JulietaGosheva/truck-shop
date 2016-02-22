@@ -24,12 +24,52 @@
 		DestinationUtil = DUtil;
 		
 		return {
+			loadItems: loadItems,
 			loadRootItems: loadRootItems,
 			loadItemById: loadItemById
 		};
 	};
 	
 	/* ============ Function declaration ============= */
+	
+	var loadItems = function($scope) {
+		var requestData = {
+			method : "GET",
+			url : DestinationUtil.getNavigationItemsEndpoint()
+		};
+		
+		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedItems, $scope), jQuery.proxy(onErrorWhileLoadingItems, $scope));
+	};
+	
+	var onSuccessfullyLoadedItems = function(xhrResponse) {
+		if (xhrResponse.status === NO_CONTENT) {
+			this.notFound = "Не успяхме да намерим търсения от вас продукт.";
+			return;
+		}
+		
+		if (Array.isArray(xhrResponse.data)) {
+			this.items = xhrResponse.data;
+		} else {
+			this.items = Object.toArray(xhrResponse.data);
+		}
+	};
+	
+	var onErrorWhileLoadingItems = function(xhrResponse) {
+		if (xhrResponse.status === UNPROCESSABLE_ENTITY) {
+			this.errorMessage = "Не успяхме да заредим навигационни менюта поради възникването на грешка " +
+				"при валидиране на входните данни, моля опитайте пак." +
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result") + 
+				"]";
+		} else {
+			this.errorMessage = "Възникна неочаквана грешка при опит за извличане на навигационните менюта, моля опитайте пак." +
+				"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+				"Информация от сървъра: [" + 
+					HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result") + 
+				"]";
+		}
+	};
 	
 	var loadRootItems = function($scope) {
 		var requestData = {
@@ -47,9 +87,9 @@
 		}
 		
 		if (Array.isArray(xhrResponse.data)) {
-			this.navigationItems = xhrResponse.data;
+			this.items = xhrResponse.data;
 		} else {
-			this.navigationItems = [xhrResponse.data];
+			this.items = [xhrResponse.data];
 		}
 	};
 	
