@@ -4,7 +4,8 @@
       ng-submit="executeRequest({
            'newItemName': newItemName,
            'existingItemId': existingItemId,
-           'parentId': parentId,
+           'newSubItemName': newSubItemName,
+           'existingSubItemId': existingSubItemId,
            'displayName': displayName,
            'language': language
       })">
@@ -38,7 +39,7 @@
                 <p ng-show="itemCreation" style="padding-left: 15px; padding-top: 4px;">Не може да избирате или създавате под меню докато създавате главно меню</p>
                 <input type="text" class="form-control" name="newSubItemName" ng-hide="itemCreation || subItemCreation == false" placeholder="Име на под менюто" ng-model="newSubItemName">
                 <div ng-hide="itemCreation || subItemCreation">
-                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames" ng-model="parentId">
+                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames" ng-model="existingSubItemId">
 	                    <option value=""></option>
 	                    <option ng-repeat="subItem in subItems" value="{{ subItem.id }}"
 	                        ng-custom-repeat-watcher="updateSubItems">{{ subItem.name }}</option>

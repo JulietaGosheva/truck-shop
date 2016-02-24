@@ -18,7 +18,7 @@
 	if(!Object.toArray) {
 		Object.toArray = function(object){
 		    if (object !== Object(object)) {
-		    	throw new TypeError('Object.keys called on non-object');
+		    	throw new TypeError('Object.toArray called on non-object');
 		    }
 	
 		    var keys = []

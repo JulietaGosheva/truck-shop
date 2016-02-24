@@ -32,7 +32,7 @@ class NavigationController extends Controller  {
 		$rawContentBody = $request->getContent();
 		$requestBody = json_decode($rawContentBody);
 
-		Log::debug("Request data: [" . $requestBody . "]");
+		Log::debug("Request data: [" . $rawContentBody . "]");
 
 		if ($requestBody === NULL) {
 			$response->header(Constants::RESPONSE_HEADER, "Failed to parse request body.");
@@ -92,7 +92,7 @@ class NavigationController extends Controller  {
 		
 		$structure = $this->constructHierarchicalStructure($items);
 		
-		Log::debug("Retrieved navigation items: [" . json_encode($structure) . "]");
+		Log::debug("Retrieved navigation items: [" . json_encode($structure, JSON_UNESCAPED_UNICODE) . "]");
 		return $structure;
 	}
 	
@@ -139,9 +139,10 @@ class NavigationController extends Controller  {
 			if ($this->isRootItem($item)) {
 				continue;
 			}
-		
+
 			$newStructure = array();
-			$newStructure["parent"] = $item->paren_id;
+			$newStructure["id"] = $item->id;
+			$newStructure["parent"] = $item->parent_id;
 			$newStructure["href"] = $item->href;
 			$newStructure["name"] = $item->name;
 
@@ -158,7 +159,7 @@ class NavigationController extends Controller  {
 			}
 		
 			$newStructure["displayName"] = $itemI18N->display_name;
-			$structure[$item->paren_id]["subItems"][$item->id] = $newStructure;
+			$structure[$item->parent_id]["subItems"][$item->id] = $newStructure;
 		}
 	}
 	

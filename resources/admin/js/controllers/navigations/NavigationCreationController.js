@@ -52,22 +52,36 @@
 	/* ================ Selectors onChange event handlers ================ */
 	
 	var reloadSubItems = function(oElement) {
-		this.subItems = this.items[1];
+		var itemId = oElement.existingItemId;
+		if (isNaN(itemId)) {
+			return this.subItems = [];
+		}
+		this.subItems = getItemById.call(this, parseInt(itemId));
 	};
+	
+	var getItemById = function (itemId) {
+		for (var i = 0 ; i < this.items.length ; i++) {
+			var navItem = this.items[i];
+			if (navItem.id === itemId) {
+				return typeof navItem.subItems === "undefined" ? [] : navItem.subItems;
+			}
+		}
+		return [];
+	}
 	
 	/* ================ Backend AJAX requests ================ */
 	
-	var executeRequest = function(oData) {
-		var requestData = prepareRequestData(oData, this);
+	var executeRequest = function(formData) {
+		var requestData = prepareRequestData(formData, this);
 		RestUtil.POST(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
-	var prepareRequestData = function(oData, scope) {
+	var prepareRequestData = function(formData, scope) {
 		var data = {
-			name : oData.name,
-			parentId : oData.parentId,
-			displayName : oData.displayName,
-			language : oData.language
+			name : getItemName(formData, scope),
+			parentId : getParentId(scope),
+			displayName : formData.displayName,
+			language : formData.language
 		};
 		
 		var headers = {
@@ -80,6 +94,24 @@
 			headers : headers,
 			data : JSON.stringify(data) 
 		};
+	};
+	
+	var getItemName = function (formData, scope) {
+		if (scope.itemCreation === true) {
+			return formData.newItemName;
+		}
+		
+		var subItemNames = $("#subItemNames")[0];
+		var selectedIndex = $("#subItemNames")[0].selectedIndex;
+		return subItemNames.options[selectedIndex].text;
+	};
+	
+	var getParentId = function(scope) {
+		if (scope.itemCreation === true) {
+			return undefined;
+		}
+		
+		return scope.existingItemId;
 	};
 	
 	var onSuccess = function(xhrResponse) {
