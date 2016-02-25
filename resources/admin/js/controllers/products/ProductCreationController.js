@@ -10,8 +10,8 @@
 	
 	var moduleNames = new com.rs.module.ModuleNames();
 	var adminControllerName = moduleNames.getApplicationName();
-	var ajaxUtilName = moduleNames.getAjaxUtilName();
-	var restUtilName = moduleNames.getRestUtilName();
+	var ajaxUtilName = moduleNames.getAjaxClientName();
+	var restUtilName = moduleNames.getRestClientName();
 	var destinationUtilName = moduleNames.getDestinationUtilName();
 	var productRetrieverName = moduleNames.getProductRetrieverName();
 	var headerUtilName = moduleNames.getHeaderUtilName();

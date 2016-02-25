@@ -9,8 +9,7 @@
 	/* ============ Variables and Constructor ============= */
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var headerUtilName = moduleNames.getHeaderUtilName();
-	var adminControllerName = moduleNames.getApplicationName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
 	var HeaderUtil = function() {
 		return {
@@ -68,17 +67,19 @@
 	
 	/* ============ Module Registration ============= */
 	
+	registry.register(moduleNames.getHeaderUtilName(), HeaderUtil);
+	
 	var module = undefined;
 	try {
 		module = angular.module("AngularApplication");
-		module.factory(headerUtilName, [HeaderUtil]);
+		module.factory(moduleNames.getHeaderUtilName(), [HeaderUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		module = angular.module(adminControllerName);
-		module.factory(headerUtilName, [HeaderUtil]);
+		module = angular.module(moduleNames.getApplicationName());
+		module.factory(moduleNames.getHeaderUtilName(), [HeaderUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}

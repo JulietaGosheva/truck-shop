@@ -3,8 +3,7 @@
 	/* ============ Variables and Constructor ============= */
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
-	var destinationUtilName = moduleNames.getDestinationUtilName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
 	var DestinationUtil = function() {
 		var SERVER_URL = "http://localhost/truck-shop/";
@@ -110,17 +109,19 @@
 	
 	/* ============ Module Registration ============= */
 	
+	registry.register(moduleNames.getDestinationUtilName(), DestinationUtil);
+	
 	var module = undefined;
 	try {
 		module = angular.module("AngularApplication");
-		module.factory(destinationUtilName, [DestinationUtil]);
+		module.factory(moduleNames.getDestinationUtilName(), [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		module = angular.module(adminControllerName);
-		module.factory(destinationUtilName, [DestinationUtil]);
+		module = angular.module(moduleNames.getApplicationName());
+		module.factory(moduleNames.getDestinationUtilName(), [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}

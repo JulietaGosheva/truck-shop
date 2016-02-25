@@ -7,21 +7,17 @@
 	
 	/* ============ Variables and Constructor ============= */
 	
-	var RestUtil = null;
+	var RestClient = null;
 	var HeaderUtil = null;
 	var DestinationUtil = null;
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var navigationItemRetrieverName = moduleNames.getNavigationItemRetrieverName();
-	var adminControllerName = moduleNames.getApplicationName();
-	var restUtilName = moduleNames.getRestUtilName();
-	var destinationUtilName = moduleNames.getDestinationUtilName();
-	var headerUtilName = moduleNames.getHeaderUtilName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
-	var UserRetriever = function(RUtil, DUtil, HUtil) {
-		RestUtil = RUtil;
-		HeaderUtil = HUtil;
-		DestinationUtil = DUtil;
+	var NavigationItemRetriever = function($http) {
+		RestClient = registry.getReference(moduleNames.getRestClientName(), $http);
+		HeaderUtil = registry.getReference(moduleNames.getHeaderUtilName());
+		DestinationUtil = registry.getReference(moduleNames.getDestinationUtilName());
 		
 		return {
 			loadItems: loadItems,
@@ -38,7 +34,7 @@
 			url : DestinationUtil.getNavigationItemsEndpoint()
 		};
 		
-		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedItems, $scope), jQuery.proxy(onErrorWhileLoadingItems, $scope));
+		RestClient.GET(requestData, jQuery.proxy(onSuccessfullyLoadedItems, $scope), jQuery.proxy(onErrorWhileLoadingItems, $scope));
 	};
 	
 	var onSuccessfullyLoadedItems = function(xhrResponse) {
@@ -77,7 +73,7 @@
 			url : DestinationUtil.getRootNavigationItemsEndpoint()
 		};
 		
-		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedRootItems, $scope), jQuery.proxy(onErrorWhileLoadingRootItems, $scope));
+		RestClient.GET(requestData, jQuery.proxy(onSuccessfullyLoadedRootItems, $scope), jQuery.proxy(onErrorWhileLoadingRootItems, $scope));
 	};
 	
 	var onSuccessfullyLoadedRootItems = function(xhrResponse) {
@@ -116,7 +112,7 @@
 			url : String.format(DestinationUtil.getNavigationItemSearchingEndpoint(), userId)
 		};
 		
-		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedItem, $scope), jQuery.proxy(onErrorWhileLoadingItem, $scope));
+		RestClient.GET(requestData, jQuery.proxy(onSuccessfullyLoadedItem, $scope), jQuery.proxy(onErrorWhileLoadingItem, $scope));
 	};
 	
 	var onSuccessfullyLoadedItem = function(xhrResponse) {
@@ -149,7 +145,6 @@
 	
 	/* ============ Module Registration ============= */
 	
-	var module = angular.module(adminControllerName);
-	module.factory(navigationItemRetrieverName, [restUtilName, destinationUtilName, headerUtilName, UserRetriever]);
-
+	var module = angular.module(moduleNames.getApplicationName());
+	module.factory(moduleNames.getNavigationItemRetrieverName(), ["$http", NavigationItemRetriever]);
 })();

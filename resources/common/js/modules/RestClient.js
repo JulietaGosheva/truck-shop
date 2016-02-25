@@ -3,10 +3,9 @@
 	/* ============ Variables and Constructor ============= */
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
-	var restUtilName = moduleNames.getRestUtilName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
 
-	var RESTUtil = function($http) {
+	var RestClient = function($http) {
 		
 		var GETRequest = function(oData, onSuccess, onError) {
 			setMandatoryHeaders(oData);
@@ -88,17 +87,19 @@
 	
 	/* ============ Module Registration ============= */
 	
+	registry.register(moduleNames.getRestClientName(), RestClient);
+	
 	var module = undefined;
 	try {
 		module = angular.module("AngularApplication");
-		module.factory(restUtilName, ["$http", RESTUtil]);
+		module.factory(moduleNames.getRestClientName(), ["$http", RestClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		var module = angular.module(adminControllerName);
-		module.factory(restUtilName, ["$http", RESTUtil]);
+		var module = angular.module(moduleNames.getApplicationName());
+		module.factory(moduleNames.getRestClientName(), ["$http", RestClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}

@@ -13,7 +13,7 @@
 	
 	var moduleNames = new com.rs.module.ModuleNames();
 	var adminControllerName = moduleNames.getApplicationName();
-	var restUtilName = moduleNames.getRestUtilName();
+	var restUtilName = moduleNames.getRestClientName();
 	var headerUtilName = moduleNames.getHeaderUtilName();
 	var destinationUtilName = moduleNames.getDestinationUtilName();
 	var productRetrieverName = moduleNames.getProductRetrieverName();

@@ -6,10 +6,10 @@
 	
 	var moduleNames = new com.rs.module.ModuleNames();
 	var adminControllerName = moduleNames.getApplicationName();
-	var ajaxUtilName = moduleNames.getAjaxUtilName();
+	var ajaxClientName = moduleNames.getAjaxClientName();
 	var headerUtilName = moduleNames.getHeaderUtilName();
 	
-	var AJAXRESTUtil = function(HUtil) {
+	var AjaxClient = function(HUtil) {
 		HeaderUtil = HUtil;
 		
 		var GETRequest = function(oData, onSuccess, onError) {
@@ -72,14 +72,14 @@
 	var module = undefined;
 	try {
 		module = angular.module("AngularApplication");
-		module.factory(ajaxUtilName, [headerUtilName, AJAXRESTUtil]);
+		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
 		module = angular.module(adminControllerName);
-		module.factory(ajaxUtilName, [headerUtilName, AJAXRESTUtil]);
+		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}

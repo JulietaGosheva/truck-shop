@@ -19,6 +19,7 @@
         
         <script src="resources/admin/js/AdminController.js"></script>
         <script src="resources/admin/js/ModuleNames.js"></script>
+        <script src="resources/common/js/Registry.js"></script>
         <script src="resources/common/js/FunctionDefinition.js"></script>
         <script src="resources/common/js/modules/HeaderUtil.js"></script>
         
@@ -40,8 +41,8 @@
         <script src="resources/admin/js/controllers/OrdersController.js"></script>
         <script src="resources/admin/js/controllers/PromotionController.js"></script>
         
-        <script src="resources/common/js/modules/RestUtil.js"></script>
-        <script src="resources/common/js/modules/AjaxUtil.js"></script>
+        <script src="resources/common/js/modules/RestClient.js"></script>
+        <script src="resources/common/js/modules/AjaxClient.js"></script>
         <script src="resources/common/js/modules/DestinationUtil.js"></script>
         
         <script src="resources/admin/js/modules/HashHelper.js"></script>
