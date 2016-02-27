@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\ProductTypes;
 
 class ProductTypesController extends Controller  {
 	
 	public function getTypes() {
-		return "[".
-					"{\"id\":1,\"name\":\"Волан\"},".
-					"{\"id\":2,\"name\":\"Двигател\"}".
-				"]";
+		return ProductTypes::all();
 	}
 	
 }

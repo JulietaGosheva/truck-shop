@@ -86,7 +86,6 @@
 	var loadProductTypes = function($scope) {
 		var requestData = {
 			method : "GET",
-			headers: headers,
 			url: DestinationUtil.getProductTypesEndpoint()
 		};
 		RestUtil.GET(requestData, jQuery.proxy(onSuccessfullyLoadedProductTypes, $scope), jQuery.proxy(onFailingOfLoadingProductTypes, $scope));

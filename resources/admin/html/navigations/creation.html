@@ -6,6 +6,7 @@
            'existingItemId': existingItemId,
            'newSubItemName': newSubItemName,
            'existingSubItemId': existingSubItemId,
+           'productTypeId': productTypeId,
            'displayName': displayName,
            'language': language
       })">
@@ -64,6 +65,17 @@
 	             <option value="en">Английски</option>
 	         </select>
 	     </div>
+    </div>
+    
+    <div class="form-group">
+         <label class="col-sm-4 control-label">Продуктов тип асоцииран с това навигационно меню</label>
+         <div class="col-sm-8">
+             <select class="form-control chosen-select" name="productTypeId" id="productTypeNames" ng-model="productTypeId">
+	             <option value=""></option>
+	             <option ng-repeat="productType in types" value="{{ productType.id }}"
+	                 ng-custom-repeat-watcher="updateProductTypes">{{ productType.name }}</option>
+	         </select>
+         </div>
     </div>
     
     <div class="form-group">

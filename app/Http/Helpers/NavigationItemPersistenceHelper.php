@@ -11,6 +11,7 @@ use App\NavigationItemsI18N;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class NavigationItemPersistenceHelper {
 
@@ -94,13 +95,18 @@ class NavigationItemPersistenceHelper {
 		$href = "#/articals" . $parentName . "/" . strtolower($requestBody->name);
 		
 		try {
-			$Item = NavigationItems::firstOrCreate([
+			$item = NavigationItems::firstOrCreate([
 				"name" => strtolower($requestBody->name),
 				"href" => strtolower($href),
 				"parent_id" => $requestBody->parentId
 			]);
 			
-			Log::debug("Created navigation item: [" . json_encode($Item, JSON_UNESCAPED_UNICODE) . "]");
+			Log::debug("Created navigation item: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "]");
+			
+			$productTypeId = $requestBody->productTypeId;
+			$item->productTypes()->attach($productTypeId);
+			
+			Log::debug("Successfully created mapping between product type with id: [" . $productTypeId . "] and navigation item with id: [" . $item->id . "].");
 		} catch (Exception $exception) {
 			DB::rollBack();
 			Log::debug("Failed to create navigation item. Transaction rolled back. Caused by: [" . $exception->getMessage() . "].");
@@ -111,7 +117,7 @@ class NavigationItemPersistenceHelper {
 			$i18nItem = NavigationItemsI18N::firstOrCreate([
 				"language" => $requestBody->language,
 				"display_name" => $requestBody->displayName,
-				"navigation_item_id" => $Item->id
+				"navigation_item_id" => $item->id
 			]);
 				
 			Log::debug("Created navigation item I18N model: [" . json_encode($i18nItem, JSON_UNESCAPED_UNICODE) . "]");

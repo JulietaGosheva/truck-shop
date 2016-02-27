@@ -16,4 +16,9 @@ class NavigationItems extends Model
     public function navigationItemI18N() {
     	return $this->hasMany("App\NavigationItemsI18N", "navigation_item_id");
     }
+    
+    public function productTypes() {
+    	return $this->belongsToMany("App\ProductTypes", "producttype_to_navigationitem_mapping", "navigation_item_id", "product_type_id");
+    }
+    
 }

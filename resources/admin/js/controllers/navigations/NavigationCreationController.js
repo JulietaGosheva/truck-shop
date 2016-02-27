@@ -2,38 +2,38 @@
 	
 	/* ============ Variables and Constructor ============= */
 	
-	var RestUtil = null;
-	var DestinationUtil = null;
+	var RestClient = null;
 	var HeaderUtil = null;
-	var NavigationItemRetriever = null;
+	var DestinationUtil = null;
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
-	var restUtilName = moduleNames.getRestClientName();
-	var destinationUtilName = moduleNames.getDestinationUtilName();
-	var headerUtilName = moduleNames.getHeaderUtilName();
-	var navigationItemRetrieverName = moduleNames.getNavigationItemRetrieverName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
+
+	var module = angular.module(moduleNames.getApplicationName());
 	
-	var module = angular.module(adminControllerName);
-	
-	var NavigationCreationController = function($scope, RUtil, DUtil, HUtil, NIRetriever) {
-		RestUtil = RUtil;
-		DestinationUtil = DUtil;
-		HeaderUtil = HUtil;
-		NavigationItemRetriever = NIRetriever;
+	var NavigationCreationController = function($scope, $http, NavigationItemRetriever, ProductRetriever) {
+		initModel($scope);
 		
+		RestClient = registry.getReference(moduleNames.getRestClientName(), $http);
+		HeaderUtil = registry.getReference(moduleNames.getHeaderUtilName());
+		DestinationUtil = registry.getReference(moduleNames.getDestinationUtilName());
+		
+		NavigationItemRetriever.loadItems($scope);
+		ProductRetriever.loadProductTypes($scope);
+	};
+	
+	var initModel = function ($scope) {
 		$scope.itemCreation = true;
 		$scope.subItemCreation = true;
 		
 		$scope.updateItems = updateItems;
 		$scope.updateSubItems = updateSubItems;
+		$scope.updateProductTypes = updateProductTypes;
 		$scope.reloadSubItems = jQuery.proxy(reloadSubItems, $scope);
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
-		
-		NavigationItemRetriever.loadItems($scope);
 	};
 	
-	module.controller("NavigationCreationController", ["$scope", restUtilName, destinationUtilName, headerUtilName, navigationItemRetrieverName, NavigationCreationController]);
+	module.controller("NavigationCreationController", ["$scope", "$http", moduleNames.getNavigationItemRetrieverName(), moduleNames.getProductRetrieverName(), NavigationCreationController]);
 	
 	/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
 	
@@ -46,6 +46,12 @@
 	var updateSubItems = function() {
 		setTimeout(function() {
 			$("#subItemNames").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateProductTypes = function() {
+		setTimeout(function() {
+			$("#productTypeNames").trigger("chosen:updated");
 		}, 50);
 	};
 	
@@ -73,13 +79,14 @@
 	
 	var executeRequest = function(formData) {
 		var requestData = prepareRequestData(formData, this);
-		RestUtil.POST(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
+		RestClient.POST(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
 	var prepareRequestData = function(formData, scope) {
 		var data = {
 			name : getItemName(formData, scope),
 			parentId : getParentId(scope),
+			productTypeId : formData.productTypeId,
 			displayName : formData.displayName,
 			language : formData.language
 		};
