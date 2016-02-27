@@ -1,51 +1,88 @@
-<div>
-
-    <h3 style='text-align: center;'>Редактиране на навигационни менюта</h3>
+<h3 style='text-align: center;'>Редактиране на навигационни менюта</h3>
     
-    <form class="form-horizontal col-sm-10">
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Име</label>
-            <div class="col-sm-9">
-                <select class="form-control chosen-select" name="menuName"></select>
-            </div>
+<form class="form-horizontal col-sm-10"
+    ng-submit="executeRequest({
+       'newItemName': newItemName,
+       'existingItemId': existingItemId,
+       'existingSubItemId': existingSubItemId,
+       'displayName': displayName,
+       'language': language
+    })">
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Изберете меню</label>
+        <div class="col-sm-8">
+            <select class="form-control chosen-select" name="existingItemId" id="itemNames" 
+                 ng-model="existingItemId" ng-change="reloadSubItems(this)">
+                 <option value=""></option>
+                 <option ng-repeat="item in items" value="{{ item.id }}"
+                     ng-custom-repeat-watcher="updateItems">{{ item.name }}</option>
+            </select>
         </div>
-        
-        <div class="form-group">
-            <label class="col-sm-3 control-label">Под меню</label>
-            <div class="col-sm-9">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <input type="checkbox" ng-model="subMenuEnabled">
-                    </span>
-                    <p ng-show="subMenuEnabled == false" style="padding-left: 15px; padding-top: 4px;">Натиснете върху checkbox-а ако искате да редактирате под меню</p>
-                    <div ng-show="subMenuEnabled">
-                        <select class="form-control chosen-select" name="submenuName"></select>
-                    </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-4 control-label">Изберете под меню</label>
+        <div class="col-sm-8">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="checkbox" ng-model="isSubMenuEnabled">
+                </span>
+                <p ng-hide="isSubMenuEnabled" style="padding-left: 15px; padding-top: 4px;">Натиснете върху checkbox-а ако искате да редактирате под меню</p>
+                <div ng-show="isSubMenuEnabled">
+                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames" ng-model="existingSubItemId">
+                     <option value=""></option>
+                     <option ng-repeat="subItem in subItems" value="{{ subItem.id }}"
+                        ng-custom-repeat-watcher="updateSubItems">{{ subItem.name }}</option>
+                    </select>
                 </div>
             </div>
         </div>
-        
-        <div class="form-group">
-	        <label class="col-sm-3 control-label">Ново име(англииско наименование)</label>
-	        <div class="col-sm-9">
-	            <input type="text" class="form-control" name="newName" placeholder="Новото име на менюто">
-	        </div>
-	    </div>
-	    
-	    <div class="form-group">
-            <label class="col-sm-3 control-label">Ново име(българско наименование)</label>
-            <div class="col-sm-9">
-                <input type="text" class="form-control" name="newName" placeholder="Новото име на менюто">
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div class="col-sm-offset-6 col-sm-2">
-                <button type="submit" class="btn btn-default" style='min-width: 200px;'>{{ buttonText }}</button>
-            </div>
-        </div>
-    </form>
+    </div>
+    
+    <div class="form-group">
+     <label class="col-sm-4 control-label">Ново име на менюто(нглийско наименование)</label>
+     <div class="col-sm-8">
+         <input type="text" class="form-control" name="newItemName" placeholder="Име на менюто" ng-model="newItemName">
+     </div>
+ </div>
+ 
+ <div class="form-group">
+     <label class="col-sm-4 control-label">Име което ще виждат потребителите</label>
+     <div class="col-sm-8">
+         <input type="text" class="form-control" name="displayName" placeholder="Име на менюто" ng-model="displayName">
+     </div>
+ </div>
 
+    
+    <div class="form-group">
+       <label class="col-sm-4 control-label">Език на менюто</label>
+       <div class="col-sm-8">
+           <select class="form-control" name="language" ng-model="language">
+               <option value="bg" selected>Български</option>
+               <option value="en">Английски</option>
+           </select>
+       </div>
+   </div>
+    
+    <div class="form-group">
+        <div class="col-sm-offset-6 col-sm-2">
+            <button type="submit" class="btn btn-default" style='min-width: 200px;'>{{ buttonText }}</button>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="result-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modal_label">{{ modalText }}</h4>
+            </div>
+            <div class="modal-body">
+                {{ requestExecutionResult }}
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

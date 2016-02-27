@@ -1,6 +1,6 @@
 (function() {
 	
-/* ============ Variables and Constructor ============= */
+	/* ============ Variables and Constructor ============= */
 	
 	var RestUtil = null;
 	var DestinationUtil = null;
@@ -67,7 +67,7 @@
 			}
 		}
 		return [];
-	}
+	};
 	
 	/* ================ Backend AJAX requests ================ */
 	
@@ -99,6 +99,10 @@
 	var getItemName = function (formData, scope) {
 		if (scope.itemCreation === true) {
 			return formData.newItemName;
+		}
+		
+		if (scope.subItemCreation === true) {
+			return formData.newSubItemName;
 		}
 		
 		var subItemNames = $("#subItemNames")[0];

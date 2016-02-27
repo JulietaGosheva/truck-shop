@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App;
 use Log;
+use Validator;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -42,19 +43,19 @@ class NavigationController extends Controller  {
 		
 		if (isset($requestBody->name) === false) {
 			$response->header(Constants::RESPONSE_HEADER, "\"name\" is required parameter.");
-			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
 		
 		if (isset($requestBody->displayName) === false) {
 			$response->header(Constants::RESPONSE_HEADER, "\"displayName\" is required parameter.");
-			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
 		
 		if (isset($requestBody->language) === false) {
 			$response->header(Constants::RESPONSE_HEADER, "\"language\" is required parameter.");
-			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
 
@@ -72,11 +73,73 @@ class NavigationController extends Controller  {
 	}
 	
 	public function editItem(Request $request, Response $response) {
+		Log::debug("Modifying navigation item.");
+		
+		$rawContentBody = $request->getContent();
+		$requestBody = json_decode($rawContentBody);
+		
+		Log::debug("Request data: [" . $rawContentBody . "]");
+		
+		if ($requestBody === NULL) {
+			$response->header(Constants::RESPONSE_HEADER, "Failed to parse request body.");
+			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+		
+		if (isset($requestBody->name) === false) {
+			$response->header(Constants::RESPONSE_HEADER, "\"name\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->displayName) === false) {
+			$response->header(Constants::RESPONSE_HEADER, "\"displayName\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->language) === false) {
+			$response->header(Constants::RESPONSE_HEADER, "\"language\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->itemId) === false) {
+			$response->header(Constants::RESPONSE_HEADER, "\"itemId\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		$this->persistenceHelper->editItem($response, $requestBody);
+		
+		Log::debug("Navigation item modification finished successfully.");
+		
+		$response->header(Constants::RESPONSE_HEADER, "Successfully modified navigation item.");
+		$response->setStatusCode(Response::HTTP_NO_CONTENT);
+		return $response;
 		
 	}
 	
 	public function deleteItem(Request $request, Response $response) {
+		$validator = Validator::make($request->all(), [
+			'id' => 'required|numeric'
+		]);
 		
+		if ($validator->fails()) {
+			$response->header(Constants::RESPONSE_HEADER, "\"id\" query parameter is required and must contain number as value.");
+			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+			return $response;
+		}
+			
+		$itemId = $request->input("id");
+		
+		$this->persistenceHelper->deleteItemById($itemId);
+		
+		Log::debug("Navigation item deletion finished successfully.");
+		
+		$response->header(Constants::RESPONSE_HEADER, "Successfully deleted navigation item.");
+		$response->setStatusCode(Response::HTTP_NO_CONTENT);
+		return $response;
 	}
 	
 	public function getItems(Request $request, Response $response) {
