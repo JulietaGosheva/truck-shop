@@ -1,91 +1,64 @@
 (function() {
-	var module = angular.module("AngularApplication");
-	
-	var NavigationUtil = function() {
-		var navigationArticals = {
-				"accessoars": {
-					href: "#/accessoars",
-					displayName: "Аксесоари",
-					subArtical : [
-						{ 
-							"gresiorka" : {
-			            		href: "#/buffers/subArtical/gresiorka",
-				            	displayName: "Гресьорка",
-				            	subArtical : []
-			            	}
-						},
-						{ 
-							"eluredi" : {
-			            		href: "#/buffers/subArtical/eluredi",
-				            	displayName: "Електрически уреди",
-				            	subArtical : []
-			            	}
-						}
-	                ],
-				},
-			    "buffers": {
-					href: "#/buffers",
-					displayName: "Буфери",
-					subArtical : [
-			            { 
-			            	"golemi" : {
-			            		href: "#/buffers/subArtical/golemi",
-				            	displayName: "Буфери и лафети",
-				            	subArtical : []
-			            	}
-	            		},
-			            {
-	            			"lafeti" : {
-			            		href: "#/buffers/subArtical/lafeti",
-			            		displayName: "Лафети",
-			            		subArtical : []
-			            	}
-			            }
-		            ],
-					
-			    },
-			    "engines": {
-			    	href: "#/engines",
-			    	displayName: "Двигатели",
-			    	subArtical : [],
-			    },
-			    "buffer-laffets": {
-			    	href: "#/buffer-laffets",
-			    	displayName: "Буфери-Лафети",
-			    	subArtical : [],
-			    },
-			    "snow-net": {
-			    	href: "#/snow-net",
-			    	displayName: "Вериги за сняг",
-			    	subArtical : []
-			    }
-		};
-		
-		return {
-			getNavigationArtical: function(item) {
-				return navigationArticals[item];
-			},
-			
-			getNavigationArticals: function() {
-				return navigationArticals;
-			},
-			
-			getNavigationSubArticals: function(key) {
-				var subArticals = [];
-				
-				var articals = navigationArticals[key].subArtical;
-				for (var i = 0 ; i < articals.length ; i++) {
-					for (var articalKey in articals[i]) {
-						subArticals.push({
-							navLinkName: articals[i][articalKey].displayName,
-							navLinkUrl: articals[i][articalKey].href
-						});
-					}
-				}
-				return subArticals;
-			}
-		};
-	};
-	
-	module.factory("NavigationUtil", NavigationUtil);
+	$.ajax({
+        url: "http://localhost/truck-shop/navigation/api/v1/items",
+        type: "GET",
+        async: false,
+        dataType: 'json',
+        success: function(xhrResponse) {
+        	var clientCache = com.rs.client.cache.ClientCache.prototype.getInstance();
+        	
+        	var items = null;
+        	if (Array.isArray(xhrResponse)) {
+    			items = xhrResponse;
+    		} else {
+    			items = Object.toArray(xhrResponse);
+    		}
+        	
+        	clientCache.setCacheEntry("navItems", items);
+        },
+        error: function(xhrResponse) {
+        	console.log(1);
+        },
+        complete: function(xhrResponse) {
+        	console.log(2);
+        }
+    });
 })();
+
+if (typeof com === "undefined") {
+	var com = {
+		rs : {
+			utils : {
+
+			}	
+		}
+	};
+} else if (typeof com.rs === "undefined") {
+	com.rs = {
+		utils: {
+
+		}
+	};
+} else {
+	com.rs.utils = {};
+}
+
+com.rs.utils.NavigationUtil = function() {
+	this.clientCache = com.rs.client.cache.ClientCache.prototype.getInstance();
+	this.navItems = this.clientCache.getCacheEntry("navItems");
+};
+
+com.rs.utils.NavigationUtil.prototype.hasSubItems = function(navItemName) {
+	if (typeof this.navItems[navItemName] === "undefined") {
+		return false;
+	}
+	return typeof this.navItems[navItemName].subItems !== "undefined";
+};
+
+com.rs.utils.NavigationUtil.prototype.getNavItems = function() {
+	return this.navItems;
+};
+
+com.rs.utils.NavigationUtil.prototype.getNavSubItems = function(navItem) {
+	return this.navItems[navItemName].subItems;
+};

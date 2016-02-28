@@ -11,14 +11,7 @@
 	var HeaderUtil = null;
 	var DestinationUtil = null;
 	
-	var moduleNames = null;
-	
-	if (com.rs.module === undefined) {
-		moduleNames = new com.rs.client.module.ClientModules();
-	} else {
-		moduleNames = new com.rs.module.ModuleNames();
-	}
-	
+	var moduleNames = new com.rs.module.ModuleNames();
 	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
 	var NavigationItemRetriever = function($http) {
@@ -46,7 +39,7 @@
 	
 	var onSuccessfullyLoadedItems = function(xhrResponse) {
 		if (xhrResponse.status === NO_CONTENT) {
-			this.notFound = "Не успяхме да намерим търсения от вас продукт.";
+			this.notFound = "Не успяхме да извлечем навигационните менюта.";
 			return;
 		}
 		
@@ -152,18 +145,6 @@
 	
 	/* ============ Module Registration ============= */
 	
-	var module = undefined;
-	try {
-		module = angular.module(moduleNames.getClientControllerName());
-		module.factory(moduleNames.getNavigationItemRetrieverName(), ["$http", NavigationItemRetriever]);
-	} catch(Exception) {
-		//just ignore the exception
-	}
-	
-	try {
-		module = angular.module(moduleNames.getAdminControllerName());
-		module.factory(moduleNames.getNavigationItemRetrieverName(), ["$http", NavigationItemRetriever]);
-	} catch(Exception) {
-		//just ignore the exception
-	}
+	var module = angular.module(moduleNames.getAdminControllerName());
+	module.factory(moduleNames.getNavigationItemRetrieverName(), ["$http", NavigationItemRetriever]);
 })();

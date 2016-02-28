@@ -1,24 +1,11 @@
 (function() {
 
-	var clientModules = new com.rs.client.module.ClientModules();
-	
 	var module = angular.module(clientModules.getClientControllerName());
 	
-	var TemplateController = function($scope, NavigationRetriever) {
-		$scope.navLinks = [];
-		
-		var navItems = NavigationRetriever.loadItems($scope);
-		
-		
-		
-//		var navigationArticals = NavigationUtil.getNavigationArticals();
-//		for (var item in navigationArticals) {
-//			$scope.navLinks.push({
-//				navLinkName: navigationArticals[item].displayName,
-//				navLinkUrl: navigationArticals[item].href
-//			});
-//		}
+	var TemplateController = function($scope) {
+		var clientCache = com.rs.client.cache.ClientCache.prototype.getInstance();
+		$scope.items = clientCache.getCacheEntry("navItems");
 	};
 	
-	module.controller("TemplateController", ["$scope", clientModules.getNavigationItemRetrieverName(), TemplateController]);
+	module.controller("TemplateController", ["$scope", TemplateController]);
 })();

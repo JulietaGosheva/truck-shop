@@ -59,7 +59,7 @@ Route::group(['prefix' => 'navigation/api/v1'], function() {
 
 	Route::delete('/', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@deleteItem']);
 
-	Route::get('/items', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@getItems']);
+	Route::get('/items', 'NavigationController@getItems');
 	
 	Route::get('/items/root', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@getRootItems']);
 });

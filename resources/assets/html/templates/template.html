@@ -3,9 +3,9 @@
    <div ng-include="'resources/assets/html/navigation.html'"></div>
    
    <div class="nav-link-container col-sm-2" ng-controller="TemplateController">
-      <ul class="nav-ul nav nav-pills nav-stacked" style="text-align: center" ng-repeat="navLink in navLinks">
+      <ul class="nav-ul nav nav-pills nav-stacked" style="text-align: center" ng-repeat="item in items">
          <li role="presentation" class="nav-bar-link-list">
-            <a class="nav-bar-link-elem" href="{{ navLink.navLinkUrl }}">{{ navLink.navLinkName }}</a>
+            <a class="nav-bar-link-elem" href="{{ item.href }}">{{ item.displayName }}</a>
          </li>
       </ul>
    </div>

@@ -20,6 +20,26 @@
 				templateUrl: "resources/assets/html/templates/articals.html",
 				controller: "SearchController"
 			})
+			
+			
+			.when("/articals/:navItemName", {
+				templateUrl: "resources/assets/html/templates/articals.html",
+				controller: "ArticalsController"
+			})
+			.when("/articals/:navItemName/artical/:uniqueId", {
+				templateUrl: "resources/assets/html/templates/details.html",
+				controller: "DetailsController"
+			})
+			.when("/articals/:navItemName/:navSubItemName", {
+				templateUrl: "resources/assets/html/templates/articals.html",
+				controller: "ArticalsController"
+			})
+			.when("/articals/:navItemName/:navSubItemName/artical/:uniqueId", {
+				templateUrl: "resources/assets/html/templates/details.html",
+				controller: "DetailsController"
+			})
+			
+			
 			.when("/:artical", {
 				templateUrl: "resources/assets/html/templates/articals.html",
 				controller: "ArticalsController"
