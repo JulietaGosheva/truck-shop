@@ -1,12 +1,12 @@
 <h3 style='text-align: center;'>Създаване на навигационни менюта</h3>
 
-<form class="form-horizontal col-sm-10"
+<form class="form-horizontal col-sm-11"
       ng-submit="executeRequest({
            'newItemName': newItemName,
            'existingItemId': existingItemId,
            'newSubItemName': newSubItemName,
            'existingSubItemId': existingSubItemId,
-           'productTypeId': productTypeId,
+           'productTypeIds': productTypeIds,
            'displayName': displayName,
            'language': language
       })">
@@ -56,6 +56,18 @@
 	         <input type="text" class="form-control" name="displayName" placeholder="Име на менюто" ng-model="displayName">
 	     </div>
 	 </div>
+    
+    <div class="form-group">
+         <label class="col-sm-4 control-label">Продуктови типове спадащи към менюто</label>
+         <div class="col-sm-8">
+             <select multiple class="form-control chosen-select" name="productTypeIds[]" id="productTypeNames"
+                 ng-model="productTypeIds" data-placeholder="Изберете продуктов тип">
+	             <option value=""></option>
+	             <option ng-repeat="productType in types" value="{{ productType.id }}"
+	                 ng-custom-repeat-watcher="updateProductTypes">{{ productType.name }}</option>
+	         </select>
+         </div>
+    </div>
 	 
 	 <div class="form-group">
 	     <label class="col-sm-4 control-label">Език на менюто</label>
@@ -65,17 +77,6 @@
 	             <option value="en">Английски</option>
 	         </select>
 	     </div>
-    </div>
-    
-    <div class="form-group">
-         <label class="col-sm-4 control-label">Продуктов тип асоцииран с това навигационно меню</label>
-         <div class="col-sm-8">
-             <select class="form-control chosen-select" name="productTypeId" id="productTypeNames" ng-model="productTypeId">
-	             <option value=""></option>
-	             <option ng-repeat="productType in types" value="{{ productType.id }}"
-	                 ng-custom-repeat-watcher="updateProductTypes">{{ productType.name }}</option>
-	         </select>
-         </div>
     </div>
     
     <div class="form-group">

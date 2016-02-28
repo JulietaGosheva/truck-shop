@@ -58,6 +58,12 @@ class NavigationController extends Controller  {
 			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
+		
+		if (isset($requestBody->productTypeIds) === false || count($requestBody->productTypeIds) === 0) {
+			$response->header(Constants::RESPONSE_HEADER, "\"productType\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
 
 		if (isset($requestBody->parentId) === false) {
 			$requestBody->parentId = 1;

@@ -86,7 +86,7 @@
 		var data = {
 			name : getItemName(formData, scope),
 			parentId : getParentId(scope),
-			productTypeId : formData.productTypeId,
+			productTypeIds : formData.productTypeIds,
 			displayName : formData.displayName,
 			language : formData.language
 		};

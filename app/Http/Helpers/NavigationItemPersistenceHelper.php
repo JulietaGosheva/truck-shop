@@ -27,6 +27,7 @@ class NavigationItemPersistenceHelper {
 			Log::debug("Following navigation item will be modified: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "].");
 			
 			$this->modifyItem($item, $requestBody);
+			$this->modifyPivotTable($item, $requestBody);
 			$this->modifySubItems($item->id, $item->name);
 			$this->modifyI18NModel($item, $requestBody);
 			
@@ -48,6 +49,10 @@ class NavigationItemPersistenceHelper {
 			
 		$item->href = strtolower($href);
 		$item->name = strtolower($requestBody->name);
+	}
+	
+	private function modifyPivotTable(&$item, $requestBody) {
+		
 	}
 	
 	private function modifySubItems($itemId, $newItemName) {
@@ -103,10 +108,13 @@ class NavigationItemPersistenceHelper {
 			
 			Log::debug("Created navigation item: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "]");
 			
-			$productTypeId = $requestBody->productTypeId;
-			$item->productTypes()->attach($productTypeId);
+			Log::debug("Detaching previous mappings.");
+			$item->productTypes()->detach(null);
 			
-			Log::debug("Successfully created mapping between product type with id: [" . $productTypeId . "] and navigation item with id: [" . $item->id . "].");
+			Log::debug("Following product type ids will be attached: [" . json_encode($requestBody->productTypeIds, JSON_UNESCAPED_UNICODE) . "].");
+			$item->productTypes()->attach($requestBody->productTypeIds);
+			
+			Log::debug("Successfully created mapping between product types and navigation item with id: [" . $item->id . "].");
 		} catch (Exception $exception) {
 			DB::rollBack();
 			Log::debug("Failed to create navigation item. Transaction rolled back. Caused by: [" . $exception->getMessage() . "].");
