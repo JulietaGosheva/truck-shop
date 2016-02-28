@@ -52,7 +52,11 @@ class NavigationItemPersistenceHelper {
 	}
 	
 	private function modifyPivotTable(&$item, $requestBody) {
-		
+		Log::debug("Detaching previous mappings.");
+		$item->productTypes()->detach(null);
+			
+		Log::debug("Following product type ids will be attached: [" . json_encode($requestBody->productTypeIds, JSON_UNESCAPED_UNICODE) . "].");
+		$item->productTypes()->attach($requestBody->productTypeIds);
 	}
 	
 	private function modifySubItems($itemId, $newItemName) {

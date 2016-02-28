@@ -9,7 +9,7 @@
            'productTypeIds': productTypeIds,
            'displayName': displayName,
            'language': language
-      })">
+      })" ng-show="errorMessage == null">
     <div class="form-group">
         <label class="col-sm-4 control-label">Име(англииско наименование)</label>
         <div class="col-sm-8">
@@ -85,6 +85,10 @@
         </div>
     </div>
 </form>
+
+<div style="text-align: center">
+    <h2>{{ errorMessage }}</h2>
+</div>
 
 <div class="modal fade" id="result-modal">
     <div class="modal-dialog">

@@ -11,7 +11,7 @@
 	
 	var module = angular.module(moduleNames.getApplicationName());
 	
-	var EditNavigationController = function($scope, $http, NavigationRetriever) {
+	var EditNavigationController = function($scope, $http, NavigationRetriever, ProductRetriever) {
 		initModel($scope);
 		
 		RestClient = registry.getReference(moduleNames.getRestClientName(), $http);
@@ -19,6 +19,7 @@
 		DestinationUtil = registry.getReference(moduleNames.getDestinationUtilName());
 		
 		NavigationRetriever.loadItems($scope);
+		ProductRetriever.loadProductTypes($scope);
 	};
 	
 	var initModel = function ($scope) {
@@ -27,11 +28,12 @@
 		
 		$scope.updateItems = updateItems;
 		$scope.updateSubItems = updateSubItems;
+		$scope.updateProductTypes = updateProductTypes;
 		$scope.reloadSubItems = jQuery.proxy(reloadSubItems, $scope);
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 	};
 	
-	module.controller("EditNavigationController", ["$scope", "$http", moduleNames.getNavigationItemRetrieverName(), EditNavigationController]);
+	module.controller("EditNavigationController", ["$scope", "$http", moduleNames.getNavigationItemRetrieverName(), moduleNames.getProductRetrieverName(), EditNavigationController]);
 	
 	/* ================ ngCustomRepeatWatcher directive callback handlers ================ */
 	
@@ -44,6 +46,12 @@
 	var updateSubItems = function() {
 		setTimeout(function() {
 			$("#subItemNames").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateProductTypes = function() {
+		setTimeout(function() {
+			$("#productTypeNames").trigger("chosen:updated");
 		}, 50);
 	};
 	
@@ -78,6 +86,7 @@
 		var data = {
 			itemId : getItemId(scope),
 			name : formData.newItemName,
+			productTypeIds : formData.productTypeIds,
 			displayName : formData.displayName,
 			language : formData.language
 		};
