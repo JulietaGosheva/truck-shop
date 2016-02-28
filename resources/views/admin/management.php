@@ -18,7 +18,7 @@
         <script src="resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
         
         <script src="resources/admin/js/AdminController.js"></script>
-        <script src="resources/admin/js/ModuleNames.js"></script>
+        <script src="resources/admin/js/AdminModules.js"></script>
         <script src="resources/common/js/Registry.js"></script>
         <script src="resources/common/js/FunctionDefinition.js"></script>
         <script src="resources/common/js/modules/HeaderUtil.js"></script>
@@ -48,7 +48,7 @@
         <script src="resources/admin/js/modules/HashHelper.js"></script>
         <script src="resources/admin/js/modules/users/UserRetriever.js"></script>
         <script src="resources/admin/js/modules/products/ProductRetriever.js"></script>
-        <script src="resources/admin/js/modules/navigations/NavigationItemRetriever.js"></script>
+        <script src="resources/common/js/modules/navigations/NavigationItemRetriever.js"></script>
         
 		<link rel="stylesheet" href="resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="resources/dependencies/css/bootstrap-theme.css"></link>

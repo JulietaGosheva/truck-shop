@@ -2,7 +2,14 @@
 	
 	/* ============ Variables and Constructor ============= */
 	
-	var moduleNames = new com.rs.module.ModuleNames();
+	var moduleNames = null;
+	
+	if (com.rs.module === undefined) {
+		moduleNames = new com.rs.client.module.ClientModules();
+	} else {
+		moduleNames = new com.rs.module.ModuleNames();
+	}
+	
 	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
 	var DestinationUtil = function() {
@@ -113,14 +120,14 @@
 	
 	var module = undefined;
 	try {
-		module = angular.module("AngularApplication");
+		module = angular.module(moduleNames.getClientControllerName());
 		module.factory(moduleNames.getDestinationUtilName(), [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		module = angular.module(moduleNames.getApplicationName());
+		module = angular.module(moduleNames.getAdminControllerName());
 		module.factory(moduleNames.getDestinationUtilName(), [DestinationUtil]);
 	} catch(Exception) {
 		//just ignore the exception

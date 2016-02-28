@@ -2,7 +2,7 @@
 	
 	var moduleNames = new com.rs.module.ModuleNames();
 	
-	var adminControllerName = moduleNames.getApplicationName();
+	var adminControllerName = moduleNames.getAdminControllerName();
 	var productRetrieverName = moduleNames.getProductRetrieverName();
 	
 	var module = angular.module(adminControllerName);

@@ -4,8 +4,14 @@
 	
 	var HeaderUtil = null;
 	
-	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
+	var moduleNames = null;
+	
+	if (com.rs.module === undefined) {
+		moduleNames = new com.rs.client.module.ClientModules();
+	} else {
+		moduleNames = new com.rs.module.ModuleNames();
+	}
+	
 	var ajaxClientName = moduleNames.getAjaxClientName();
 	var headerUtilName = moduleNames.getHeaderUtilName();
 	
@@ -71,14 +77,14 @@
 	
 	var module = undefined;
 	try {
-		module = angular.module("AngularApplication");
+		module = angular.module(moduleNames.getClientControllerName());
 		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
-		module = angular.module(adminControllerName);
+		module = angular.module(moduleNames.getAdminControllerName());
 		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception

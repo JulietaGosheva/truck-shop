@@ -9,7 +9,7 @@
 	var moduleNames = new com.rs.module.ModuleNames();
 	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
-	var module = angular.module(moduleNames.getApplicationName());
+	var module = angular.module(moduleNames.getAdminControllerName());
 	
 	var EditNavigationController = function($scope, $http, NavigationRetriever, ProductRetriever) {
 		initModel($scope);

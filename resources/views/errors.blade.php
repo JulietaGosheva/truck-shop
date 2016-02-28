@@ -5,7 +5,7 @@
 		<title>Грешка</title>
 	</head>
 	<body>
-		Възникнала грешка: {{ $excpetionMessage }}. Статус на грешката: {{ $statusCode }}.
+		Възникнала грешка: {{ $excpetionMessage }}. Статус на грешката: {{ $statusCode }}.<br>
 		Път към началната страница: {!! $baseUrl !!}.
 	</body>
 </html>

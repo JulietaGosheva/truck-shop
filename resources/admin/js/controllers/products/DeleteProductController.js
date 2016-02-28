@@ -7,7 +7,7 @@
 	var HeaderUtil = null;
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
+	var adminControllerName = moduleNames.getAdminControllerName();
 	var restUtilName = moduleNames.getRestClientName();
 	var headerUtilName = moduleNames.getHeaderUtilName();
 	var destinationUtilName = moduleNames.getDestinationUtilName();

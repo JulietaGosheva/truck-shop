@@ -30,8 +30,12 @@ com.rs.module.ModuleNames.prototype.getHeaderUtilName = function() {
 	return "HeaderUtil";
 };
 
-com.rs.module.ModuleNames.prototype.getApplicationName = function() {
+com.rs.module.ModuleNames.prototype.getAdminControllerName = function() {
 	return "AdminController";
+};
+
+com.rs.module.ModuleNames.prototype.getClientControllerName = function() {
+	return "ClientController";
 };
 
 com.rs.module.ModuleNames.prototype.getHashHelperName = function() {

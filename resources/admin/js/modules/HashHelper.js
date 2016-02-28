@@ -3,7 +3,7 @@
 	/* ============ Variables and Constructor ============= */
 	
 	var moduleNames = new com.rs.module.ModuleNames();
-	var adminControllerName = moduleNames.getApplicationName();
+	var adminControllerName = moduleNames.getAdminControllerName();
 	var hashHelperName = moduleNames.getHashHelperName();
 	
 	var HashHelper = function() {
