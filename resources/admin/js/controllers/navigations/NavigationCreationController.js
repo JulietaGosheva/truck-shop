@@ -23,6 +23,7 @@
 	};
 	
 	var initModel = function ($scope) {
+		$scope.language = "bg";
 		$scope.itemCreation = true;
 		$scope.subItemCreation = true;
 		
@@ -62,10 +63,10 @@
 		if (isNaN(itemId)) {
 			return this.subItems = [];
 		}
-		this.subItems = getItemById.call(this, parseInt(itemId));
+		this.subItems = getSubItemsById.call(this, parseInt(itemId));
 	};
 	
-	var getItemById = function (itemId) {
+	var getSubItemsById = function (itemId) {
 		for (var i = 0 ; i < this.items.length ; i++) {
 			var navItem = this.items[i];
 			if (navItem.id === itemId) {

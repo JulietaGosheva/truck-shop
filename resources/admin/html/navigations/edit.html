@@ -30,7 +30,8 @@
                 </span>
                 <p ng-hide="isSubMenuEnabled" style="padding-left: 15px; padding-top: 4px;">Натиснете върху checkbox-а ако искате да редактирате под меню</p>
                 <div ng-show="isSubMenuEnabled">
-                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames" ng-model="existingSubItemId">
+                    <select class="form-control chosen-select" name="existingSubItemId" id="subItemNames"
+                         ng-model="existingSubItemId" ng-change="changeFieldValues(this)">
                      <option value=""></option>
                      <option ng-repeat="subItem in subItems" value="{{ subItem.id }}"
                         ng-custom-repeat-watcher="updateSubItems">{{ subItem.name }}</option>
@@ -70,7 +71,7 @@
        <label class="col-sm-4 control-label">Език на менюто</label>
        <div class="col-sm-8">
            <select class="form-control" name="language" ng-model="language">
-               <option value="bg" selected>Български</option>
+               <option value="bg">Български</option>
                <option value="en">Английски</option>
            </select>
        </div>

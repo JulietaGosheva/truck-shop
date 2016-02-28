@@ -190,7 +190,7 @@ class NavigationItemPersistenceHelper {
 	}
 	
 	public function getAllItems() {
-		return NavigationItems::with("navigationItemI18N")->get();
+		return NavigationItems::with("navigationItemI18N", "productTypes")->get();
 	}
 	
 	public function findItemByParentId($parentId) {

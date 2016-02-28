@@ -179,7 +179,9 @@ class NavigationController extends Controller  {
 			if ($this->isRootItem($item) === false) {
 				continue;
 			}
-				
+			
+			Log::debug("Following item will be processed: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "].");
+			
 			$newStructure = array();
 			$newStructure["id"] = $item->id;
 			$newStructure["parent"] = "self";
@@ -198,7 +200,16 @@ class NavigationController extends Controller  {
 				continue;
 			}
 				
+			$newStructure['language'] = $itemI18N->language;
 			$newStructure["displayName"] = $itemI18N->display_name;
+			
+			$productTypeIds = array();
+			foreach ($item->productTypes as $productType) {
+				array_push($productTypeIds, strval($productType->id));
+			}
+				
+			$newStructure["productTypeIds"] = $productTypeIds;
+			
 			$structure[$item->id] = $newStructure;
 		}
 	}
@@ -209,6 +220,8 @@ class NavigationController extends Controller  {
 				continue;
 			}
 
+			Log::debug("Following sub item will be processed: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "].");
+			
 			$newStructure = array();
 			$newStructure["id"] = $item->id;
 			$newStructure["parent"] = $item->parent_id;
@@ -227,7 +240,16 @@ class NavigationController extends Controller  {
 				continue;
 			}
 		
+			$newStructure['language'] = $itemI18N->language;
 			$newStructure["displayName"] = $itemI18N->display_name;
+			
+			$productTypeIds = array();
+			foreach ($item->productTypes as $productType) {
+				array_push($productTypeIds, strval($productType->id));
+			}
+			
+			$newStructure["productTypeIds"] = $productTypeIds;
+			
 			$structure[$item->parent_id]["subItems"][$item->id] = $newStructure;
 		}
 	}

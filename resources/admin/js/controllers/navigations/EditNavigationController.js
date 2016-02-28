@@ -23,11 +23,12 @@
 	};
 	
 	var initModel = function ($scope) {
-		$scope.isSubMenuEnabled = false;
 		$scope.buttonText = "Редактирай";
+		$scope.isSubMenuEnabled = false;
 		
 		$scope.updateItems = updateItems;
 		$scope.updateSubItems = updateSubItems;
+		$scope.changeFieldValues = changeFieldValues;
 		$scope.updateProductTypes = updateProductTypes;
 		$scope.reloadSubItems = jQuery.proxy(reloadSubItems, $scope);
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
@@ -57,15 +58,17 @@
 	
 	/* ================ Selectors onChange event handlers ================ */
 	
-	var reloadSubItems = function(oElement) {
-		var itemId = oElement.existingItemId;
+	var reloadSubItems = function(scope) {
+		var itemId = scope.existingItemId;
 		if (isNaN(itemId)) {
 			return this.subItems = [];
 		}
-		this.subItems = getItemById.call(this, parseInt(itemId));
+		this.subItems = getSubItemsById.call(scope, parseInt(itemId));
+		
+		fillFieldValues.call(scope, itemId);
 	};
 	
-	var getItemById = function (itemId) {
+	var getSubItemsById = function (itemId) {
 		for (var i = 0 ; i < this.items.length ; i++) {
 			var navItem = this.items[i];
 			if (navItem.id === itemId) {
@@ -74,6 +77,55 @@
 		}
 		return [];
 	};
+	
+	var changeFieldValues = function(scope) {
+		var itemId = scope.existingSubItemId;
+		if (isNaN(itemId)) {
+			return;
+		}
+		fillFieldValues.call(scope, itemId);
+	};
+
+	var fillFieldValues = function(itemId) {
+		var item = getItemById.call(this, parseInt(itemId));
+		
+		this.newItemName = item.name;
+		this.displayName = item.displayName;
+		this.language = item.language;
+		this.productTypeIds = item.productTypeIds;
+		
+		updateProductTypes();
+	};
+	
+	var getItemById = function (itemId) {
+		for (var i = 0 ; i < this.items.length ; i++) {
+			var navItem = this.items[i];
+			if (navItem.id === itemId) {
+				return navItem;
+			}
+			
+			if (navItem.subItems) {
+				var subItem = getSubItemById(navItem.subItems, itemId);
+				if (typeof subItem !== "undefined") {
+					return subItem;
+				}
+			}
+		}
+		return {};
+	};
+	
+	var getSubItemById = function(subItems, itemId) {
+		for (var key in subItems) {
+			if (!subItems.hasOwnProperty(key)) {
+				continue;
+			}
+			var subItem = subItems[key];
+			if (subItem.id === itemId) {
+				return subItem;
+			}
+		}
+		return undefined;
+	}
 	
 	/* ================ Backend AJAX requests ================ */
 	
