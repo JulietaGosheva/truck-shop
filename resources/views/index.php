@@ -30,6 +30,7 @@
         <script src="resources/assets/js/controllers/SearchController.js"></script>
         <script src="resources/assets/js/controllers/TemplateController.js"></script>
         <script src="resources/assets/js/controllers/ArticalsController.js"></script>
+        <script src="resources/assets/js/controllers/SubArticalsController.js"></script>
         <script src="resources/assets/js/controllers/DetailsController.js"></script>
         <script src="resources/assets/js/controllers/CarouselController.js"></script>
 		

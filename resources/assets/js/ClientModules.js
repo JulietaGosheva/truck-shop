@@ -35,7 +35,6 @@ com.rs.client.module.ClientModules.prototype.getClientControllerName = function(
 
 com.rs.client.module.ClientModules.prototype.getAdminControllerName = function() {
 	return "AdminController";
-//	return "ClientController";
 };
 
 com.rs.client.module.ClientModules.prototype.getNavigationItemRetrieverName = function() {

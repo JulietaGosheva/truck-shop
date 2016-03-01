@@ -2,9 +2,7 @@
 
 namespace App\Http\Helpers;
 
-use Illuminate\Http\Response;
-use Illuminate\Http\Request;
-
+use Log;
 use Validator;
 
 use App;
@@ -12,6 +10,9 @@ use App\Brands;
 use App\Models;
 use App\Products;
 use App\ProductTypes;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\DB;
 
@@ -45,18 +46,20 @@ class ProductPersistenceHelper {
 	
 	public function findEntityByUniqueId(Request $request, Response $response) {
 		$validator = Validator::make($request->all(), [
-				'uniqueNumber' => 'required|numeric'
+				'uniqueId' => 'required|numeric'
 		]);
 	
 		if ($validator->fails()) {
-			$response->header(Constants::RESPONSE_HEADER, "\"uniqueNumber\" query parameter is required and must contain number as value.");
+			$response->header(Constants::RESPONSE_HEADER, "\"uniqueId\" query parameter is required and must contain number as value.");
 			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
 			return $response;
 		}
 			
-		$uniqueNumber = $request->input("uniqueNumber");
+		$uniqueId = $request->input("uniqueId");
 	
-		$product = Products::with('productTypes', 'brands', 'models')->where("unique_id", $uniqueNumber)->first();
+		Log::debug("Search request with the following unique ID was performed: [" . $uniqueId . "]");
+		
+		$product = Products::with('productTypes', 'brands', 'models')->where("unique_id", $uniqueId)->first();
 	
 		if ($product === null) {
 			$response->header(Constants::RESPONSE_HEADER, "Entity not found.");
@@ -67,6 +70,19 @@ class ProductPersistenceHelper {
 		$response->header(Constants::RESPONSE_HEADER, "Successfully retrieved data.");
 	
 		return $product;
+	}
+	
+	public function findEntitiesByProductTypeIds(Request $request, Response $response) {
+		$productTypeIds = $request->input("productTypeIds");
+		$productTypeIds = explode(";", $productTypeIds);
+		
+		Log::debug("Requested product type ids are: [" . json_encode($productTypeIds) . "]");
+		
+		$products = Products::with('productTypes', 'brands', 'models')->whereIn("product_type_id", $productTypeIds)->get();
+		
+		Log::debug("Retrieved products are: [" . json_encode($products) . "]");
+		
+		return $products;
 	}
 	
 	public function findEntity(Request $request, Response $response) {

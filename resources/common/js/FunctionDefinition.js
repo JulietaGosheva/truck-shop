@@ -5,9 +5,9 @@
 		    	throw new TypeError('Object.keys called on non-object');
 		    }
 	
-		    var keys = []
+		    var keys = [];
 		    for(var key in object) {
-		    	if(Object.prototype.hasOwnProperty.call(object,key)) {
+		    	if(Object.prototype.hasOwnProperty.call(object, key)) {
 		    		keys.push(key);
 		    	}
 		    }
@@ -21,9 +21,9 @@
 		    	throw new TypeError('Object.toArray called on non-object');
 		    }
 	
-		    var keys = []
+		    var keys = [];
 		    for(var key in object) {
-		    	if(Object.prototype.hasOwnProperty.call(object,key)) {
+		    	if(Object.prototype.hasOwnProperty.call(object, key)) {
 		    		keys.push(object[key]);
 		    	}
 		    }

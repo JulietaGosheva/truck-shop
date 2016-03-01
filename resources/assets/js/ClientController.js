@@ -31,8 +31,8 @@
 				controller: "DetailsController"
 			})
 			.when("/articals/:navItemName/:navSubItemName", {
-				templateUrl: "resources/assets/html/templates/articals.html",
-				controller: "ArticalsController"
+				templateUrl: "resources/assets/html/templates/subArticals.html",
+				controller: "SubArticalsController"
 			})
 			.when("/articals/:navItemName/:navSubItemName/artical/:uniqueId", {
 				templateUrl: "resources/assets/html/templates/details.html",

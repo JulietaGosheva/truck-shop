@@ -17,21 +17,21 @@ Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
 	return view("admin.management");
 }]);
 
-Route::group(['prefix' => 'products/api/v1', 'middleware' => ['auth', 'role']], function() {
+Route::group(['prefix' => 'products/api/v1'], function() {
 	
 	Route::get('/', 'ProductsController@findEntities');
 	
-	Route::post('/', 'ProductsController@persistEntity');
+	Route::post('/', ['middleware' => ['auth', 'role'], 'uses' => 'ProductsController@persistEntity']);
 	
-	Route::put('/', 'ProductsController@updateEntity');
+	Route::put('/', ['middleware' => ['auth', 'role'], 'uses' => 'ProductsController@updateEntity']);
 	
-	Route::delete('/', 'ProductsController@deleteEntity');
+	Route::delete('/', ['middleware' => ['auth', 'role'], 'uses' => 'ProductsController@deleteEntity']);
 	
 	Route::get('/all', 'ProductsController@getAllEntries');
 	
-	Route::post('/image', 'ProductsController@uploadImage');
+	Route::post('/image', ['middleware' => ['auth', 'role'], 'uses' => 'ProductsController@uploadImage']);
 	
-	Route::post('/image/{imageName}', 'ProductsController@updateImage');
+	Route::post('/image/{imageName}', ['middleware' => ['auth', 'role'], 'uses' => 'ProductsController@updateImage']);
 	
 	Route::get('/types', 'ProductTypesController@getTypes');
 	

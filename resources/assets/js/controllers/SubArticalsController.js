@@ -1,5 +1,5 @@
 (function() {
-	
+
 	var RestClient = null;
 	var HeaderUtil = null;
 	var DestinationUtil = null;
@@ -10,7 +10,7 @@
 	
 	var module = angular.module(clientModules.getClientControllerName());
 	
-	var ArticalsController = function($scope, $routeParams, $http, $location) {
+	var SubArticalsController = function($scope, $routeParams, $http, $location) {
 		RestClient = registry.getReference(clientModules.getRestClientName(), $http);
 		HeaderUtil = registry.getReference(clientModules.getHeaderUtilName());
 		DestinationUtil = registry.getReference(clientModules.getDestinationUtilName());
@@ -18,18 +18,15 @@
 		$scope.host = DestinationUtil.getServerHostEndpoint();
 		
 		var navItemName = $routeParams.navItemName;
+		var navSubItemName = $routeParams.navSubItemName;
 		
 		var navUtil = new com.rs.utils.NavigationUtil();
-		if (navUtil.hasSubItems(navItemName)) {
-			$scope.navSubItems = navUtil.getNavSubItems(navItemName);
-			return;
-		}
 		
-		$scope.navItem = navUtil.getNavItemByName(navItemName);
+		$scope.navItem = navUtil.getNavItemByName(navSubItemName);
 		loadProducts.call($scope, $scope.navItem.productTypeIds);
 	};
 	
-	module.controller("ArticalsController", ["$scope", "$routeParams", "$http", "$location", ArticalsController]);
+	module.controller("SubArticalsController", ["$scope", "$routeParams", "$http", "$location", SubArticalsController]);
 	
 	var loadProducts = function(productTypeIds) {
 		var requestData = prepareRequestData.call(this, productTypeIds);
@@ -143,5 +140,4 @@
 			+ "]";
 		$('#result-modal').modal({ keyboard: true });
 	};
-	
 })();

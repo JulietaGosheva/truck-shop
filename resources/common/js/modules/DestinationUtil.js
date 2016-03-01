@@ -45,6 +45,10 @@
 		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "/registration";
 		
 		return {
+			getServerHostEndpoint: function() {
+				return SERVER_URL;
+			},
+			
 					/* Product APIs */
 			getProductListEndpoint: function() {
 				return LIST_PRODUCTS_ENDPOINT;
