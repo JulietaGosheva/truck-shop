@@ -15,14 +15,15 @@ class Products extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 128);
-            $table->string('imagename', 128);
+            $table->string("image_name", 128);
+            $table->float("price")->unsigned();
             $table->integer('unique_id')->unsigned();
             $table->integer('brand_id')->unsigned();
             $table->integer('product_type_id')->unsigned();
             $table->integer('model_id')->unsigned();
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('product_type_id')->references('id')->on('product_types');
-            $table->foreign('model_id')->references('id')->on('models');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
+            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
         });
     }
 

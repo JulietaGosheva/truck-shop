@@ -16,8 +16,8 @@ class ProducttypeToBrandMapping extends Migration
             $table->increments('id');
             $table->integer('brand_id')->unsigned();
             $table->integer('product_type_id')->unsigned();
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('product_type_id')->references('id')->on('product_types');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
         });
     }
 

@@ -17,7 +17,7 @@ class AddNavigationItems18nTable extends Migration
             $table->string('language', 16);
             $table->string('display_name', 128);
             $table->integer('navigation_item_id')->unsigned();
-            $table->foreign('navigation_item_id')->references('id')->on('navigation_items');
+            $table->foreign('navigation_item_id')->references('id')->on('navigation_items')->onDelete('cascade');
         });
     }
 

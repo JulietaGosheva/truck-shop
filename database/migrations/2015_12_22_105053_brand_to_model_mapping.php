@@ -16,8 +16,8 @@ class BrandToModelMapping extends Migration
             $table->increments('id');
             $table->integer('brand_id')->unsigned();
             $table->integer('model_id')->unsigned();
-            $table->foreign('brand_id')->references('id')->on('brands');
-            $table->foreign('model_id')->references('id')->on('models');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('model_id')->references('id')->on('models')->onDelete('cascade');
         });
     }
 
