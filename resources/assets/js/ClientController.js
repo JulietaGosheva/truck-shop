@@ -22,19 +22,19 @@
 			})
 			
 			
-			.when("/articals/:navItemName", {
+			.when("/articles/:navItemName", {
 				templateUrl: "resources/assets/html/templates/articals.html",
 				controller: "ArticalsController"
 			})
-			.when("/articals/:navItemName/artical/:uniqueId", {
+			.when("/articles/:navItemName/article/:uniqueId", {
 				templateUrl: "resources/assets/html/templates/details.html",
 				controller: "DetailsController"
 			})
-			.when("/articals/:navItemName/:navSubItemName", {
+			.when("/articles/:navItemName/:navSubItemName", {
 				templateUrl: "resources/assets/html/templates/subArticals.html",
 				controller: "SubArticalsController"
 			})
-			.when("/articals/:navItemName/:navSubItemName/artical/:uniqueId", {
+			.when("/articles/:navItemName/:navSubItemName/article/:uniqueId", {
 				templateUrl: "resources/assets/html/templates/details.html",
 				controller: "DetailsController"
 			})

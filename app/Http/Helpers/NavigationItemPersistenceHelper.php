@@ -45,7 +45,7 @@ class NavigationItemPersistenceHelper {
 	
 	private function modifyItem(&$item, $requestBody) {
 		$parentName = $this->getParentNameById($item->parent_id);
-		$href = "#/articals" . $parentName . "/" . $requestBody->name;
+		$href = "#/articles" . $parentName . "/" . $requestBody->name;
 			
 		$item->href = strtolower($href);
 		$item->name = strtolower($requestBody->name);
@@ -73,7 +73,7 @@ class NavigationItemPersistenceHelper {
 		}
 		
 		foreach ($items as &$item) {
-			$item->href = strtolower("#/articals/" . $newItemName . "/" . $item->name);
+			$item->href = strtolower("#/articles/" . $newItemName . "/" . $item->name);
 			$item->save();
 		}
 	}
@@ -101,7 +101,7 @@ class NavigationItemPersistenceHelper {
 		DB::beginTransaction();
 
 		$parentName = $this->getParentNameById($requestBody->parentId);
-		$href = "#/articals" . $parentName . "/" . strtolower($requestBody->name);
+		$href = "#/articles" . $parentName . "/" . strtolower($requestBody->name);
 		
 		try {
 			$item = NavigationItems::firstOrCreate([
