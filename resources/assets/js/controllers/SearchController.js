@@ -1,22 +1,13 @@
 (function() {
-	var module = angular.module("AngularApplication");
+	
+	var clientModules = new com.rs.client.module.ClientModules();
+
+	var module = angular.module(clientModules.getClientControllerName());
 	
 	var SearchController = function($scope, $location, $routeParams) {
-		if ($routeParams.uniqueNumber) {
-			// TODO: create search request by unique number
-			var hash = $location.path();
-			$scope.articals = [{
-	   			   id: 1,
-	   			   src: "http://weknowyourdreams.com/images/car/car-05.jpg",
-	   			   description: "Mnogo Qka",
-	   			   price: "Zaslujava si",
-	   			   href: "#" + hash + "/1"
-			   }];
-			return;
-		}
-		
-		$scope.search = function(uniqueNumber) {
-			$location.url("/search/" + uniqueNumber);
+		$scope.search = function(uniqueId) {
+			$scope.uniqueId = "";
+			$location.url("/search/" + uniqueId);
 		};
 	};
 	

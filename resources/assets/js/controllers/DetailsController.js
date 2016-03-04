@@ -37,12 +37,17 @@
 	};
 	
 	var onSuccess = function(xhrResponse) {
-		console.log(5);
 		this.item = xhrResponse.data;
 	};
 	
 	var onError = function(xhrResponse) {
-		console.log(4);
+		this.modalText = "Неуспешенo извличане на данни.";
+		this.requestExecutionResult = "Данните за продукта, който искате да заредите не бяха успешно извлечени." +
+			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
+			"Информация от сървъра: [" 
+				+ HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
+			+ "]";
+		$('#result-modal').modal({ keyboard: true });
 	};
 	
 })();
