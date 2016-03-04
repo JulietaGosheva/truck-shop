@@ -59,11 +59,24 @@ html, body {
     color: white;
 }
 
+.thumbnail-image {
+    width: 100%;
+    min-height: 150px;
+    max-height: 150px;
+}
+
 .thumbnail-size {
-	min-width: 255px;
-	max-width: 255px;
+    min-width: 100%;
+    max-width: 100%;
 	min-height: 325px;
 	max-height: 325px;
+}
+
+.nav-item-size {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 250px;
+    max-height: 250px;
 }
 
 .users-thumbnail-size {
@@ -71,19 +84,6 @@ html, body {
     max-width: 255px;
     min-height: 325px;
     max-height: 325px;
-}
-
-.nav-item-size {
-	max-width: 150px;
-    min-height: 250px;
-    max-height: 250px;
-}
-
-.thumbnail-image {
-	min-height: 150px;
-	max-height: 150px;
-	min-width: 245px;
-	max-width: 245px;
 }
 
 .center-alignment {
