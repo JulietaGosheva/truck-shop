@@ -23,13 +23,15 @@
 	};
 	
 	var initModel = function ($scope) {
+		$scope.language = "bg-BG";
 		$scope.buttonText = "Редактирай";
 		$scope.isSubMenuEnabled = false;
-		
+
 		$scope.updateItems = updateItems;
 		$scope.updateSubItems = updateSubItems;
 		$scope.changeFieldValues = changeFieldValues;
 		$scope.updateProductTypes = updateProductTypes;
+		$scope.updateVehicleTypes = updateVehicleTypes;
 		$scope.reloadSubItems = jQuery.proxy(reloadSubItems, $scope);
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 	};
@@ -53,6 +55,12 @@
 	var updateProductTypes = function() {
 		setTimeout(function() {
 			$("#productTypeNames").trigger("chosen:updated");
+		}, 50);
+	};
+	
+	var updateVehicleTypes = function() {
+		setTimeout(function() {
+			$("#vehicleTypeNames").trigger("chosen:updated");
 		}, 50);
 	};
 	
@@ -93,8 +101,10 @@
 		this.displayName = item.displayName;
 		this.language = item.language;
 		this.productTypeIds = item.productTypeIds;
+		this.vehicleTypeIds = item.vehicleTypeIds;
 		
 		updateProductTypes();
+		updateVehicleTypes();
 	};
 	
 	var getItemById = function (itemId) {
@@ -139,6 +149,7 @@
 			itemId : getItemId(scope),
 			name : formData.newItemName,
 			productTypeIds : formData.productTypeIds,
+			vehicleTypeIds : formData.vehicleTypeIds,
 			displayName : formData.displayName,
 			language : formData.language
 		};

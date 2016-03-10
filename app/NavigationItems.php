@@ -21,4 +21,8 @@ class NavigationItems extends Model
     	return $this->belongsToMany("App\ProductTypes", "producttype_to_navigationitem_mapping", "navigation_item_id", "product_type_id");
     }
     
+    public function vehicleTypes() {
+    	return $this->belongsToMany("App\VehicleTypes", "navigationitem_to_vehicletype_mapping", "navigation_item_id", "vehicle_type_id");
+    }
+    
 }

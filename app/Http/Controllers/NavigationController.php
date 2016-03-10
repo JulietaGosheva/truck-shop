@@ -17,7 +17,7 @@ use App\Http\Controllers\Controller;
 class NavigationController extends Controller  {
 
 	private $persistenceHelper = null;
-	private $selectedLanguage = "bg";
+	private $selectedLanguage = "bg-BG";
 	
 	public function __construct() {
 		$this->persistenceHelper = new NavigationItemPersistenceHelper();
@@ -61,6 +61,12 @@ class NavigationController extends Controller  {
 		
 		if (isset($requestBody->productTypeIds) === false || count($requestBody->productTypeIds) === 0) {
 			$response->header(Constants::RESPONSE_HEADER, "\"productType\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->vehicleTypeIds) === false || count($requestBody->vehicleTypeIds) === 0) {
+			$response->header(Constants::RESPONSE_HEADER, "\"vehicleTypeIds\" is required parameter.");
 			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
@@ -112,6 +118,18 @@ class NavigationController extends Controller  {
 		
 		if (isset($requestBody->itemId) === false) {
 			$response->header(Constants::RESPONSE_HEADER, "\"itemId\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->productTypeIds) === false || count($requestBody->productTypeIds) === 0) {
+			$response->header(Constants::RESPONSE_HEADER, "\"productType\" is required parameter.");
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
+			return $response;
+		}
+		
+		if (isset($requestBody->vehicleTypeIds) === false || count($requestBody->vehicleTypeIds) === 0) {
+			$response->header(Constants::RESPONSE_HEADER, "\"vehicleTypeIds\" is required parameter.");
 			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
@@ -210,6 +228,13 @@ class NavigationController extends Controller  {
 				
 			$newStructure["productTypeIds"] = $productTypeIds;
 			
+			$vehicleTypeIds = array();
+			foreach ($item->vehicleTypes as $vehicleType) {
+				array_push($vehicleTypeIds, strval($vehicleType->id));
+			}
+				
+			$newStructure["vehicleTypeIds"] = $vehicleTypeIds;
+			
 			$structure[$item->id] = $newStructure;
 		}
 	}
@@ -249,6 +274,13 @@ class NavigationController extends Controller  {
 			}
 			
 			$newStructure["productTypeIds"] = $productTypeIds;
+			
+			$vehicleTypeIds = array();
+			foreach ($item->vehicleTypes as $vehicleType) {
+				array_push($vehicleTypeIds, strval($vehicleType->id));
+			}
+			
+			$newStructure["vehicleTypeIds"] = $vehicleTypeIds;
 			
 			$structure[$item->parent_id]["subItems"][$item->id] = $newStructure;
 		}

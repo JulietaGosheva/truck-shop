@@ -57,6 +57,12 @@ class NavigationItemPersistenceHelper {
 			
 		Log::debug("Following product type ids will be attached: [" . json_encode($requestBody->productTypeIds, JSON_UNESCAPED_UNICODE) . "].");
 		$item->productTypes()->attach($requestBody->productTypeIds);
+		
+		Log::debug("Detaching previous mappings.");
+		$item->vehicleTypes()->detach(null);
+			
+		Log::debug("Following product type ids will be attached: [" . json_encode($requestBody->productTypeIds, JSON_UNESCAPED_UNICODE) . "].");
+		$item->vehicleTypes()->attach($requestBody->vehicleTypeIds);
 	}
 	
 	private function modifySubItems($itemId, $newItemName) {
@@ -119,6 +125,14 @@ class NavigationItemPersistenceHelper {
 			$item->productTypes()->attach($requestBody->productTypeIds);
 			
 			Log::debug("Successfully created mapping between product types and navigation item with id: [" . $item->id . "].");
+			
+			Log::debug("Detaching previous mappings.");
+			$item->vehicleTypes()->detach(null);
+			
+			Log::debug("Following vehicle type ids will be attached: [" . json_encode($requestBody->vehicleTypeIds, JSON_UNESCAPED_UNICODE) . "].");
+			$item->vehicleTypes()->attach($requestBody->vehicleTypeIds);
+			
+			Log::debug("Successfully created mapping between navigation item and vehicle item with id: [" . $item->id . "].");
 		} catch (Exception $exception) {
 			DB::rollBack();
 			Log::debug("Failed to create navigation item. Transaction rolled back. Caused by: [" . $exception->getMessage() . "].");
@@ -190,7 +204,7 @@ class NavigationItemPersistenceHelper {
 	}
 	
 	public function getAllItems() {
-		return NavigationItems::with("navigationItemI18N", "productTypes")->get();
+		return NavigationItems::with("navigationItemI18N", "productTypes", "vehicleTypes")->get();
 	}
 	
 	public function findItemByParentId($parentId) {

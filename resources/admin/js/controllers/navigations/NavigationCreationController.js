@@ -23,9 +23,10 @@
 	};
 	
 	var initModel = function ($scope) {
-		$scope.language = "bg";
+		$scope.language = "bg-BG";
 		$scope.itemCreation = true;
 		$scope.subItemCreation = true;
+		$scope.vehicleTypeIds = ["1"];
 		
 		$scope.updateItems = updateItems;
 		$scope.updateSubItems = updateSubItems;
@@ -88,6 +89,7 @@
 			name : getItemName(formData, scope),
 			parentId : getParentId(scope),
 			productTypeIds : formData.productTypeIds,
+			vehicleTypeIds : formData.vehicleTypeIds,
 			displayName : formData.displayName,
 			language : formData.language
 		};

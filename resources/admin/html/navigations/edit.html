@@ -6,6 +6,7 @@
        'existingItemId': existingItemId,
        'existingSubItemId': existingSubItemId,
        'productTypeIds': productTypeIds,
+       'vehicleTypeIds': vehicleTypeIds,
        'displayName': displayName,
        'language': language
     })" ng-show="errorMessage == null">
@@ -68,11 +69,22 @@
     </div>
     
     <div class="form-group">
+         <label class="col-sm-4 control-label">Спадащато към</label>
+         <div class="col-sm-8">
+             <select multiple class="form-control chosen-select" name="vehicleTypeIds[]" id="vehicleTypeNames"
+                 ng-model="vehicleTypeIds" data-placeholder="Изберете към кой тип превозно средство спада">
+                 <option value="1">Автомобили</option>
+                 <option value="2">Камиони</option>
+             </select>
+         </div>
+     </div>
+    
+    <div class="form-group">
        <label class="col-sm-4 control-label">Език на менюто</label>
        <div class="col-sm-8">
            <select class="form-control" name="language" ng-model="language">
-               <option value="bg">Български</option>
-               <option value="en">Английски</option>
+               <option value="bg-BG" selected>Български</option>
+               <option value="en-EN">Английски</option>
            </select>
        </div>
    </div>

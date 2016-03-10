@@ -85,7 +85,12 @@ com.rs.utils.NavigationUtil.prototype.getNavItemByName = function(navItemName) {
 	
 	var navItems = Object.toArray(this.getNavItems());
 	for (var j = 0 ; j < navItems.length ; j++) {
-		var navSubItems = Object.toArray(this.getNavSubItems(navItems[j].name));
+		var navSubItems = this.getNavSubItems(navItems[j].name);
+		if (typeof navSubItems === "undefined") {
+			continue;
+		}
+		
+		navSubItems = Object.toArray(navSubItems);
 		for (var i = 0 ; i < navSubItems.length ; i++) {
 			if (navSubItems[i].name === navItemName) {
 				return navSubItems[i];
