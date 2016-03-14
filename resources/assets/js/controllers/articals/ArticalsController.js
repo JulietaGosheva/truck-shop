@@ -26,7 +26,9 @@
 		}
 		
 		$scope.navItem = navUtil.getNavItemByName(navItemName);
-		loadProducts.call($scope, $scope.navItem.productTypeIds);
+		if (typeof $scope.navItem !== "undefined") {
+			loadProducts.call($scope, $scope.navItem.productTypeIds);
+		}
 	};
 	
 	module.controller("ArticalsController", ["$scope", "$routeParams", "$http", "$location", ArticalsController]);
@@ -135,12 +137,8 @@
 	};
 	
 	var onError = function(xhrResponse) {
-		this.modalText = "Неуспешенo извличане на данни.";
-		this.requestExecutionResult = "Данните за продукта, който искате да заредите не бяха успешно извлечени." +
-			"Статус на грешката: [" + xhrResponse.status + "], хвърлена грешка: [" + xhrResponse.statusText + "]." +
-			"Информация от сървъра: [" 
-				+ HeaderUtil.getHeaderValueByName(xhrResponse, "X-Request-Result")
-			+ "]";
+		$("#result-modal-label").text("Неуспешенo извличане на данни.");
+		$("#result-modal-body").text("Данните за продукта, който искате да заредите не бяха успешно извлечени.");
 		$('#result-modal').modal({ keyboard: true });
 	};
 	

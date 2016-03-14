@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesSeeder::class);
         $this->call(UsersSeeder::class);
         $this->call(NavigationItemsSeeder::class);
+        $this->call(VehicleTypesSeeder::class);
+        $this->call(VehicleTypesI18NSeeder::class);
 
         Model::reguard();
     }

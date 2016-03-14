@@ -8,6 +8,7 @@ use Exception;
 use App\NavigationItems;
 use App\NavigationItemsI18N;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -205,6 +206,85 @@ class NavigationItemPersistenceHelper {
 	
 	public function getAllItems() {
 		return NavigationItems::with("navigationItemI18N", "productTypes", "vehicleTypes")->get();
+	}
+	
+	public function findItems(Request $request) {
+		$language = $request->headers->get("X-RS-Language");
+		Log::debug("Selected item language: [" . $language . "].");
+		
+		$vehicleTypeId = $request->headers->get("X-RS-VType-ID");
+		Log::debug("Selected vehicle type id: [" . $vehicleTypeId . "]");
+		
+		$query = "SELECT * FROM navigation_items"
+				." JOIN navigation_items_i18n ON navigation_items_i18n.navigation_item_id = navigation_items.id"
+				." JOIN producttype_to_navigationitem_mapping ON producttype_to_navigationitem_mapping.navigation_item_id = navigation_items.id"
+				." JOIN navigationitem_to_vehicletype_mapping ON navigationitem_to_vehicletype_mapping.navigation_item_id = navigation_items.id"
+			  	." WHERE"
+				." navigation_items_i18n.language = ? AND"
+				." navigationitem_to_vehicletype_mapping.vehicle_type_id = ?";
+		
+		$navItems = DB::select($query, [$language, $vehicleTypeId]);
+
+		$hierarchicalStructure = array();
+		
+		$this->addRootItemsToStructure($hierarchicalStructure, $navItems);
+		$this->addSubItemsToStructure($hierarchicalStructure, $navItems);
+		
+		return $hierarchicalStructure;
+	}
+	
+	private function addRootItemsToStructure(&$structure, $navItems) {
+		foreach ($navItems as $navItem) {
+			if ($this->isRootItem($navItem) === false || $navItem->name === "root") {
+				continue;
+			}
+			
+			Log::debug("Following item will be processed: [" . json_encode($navItem, JSON_UNESCAPED_UNICODE) . "].");
+			
+			if (array_key_exists($navItem->id, $structure) === false) {
+				$newStructure = $this->createStructureData($navItem);
+				$structure[$navItem->id] = $newStructure;
+			} else {
+				array_push($structure[$navItem->id]["productTypeIds"], $navItem->product_type_id);
+				array_push($structure[$navItem->id]["vehicleTypeIds"], $navItem->vehicle_type_id);
+			}
+		}
+	}
+	
+	private function addSubItemsToStructure(&$structure, $navItems) {
+		foreach ($navItems as $navItem) {
+			if ($this->isRootItem($navItem)) {
+				continue;
+			}
+				
+			Log::debug("Following sub item will be processed: [" . json_encode($navItem, JSON_UNESCAPED_UNICODE) . "].");
+				
+			if (array_key_exists($navItem->id, $structure) === false) {
+				$newStructure = $this->createStructureData($navItem);
+				$structure[$navItem->parent_id]["subItems"][$navItem->id] = $newStructure;
+			} else {
+				array_push($structure[$navItem->parent_id]["subItems"][$navItem->id]["productTypeIds"], $navItem->product_type_id);
+				array_push($structure[$navItem->parent_id]["subItems"][$navItem->id]["vehicleTypeIds"], $navItem->vehicle_type_id);
+			}
+		}
+	}
+	
+	private function createStructureData($navItem) {
+		$newStructure = array();
+		$newStructure["id"] = $navItem->id;
+		$newStructure['name'] = $navItem->name;
+		$newStructure["href"] = $navItem->href;
+		$newStructure["parent"] = $navItem->parent_id;
+		$newStructure['language'] = $navItem->language;
+		$newStructure['displayName'] = $navItem->display_name;
+		$newStructure['productTypeIds'] = array($navItem->product_type_id);
+		$newStructure['vehicleTypeIds'] = array($navItem->vehicle_type_id);
+		
+		return $newStructure;
+	}
+	
+	private function isRootItem($navItem) {
+		return $navItem->parent_id === 1;
 	}
 	
 	public function findItemByParentId($parentId) {

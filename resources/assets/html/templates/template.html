@@ -2,10 +2,29 @@
 
    <div ng-include="'resources/assets/html/navigation.html'"></div>
    
-   <div class="nav-link-container col-sm-2" ng-controller="TemplateController">
-      <ul class="nav-ul nav nav-pills nav-stacked" style="text-align: center" ng-repeat="item in items">
+   <div class="col-sm-12" style="margin: 25px 0px;">
+       <div class="col-sm-2" ng-controller="VTypeController">
+           <a class="rs-active-links" href="" ng-click="onLinkClicked(1)" id="autos">Автомобили</a>
+           <span class="glyphicon glyphicon-option-vertical"></span>
+           <a class="" href="" ng-click="onLinkClicked(2)" id="trucks">Камиони</a>
+       </div>
+       
+       <div class="col-sm-8" >
+           <!-- Implement some kind of navigation stack -->
+       </div>
+       
+       <!-- <div class="col-sm-2" align="right" ng-controller="I18NController">
+           <a class="rs-active-links" href="" ng-click="onLinkClicked()">BG</a>
+           <span class="glyphicon glyphicon-option-vertical"></span>
+           <a class="" href="" ng-click="onLinkClicked()">EN</a>
+       </div> -->
+   </div>
+   
+   <div class="nav-link-container col-sm-2" ng-controller="TemplateController" style="min-height: 100%">
+      <ul class="nav-ul nav nav-pills nav-stacked" ng-repeat="item in items" 
+            ng-custom-repeat-watcher="onLoadedNavItems">
          <li role="presentation" class="nav-bar-link-list">
-            <a class="nav-bar-link-elem" href="{{ item.href }}">{{ item.displayName }}</a>
+            <a href="{{ item.href }}" ng-hide="{{ item.hide }}">{{ item.displayName }}</a>
          </li>
       </ul>
    </div>

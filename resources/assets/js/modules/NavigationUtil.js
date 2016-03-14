@@ -1,6 +1,13 @@
 (function() {
+	$.ajaxSetup({
+		headers: {
+			"X-RS-VType-ID" : 1,
+			"X-RS-Language": "bg-BG"
+		}
+	});
+	
 	$.ajax({
-        url: "http://localhost/truck-shop/navigation/api/v1/items",
+        url: "http://localhost/truck-shop/navigation/api/v1",
         type: "GET",
         async: false,
         dataType: 'json',
@@ -16,8 +23,8 @@
         	
         	clientCache.setCacheEntry("navItems", items);
         },
-        error: function(xhrResponse) {
-        	console.log("Error occured while trying to retreive nav items");
+        error: function(xhrResponse, textStatus, errorThrown) {
+        	console.log("Failed to load the navigation items");
         },
         complete: function(xhrResponse) {
         	
@@ -50,7 +57,8 @@ com.rs.utils.NavigationUtil = function() {
 
 com.rs.utils.NavigationUtil.prototype.toMap = function(object) {
 	if (object !== Object(object)) {
-    	throw new TypeError('toMap called on non-object');
+    	this._displayErrorAndReloadPage();
+    	return [];
     }
 
     var keys = {};
@@ -61,6 +69,10 @@ com.rs.utils.NavigationUtil.prototype.toMap = function(object) {
     	}
     }
     return keys;
+};
+
+com.rs.utils.NavigationUtil.prototype._displayErrorAndReloadPage = function() {
+	$('#error-modal').modal({ keyboard: true });
 };
 
 com.rs.utils.NavigationUtil.prototype.hasSubItems = function(navItemName) {

@@ -20,7 +20,7 @@
 		<script src="resources/common/js/Registry.js"></script>
         <script src="resources/common/js/FunctionDefinition.js"></script>
 
-		<script src="resources/assets/js/modules/ClientCache.js"></script>        
+		<script src="resources/assets/js/modules/ClientCache.js"></script>
         <script src="resources/assets/js/modules/NavigationUtil.js"></script>
         
         <script src="resources/assets/js/ClientModules.js"></script>
@@ -31,10 +31,12 @@
         
         <script src="resources/assets/js/controllers/SearchController.js"></script>
         <script src="resources/assets/js/controllers/TemplateController.js"></script>
-        <script src="resources/assets/js/controllers/ArticalsController.js"></script>
-        <script src="resources/assets/js/controllers/SubArticalsController.js"></script>
+        <script src="resources/assets/js/controllers/articals/ArticalsController.js"></script>
+        <script src="resources/assets/js/controllers/articals/SubArticalsController.js"></script>
         <script src="resources/assets/js/controllers/DetailsController.js"></script>
         <script src="resources/assets/js/controllers/CarouselController.js"></script>
+        <script src="resources/assets/js/controllers/template/I18NController.js"></script>
+        <script src="resources/assets/js/controllers/template/VTypeController.js"></script>
 		
 		<link rel="stylesheet" href="resources/dependencies/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="resources/dependencies/css/bootstrap-theme.css"></link>
@@ -56,15 +58,38 @@
 			</div>
 			<div ng-include="'resources/assets/html/templates/footer.html'"></div>
 			
-			<div class="modal fade" id="wait-modal">
+			<div class="modal fade" id="wait-modal" role="dialog" data-backdrop="static" data-keyboard="false">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h4 class="modal-title" id="modal_label">Моля изчакайте</h4>
+			            </div>
+			            <div class="modal-body">
+			                Зарежда се, моля изчакайте...
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			<div class="modal fade" id="result-modal">
 			    <div class="modal-dialog">
 			        <div class="modal-content">
 			            <div class="modal-header">
 			                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			                <h4 class="modal-title" id="modal_label">Моля изчакайте</h4>
+			                <h4 class="modal-title" id="result-modal-label"></h4>
+			            </div>
+			            <div class="modal-body" id="result-modal-body"></div>
+			        </div>
+			    </div>
+			</div>
+			<div class="modal fade" id="error-modal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			                <h4 class="modal-title" id="modal_label">Неуспешно зареждане на страницата.</h4>
 			            </div>
 			            <div class="modal-body">
-			                Зарежда...
+			                Възникна грешка при зареждането на страницата, моля да ни извините. Ако проблема е постоянен, моля свържете се с нас.
 			            </div>
 			        </div>
 			    </div>

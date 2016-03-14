@@ -13,10 +13,10 @@
 	}
 	
 	var ajaxClientName = moduleNames.getAjaxClientName();
-	var headerUtilName = moduleNames.getHeaderUtilName();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
-	var AjaxClient = function(HUtil) {
-		HeaderUtil = HUtil;
+	var AjaxClient = function() {
+		HeaderUtil = registry.getReference(moduleNames.getHeaderUtilName());
 		
 		var GETRequest = function(oData, onSuccess, onError) {
 			executeRequest(oData, onSuccess, onError, 'GET');
@@ -75,17 +75,19 @@
 	
 	/* ============ Module Registration ============= */
 	
+	registry.register(ajaxClientName, AjaxClient);
+	
 	var module = undefined;
 	try {
 		module = angular.module(moduleNames.getClientControllerName());
-		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
+		module.factory(ajaxClientName, [AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}
 	
 	try {
 		module = angular.module(moduleNames.getAdminControllerName());
-		module.factory(ajaxClientName, [headerUtilName, AjaxClient]);
+		module.factory(ajaxClientName, [AjaxClient]);
 	} catch(Exception) {
 		//just ignore the exception
 	}

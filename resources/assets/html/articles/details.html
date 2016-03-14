@@ -9,17 +9,3 @@
     <p>Модел: {{ item.models.name }}</p>
     <p>Цена : {{ item.price }} лв.</p>
 </div>
-
-<div class="modal fade" id="result-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modal_label">{{ modalText }}</h4>
-            </div>
-            <div class="modal-body">
-                {{ requestExecutionResult }}
-            </div>
-        </div>
-    </div>
-</div>

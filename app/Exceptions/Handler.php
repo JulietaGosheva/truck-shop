@@ -15,14 +15,18 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 class Handler extends ExceptionHandler
 {
 
+	private $isStacktraceDumpEnabled = true;
+	
     public function report(Exception $exception) {
     	if ($exception instanceof HttpException) {
-	    	Log::error("Exception occured with status code: [" . $exception->getStatusCode() . "]. Error message: [" . $exception->getMessage() . "].");
+	    	Log::error("Exception occured with status code: [" . $exception->getStatusCode() . "]. Error message: [" . $exception->getMessage() . "].\n");
     	} else {
-    		Log::error("Unexpected exception occured with message: [" . $exception->getMessage() . "]");
+    		Log::error("Unexpected exception occured with message: [" . $exception->getMessage() . "]\n");
     	}
     	
-    	Log::error("Exception stacktrace: [" . $exception->getTraceAsString() . "]");
+    	if ($this->isStacktraceDumpEnabled) {
+	    	Log::error("Exception stacktrace: [" . $exception->getTraceAsString() . "]");
+    	}
     }
 
 	public function render($request, Exception $exception) {

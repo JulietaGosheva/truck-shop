@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App;
 use Log;
 use Validator;
+use Exception;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,8 @@ use App\Http\Helpers\Constants;
 use App\Http\Helpers\NavigationItemPersistenceHelper;
 
 use App\Http\Controllers\Controller;
+
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class NavigationController extends Controller  {
 
@@ -24,7 +27,24 @@ class NavigationController extends Controller  {
 	}
 	
 	public function findItem(Request $request, Response $response) {
+		Log::debug("Retrieving navigation items");
 		
+		if ($request->header("X-RS-Language") === null) {
+			throw new BadRequestHttpException("X-RS-Language is not found.");
+		}
+		
+		if ($request->header("X-RS-VType-ID") === null) {
+			throw new BadRequestHttpException("X-RS-VType-ID is not found.");
+		}
+		
+		$items = $this->persistenceHelper->findItems($request);
+		
+		if ($items === null) {
+			throw new BadRequestHttpException("Entity not found.");
+		}
+		
+		Log::debug("Retrieved navigation items: [" . json_encode($items, JSON_UNESCAPED_UNICODE) . "]");
+		return $items;
 	}
 	
 	public function createItem(Request $request, Response $response) {
@@ -141,7 +161,6 @@ class NavigationController extends Controller  {
 		$response->header(Constants::RESPONSE_HEADER, "Successfully modified navigation item.");
 		$response->setStatusCode(Response::HTTP_NO_CONTENT);
 		return $response;
-		
 	}
 	
 	public function deleteItem(Request $request, Response $response) {
@@ -154,7 +173,7 @@ class NavigationController extends Controller  {
 			$response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
 			return $response;
 		}
-			
+		
 		$itemId = $request->input("id");
 		
 		$this->persistenceHelper->deleteItemById($itemId);
@@ -201,39 +220,15 @@ class NavigationController extends Controller  {
 			Log::debug("Following item will be processed: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "].");
 			
 			$newStructure = array();
-			$newStructure["id"] = $item->id;
-			$newStructure["parent"] = "self";
-			$newStructure["href"] = $item->href;
-			$newStructure["name"] = $item->name;
 			
-			$itemI18N = null;
-			foreach ($item->navigationItemI18N as $I18N) {
-				if ($I18N->language === $this->selectedLanguage) {						
-					$itemI18N = $I18N;
-				}
-			}
-				
-			if ($itemI18N === null) {
-				Log::debug("Empty I18N model for item: [" . json_encode($item) . "]. Item will be skipped.");
+			try {
+				$this->addItemModelToStructure($newStructure, $item);
+				$this->addI18NModelToStructure($newStructure, $item);
+				$this->addProductTypeModelToStructure($newStructure, $item);
+				$this->addVehicleTypeModelToStructure($newStructure, $item);
+			} catch (Exception $exception) {
 				continue;
 			}
-				
-			$newStructure['language'] = $itemI18N->language;
-			$newStructure["displayName"] = $itemI18N->display_name;
-			
-			$productTypeIds = array();
-			foreach ($item->productTypes as $productType) {
-				array_push($productTypeIds, strval($productType->id));
-			}
-				
-			$newStructure["productTypeIds"] = $productTypeIds;
-			
-			$vehicleTypeIds = array();
-			foreach ($item->vehicleTypes as $vehicleType) {
-				array_push($vehicleTypeIds, strval($vehicleType->id));
-			}
-				
-			$newStructure["vehicleTypeIds"] = $vehicleTypeIds;
 			
 			$structure[$item->id] = $newStructure;
 		}
@@ -244,46 +239,64 @@ class NavigationController extends Controller  {
 			if ($this->isRootItem($item)) {
 				continue;
 			}
-
+			
 			Log::debug("Following sub item will be processed: [" . json_encode($item, JSON_UNESCAPED_UNICODE) . "].");
 			
 			$newStructure = array();
-			$newStructure["id"] = $item->id;
-			$newStructure["parent"] = $item->parent_id;
-			$newStructure["href"] = $item->href;
-			$newStructure["name"] = $item->name;
-
-			$itemI18N = null;
-			foreach ($item->navigationItemI18N as $I18N) {
-				if ($I18N->language === $this->selectedLanguage) {						
-					$itemI18N = $I18N;
-				}
-			}
-		
-			if ($itemI18N === null) {
-				Log::debug("Empty I18N model for item: [" . json_encode($item) . "]. Item will be skipped.");
+			
+			try {
+				$this->addItemModelToStructure($newStructure, $item);
+				$this->addI18NModelToStructure($newStructure, $item);
+				$this->addProductTypeModelToStructure($newStructure, $item);
+				$this->addVehicleTypeModelToStructure($newStructure, $item);
+			} catch (Exception $exception) {
 				continue;
 			}
-		
-			$newStructure['language'] = $itemI18N->language;
-			$newStructure["displayName"] = $itemI18N->display_name;
-			
-			$productTypeIds = array();
-			foreach ($item->productTypes as $productType) {
-				array_push($productTypeIds, strval($productType->id));
-			}
-			
-			$newStructure["productTypeIds"] = $productTypeIds;
-			
-			$vehicleTypeIds = array();
-			foreach ($item->vehicleTypes as $vehicleType) {
-				array_push($vehicleTypeIds, strval($vehicleType->id));
-			}
-			
-			$newStructure["vehicleTypeIds"] = $vehicleTypeIds;
 			
 			$structure[$item->parent_id]["subItems"][$item->id] = $newStructure;
 		}
+	}
+	
+	private function addItemModelToStructure(&$structure, $item) {
+		$structure["id"] = $item->id;
+		$structure["parent"] = $item->parent_id;
+		$structure["href"] = $item->href;
+		$structure["name"] = $item->name;
+	}
+	
+	private function addI18NModelToStructure(&$structure, $item) {
+		$itemI18N = null;
+		foreach ($item->navigationItemI18N as $I18N) {
+			if ($I18N->language === $this->selectedLanguage) {
+				$itemI18N = $I18N;
+			}
+		}
+		
+		if ($itemI18N === null) {
+			Log::debug("Empty I18N model for item: [" . json_encode($item) . "]. Item will be skipped.");
+			throw new Exception();
+		}
+		
+		$structure['language'] = $itemI18N->language;
+		$structure["displayName"] = $itemI18N->display_name;
+	}
+	
+	private function addProductTypeModelToStructure(&$structure, $item) {
+		$productTypeIds = array();
+		foreach ($item->productTypes as $productType) {
+			array_push($productTypeIds, strval($productType->id));
+		}
+		
+		$structure["productTypeIds"] = $productTypeIds;
+	}
+	
+	private function addVehicleTypeModelToStructure(&$structure, $item) {
+		$vehicleTypeIds = array();
+		foreach ($item->vehicleTypes as $vehicleType) {
+			array_push($vehicleTypeIds, strval($vehicleType->id));
+		}
+		
+		$structure["vehicleTypeIds"] = $vehicleTypeIds;
 	}
 	
 	private function isRootItem($item) {

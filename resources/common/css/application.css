@@ -2,45 +2,59 @@ html, body {
     height: 100%;
 }
 
+/**********************************/
+/* ***        index.php       *** */
+/**********************************/
+
 .application-content {
     min-height: 100%;
     position: relative;
 }
 
 .single-view-content {
-	padding-bottom: 30px;   /* Height of the footer element */
+	padding-bottom: 40px;   /* Height of the footer element */
 }
 
 .footer {
+    color: #eee;
+    bottom: 0px;
+    height: 30px;
+    min-width: 100%;
 	padding-top: 5px;
     background: #333;
-    min-width: 100%;
     position: absolute;
-    color: #eee;
-    height: 30px;
-    bottom: 0px;
-}
-
-.menu-item {
-    color: white;	
-}
-
-.nav-link-container {
-	padding: 0px;
-    float: left;
 }
 
 .content-container {
-	padding-top: 35px;
-	padding-right: 35px; 
-	float: right;
+    float: right;
+    padding-right: 32px;
+    border-left: solid #d6d6c2 0.5px;
 }
 
-.nav-bar-link {
-	min-width: 100%;
-    border-radius: 0px;
+
+
+
+/**********************************/
+/* ***     template.html      *** */
+/**********************************/
+
+.nav-ul {
+    text-align: center;
+}
+
+.rs-navbar {
+    margin: 0px;
+    padding: 0px; 
+    border-radius: 0px; 
     background-color: #FF3737;
-    color: white;
+}
+
+.rs-active-links {
+    text-decoration: underline;	
+}
+
+.nav-ul li a:hover {
+    border-radius: 0px;
 }
 
 .nav-bar-link-list {
@@ -48,16 +62,23 @@ html, body {
     border-radius: 0px;
 }
 
-.nav-ul li a:hover {
-	background-color: #484848;
-	color: white;
-	border-radius: 0px;
+.nav-link-container {
+    float: left;
+    padding: 0px;
 }
 
-.nav-ul li a:active {
-    background-color: #484848;
+
+
+
+/**********************************/
+/* ***    navigation.html     *** */
+/**********************************/
+
+.menu-item {
     color: white;
 }
+
+
 
 .thumbnail-image {
     width: 100%;
@@ -92,11 +113,4 @@ html, body {
 
 .artical-link:hover {
 	border-color: blue;
-}
-
-.rs-navbar {
-	background-color: #FF3737;
-	border-radius: 0px; 
-	padding: 0px; 
-	margin: 0px;
 }
