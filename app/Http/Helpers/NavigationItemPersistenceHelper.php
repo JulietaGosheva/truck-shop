@@ -215,7 +215,11 @@ class NavigationItemPersistenceHelper {
 		$vehicleTypeId = $request->headers->get("X-RS-VType-ID");
 		Log::debug("Selected vehicle type id: [" . $vehicleTypeId . "]");
 		
-		$query = "SELECT * FROM navigation_items"
+		$query = "SELECT"
+				." navigation_items.id, navigation_items.name, navigation_items.href, navigation_items.parent_id,"
+				." navigation_items_i18n.display_name, navigation_items_i18n.language,"
+				." producttype_to_navigationitem_mapping.product_type_id, navigationitem_to_vehicletype_mapping.vehicle_type_id"
+				." FROM navigation_items"
 				." JOIN navigation_items_i18n ON navigation_items_i18n.navigation_item_id = navigation_items.id"
 				." JOIN producttype_to_navigationitem_mapping ON producttype_to_navigationitem_mapping.navigation_item_id = navigation_items.id"
 				." JOIN navigationitem_to_vehicletype_mapping ON navigationitem_to_vehicletype_mapping.navigation_item_id = navigation_items.id"

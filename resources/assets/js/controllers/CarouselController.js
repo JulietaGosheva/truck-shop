@@ -1,9 +1,15 @@
 (function() {
-	var module = angular.module('AngularApplication');
+
+	var clientModules = new com.rs.client.module.ClientModules();
+	var registry = com.rs.registry.Registry.prototype.getInstance();
+
+	var module = angular.module(clientModules.getClientControllerName());
 	
 	var CarouselController = function ($scope) {
 	  $scope.myInterval = 5000;
 	  $scope.noWrapSlides = false;
+	  
+	  registry.getReference(clientModules.getNavItemsUtilName()).setBreadcrumb();
 	  
 	  var slides = $scope.slides = [
             {

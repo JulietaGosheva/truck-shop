@@ -15,6 +15,8 @@
 		HeaderUtil = registry.getReference(clientModules.getHeaderUtilName());
 		DestinationUtil = registry.getReference(clientModules.getDestinationUtilName());
 		
+		var navItemUtil = registry.getReference(clientModules.getNavItemsUtilName());
+		
 		$scope.host = DestinationUtil.getServerHostEndpoint();
 		
 		var navItemName = $routeParams.navItemName;
@@ -24,6 +26,9 @@
 		
 		$scope.navItem = navUtil.getNavItemByName(navSubItemName);
 		loadProducts.call($scope, $scope.navItem.productTypeIds);
+		
+		var parentNavItem = navUtil.getNavItemByName(navItemName);
+		navItemUtil.setBreadcrumb(parentNavItem, $scope.navItem);
 	};
 	
 	module.controller("SubArticalsController", ["$scope", "$routeParams", "$http", "$location", SubArticalsController]);

@@ -15,6 +15,8 @@
 		HeaderUtil = registry.getReference(clientModules.getHeaderUtilName());
 		DestinationUtil = registry.getReference(clientModules.getDestinationUtilName());
 		
+		var navItemUtil = registry.getReference(clientModules.getNavItemsUtilName());
+		
 		$scope.host = DestinationUtil.getServerHostEndpoint();
 		
 		var navItemName = $routeParams.navItemName;
@@ -22,12 +24,14 @@
 		var navUtil = new com.rs.utils.NavigationUtil();
 		if (navUtil.hasSubItems(navItemName)) {
 			$scope.navSubItems = navUtil.getNavSubItems(navItemName);
+			navItemUtil.setBreadcrumb(navUtil.getNavItemByName(navItemName));
 			return;
 		}
 		
 		$scope.navItem = navUtil.getNavItemByName(navItemName);
 		if (typeof $scope.navItem !== "undefined") {
 			loadProducts.call($scope, $scope.navItem.productTypeIds);
+			navItemUtil.setBreadcrumb($scope.navItem);
 		}
 	};
 	

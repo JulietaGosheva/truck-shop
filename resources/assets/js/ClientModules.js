@@ -56,3 +56,7 @@ com.rs.client.module.ClientModules.prototype.getAjaxClientName = function() {
 com.rs.client.module.ClientModules.prototype.getHeaderUtilName = function() {
 	return "HeaderUtil";
 };
+
+com.rs.client.module.ClientModules.prototype.getNavItemsUtilName = function() {
+	return "NavItemsUtil";
+};

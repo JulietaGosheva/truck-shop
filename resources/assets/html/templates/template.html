@@ -9,10 +9,14 @@
            <a class="" href="" ng-click="onLinkClicked(2)" id="trucks">Камиони</a>
        </div>
        
-       <div class="col-sm-8" >
-           <!-- Implement some kind of navigation stack -->
+       <div class="col-sm-8" id="breadcrumb">
+            <a href='#/'>Начало</a>
+            <span class='glyphicon glyphicon-menu-right' id="spanForArticalBreadcrumb" style="display:none"></span>
+            <a href="" id="articalBreadcrumb" style="display:none"></a>
+            <span class='glyphicon glyphicon-menu-right' id="spanForSubArticalBreadcrumb" style="display:none"></span>
+            <a href="" id="subArticalBreadcrumb" style="display:none"></a>
        </div>
-       
+
        <!-- <div class="col-sm-2" align="right" ng-controller="I18NController">
            <a class="rs-active-links" href="" ng-click="onLinkClicked()">BG</a>
            <span class="glyphicon glyphicon-option-vertical"></span>

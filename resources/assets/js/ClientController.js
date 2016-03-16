@@ -1,5 +1,5 @@
 (function() {
-	var application = angular.module("AngularApplication", ["ngRoute", "ui.bootstrap"]);
+	var application = angular.module("AngularApplication", ["ngRoute", "ui.bootstrap", "ngSanitize"]);
 	
 	application.config(function($routeProvider) {
 		$routeProvider

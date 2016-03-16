@@ -66,8 +66,10 @@
 			
 			clientCache.setCacheEntry("navItems", items);
 			
-			var templateController = registry.getReference("NavItemsTemplate");
-			templateController.setNavItems(items);
+			var navItemsUtilName = clientModules.getNavItemsUtilName();
+			var navItemUtil = registry.getReference(navItemsUtilName);
+			
+			navItemUtil.setNavItems(items);
 			
 			location.hash = "#/";
 		} catch (Exception) {
