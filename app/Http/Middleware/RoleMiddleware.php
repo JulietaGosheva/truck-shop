@@ -23,7 +23,7 @@ class RoleMiddleware
     	$role = Roles::where('id', $user->role_id)->firstOrFail();
     	
     	if ($role->name !== "Administrator") {
-    		throw new AccessDeniedHttpException("Permission are required for performing registration operation.");
+    		throw new AccessDeniedHttpException("Permission are required to access this resources.");
     	}
     	
         return $next($request);

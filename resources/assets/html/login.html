@@ -1,0 +1,37 @@
+<form class="form-horizontal" ng-submit="executeRequest({
+        'email': email,
+        'password': password
+    })">
+
+    <div class="form-group" align="center">
+        <h2>Входна форма</h2>
+    </div>
+
+    <!-- Ugly work arround for preventin autofill forms --> 
+    <input style="display:none" type="email" name="fakeusernameremembered"/>
+    <input style="display:none" type="password" name="fakeusernameremembered"/>
+
+	<div class="form-group">
+		<label for="email" class="col-sm-offset-1 col-sm-2 control-label">Емайл: </label>
+		<div class="col-sm-6">
+			<input type="email" class="form-control" id="email" placeholder="Емайл" ng-model="email">
+		</div>
+	</div>
+	
+	<!-- Ugly work arround for preventin autofill forms --> 
+    <input style="display:none" type="email" name="fakeusernameremembered"/>
+    <input style="display:none" type="password" name="fakeusernameremembered"/>
+    
+	<div class="form-group">
+		<label for="password" class="col-sm-offset-1 col-sm-2 control-label">Парола: </label>
+		<div class="col-sm-6">
+			<input type="password" class="form-control" id="password" placeholder="Парола" ng-model="password">
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sm-6" align="center">
+			<button type="submit" class="btn btn-primary">Вход в системата</button>
+		</div>
+	</div>
+</form>

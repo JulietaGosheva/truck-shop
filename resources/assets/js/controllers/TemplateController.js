@@ -42,7 +42,7 @@
 			}
 		};
 		
-		registry.register(clientModules.getNavItemsUtilName(), template);
+		registry.register(clientModules.getTemplateUtilName(), template);
 	};
 	
 	module.controller("TemplateController", ["$scope", "$sce", TemplateController]);

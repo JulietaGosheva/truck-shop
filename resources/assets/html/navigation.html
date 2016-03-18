@@ -1,4 +1,4 @@
-<nav class="navbar navbar-tabs" style="background-color: #FF3737; border-radius: 0px; padding: 0px; margin: 0px;">
+<nav class="navbar navbar-tabs" style="background-color: #333; border-radius: 0px; padding: 0px; margin: 0px;">
    <div class="container-fluid">
 
       <div class="navbar-header">
@@ -26,15 +26,20 @@
                 
          </ul>
          
-         <form ng-submit="search(uniqueId)" ng-controller="SearchController"
-                   class="navbar-form navbar-right" role="search">
+         <p class="navbar-text navbar-right">
+             <a class="menu-item navbar-link" style="color: #fff;" href="#/login">Вход</a>
+             <span class="glyphicon glyphicon-option-vertical" style="color: #fff"></span>
+             <a class="menu-item navbar-link" style="color: #fff;" href="#/registration">Регистрация</a>
+         </p>
+         
+         <!-- <form ng-submit="search(uniqueId)" ng-controller="SearchController" class="navbar-form" role="search">
                    
             <div class="form-group">
                <input type="text" class="form-control" placeholder="Търси" ng-model="uniqueId">
             </div>
             <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
             
-         </form>
+         </form> -->
          
       </div>
 

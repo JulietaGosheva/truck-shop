@@ -1,5 +1,7 @@
 (function() {
 	
+	/* ============ Variables and Constructor ============= */
+	
 	var AjaxClient = null;
 	var HeaderUtil = null;
 	var DestinationUtil = null;
@@ -21,6 +23,8 @@
 	var initModel = function($scope) {
 		$scope.onLinkClicked = jQuery.proxy(onLinkClicked, $scope);
 	};
+	
+	/* ================ Backend AJAX requests ================ */
 	
 	var onLinkClicked = function(vehicleTypeId) {
 		setSelectedVehicleTypeID(vehicleTypeId);
@@ -66,7 +70,7 @@
 			
 			clientCache.setCacheEntry("navItems", items);
 			
-			var navItemsUtilName = clientModules.getNavItemsUtilName();
+			var navItemsUtilName = clientModules.getTemplateUtilName();
 			var navItemUtil = registry.getReference(navItemsUtilName);
 			
 			navItemUtil.setNavItems(items);

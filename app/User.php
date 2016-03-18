@@ -19,7 +19,7 @@ class User extends Model implements AuthenticatableContract,
     public $table = 'users';
     public $timestamps = false;
     public $hidden = ['password', 'role_id'];
-    public $fillable = ['email', 'password', 'first_name', 'last_name', 'role_id'];
+    public $fillable = ['email', 'password', 'first_name', 'last_name', 'role_id', 'object_name'];
     
     public function role() {
     	return $this->belongsTo("App\Roles", "role_id");

@@ -9,7 +9,7 @@
 	  $scope.myInterval = 5000;
 	  $scope.noWrapSlides = false;
 	  
-	  registry.getReference(clientModules.getNavItemsUtilName()).setBreadcrumb();
+	  registry.getReference(clientModules.getTemplateUtilName()).setBreadcrumb();
 	  
 	  var slides = $scope.slides = [
             {

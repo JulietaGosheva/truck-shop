@@ -7,14 +7,16 @@
 				templateUrl: "resources/assets/html/startPage.html",
 				controller: "CarouselController"
 			})
-			.when("/map", {
-				templateUrl: "resources/assets/html/map.html"
+			.when("/login", {
+				templateUrl: "resources/assets/html/login.html",
+				controller: "LoginController"
 			})
 			.when("/contacts", {
 				templateUrl: "resources/assets/html/contacts.html"
 			})
-			.when("/information", {
-				templateUrl: "resources/assets/html/information.html"
+			.when("/registration", {
+				templateUrl: "resources/assets/html/registration.html",
+				controller: "RegistrationController"
 			})
 			.when("/search/:uniqueId", {
 				templateUrl: "resources/assets/html/articles/details.html",

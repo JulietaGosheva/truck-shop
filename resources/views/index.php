@@ -31,6 +31,8 @@
         
         <script src="resources/assets/js/controllers/SearchController.js"></script>
         <script src="resources/assets/js/controllers/TemplateController.js"></script>
+        <script src="resources/assets/js/controllers/LoginController.js"></script>
+        <script src="resources/assets/js/controllers/RegistrationController.js"></script>
         <script src="resources/assets/js/controllers/articals/ArticalsController.js"></script>
         <script src="resources/assets/js/controllers/articals/SubArticalsController.js"></script>
         <script src="resources/assets/js/controllers/DetailsController.js"></script>

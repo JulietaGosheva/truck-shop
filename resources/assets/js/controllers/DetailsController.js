@@ -33,17 +33,34 @@
 			url: DestinationUtil.getProductSearchingEndpoint() + "?uniqueId=" + uniqueId
 		};
 		
+		openBusyDialog();
+		
 		RestClient.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
 	
 	var onSuccess = function(xhrResponse) {
 		this.item = xhrResponse.data;
+
+		closeBusyDialog();
 	};
 	
 	var onError = function(xhrResponse) {
+		closeBusyDialog();
+		
 		$("#result-modal-label").text("Неуспешенo извличане на данни.");
 		$("#result-modal-body").text("Данните за продукта, който искате да заредите не бяха успешно извлечени.");
 		$('#result-modal').modal({ keyboard: true });
+	};
+	
+	var openBusyDialog = function() {
+		$('#wait-modal').modal({
+			backdrop: 'static',
+			keyboard: false
+		});
+	};
+	
+	var closeBusyDialog = function() {
+		$('#wait-modal').modal('hide');
 	};
 	
 })();

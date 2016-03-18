@@ -42,14 +42,16 @@
 		var NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items";
 		var ROOT_NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items/root";
 		
-		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "/registration";
+		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "registration";
+		
+		var CLIENT_AUTHENTICATION_ENDPOINT = SERVER_URL + "client/authentication";
 		
 		return {
 			getServerHostEndpoint: function() {
 				return SERVER_URL;
 			},
 			
-					/* Product APIs */
+			/* Product APIs */
 			getProductListEndpoint: function() {
 				return LIST_PRODUCTS_ENDPOINT;
 			},
@@ -80,7 +82,8 @@
 			getProductPhotoModificationEndpoint: function() {
 				return UPDATE_PRODUCT_IMAGE_ENDPOINT;
 			},
-					/* User APIs */
+			
+			/* User APIs */
 			getUserRegistrationEndpoint : function() {
 				return USER_REGISTRATION_ENDPOINT;
 			},
@@ -96,7 +99,8 @@
 			getUserSearchingEndpoint: function() {
 				return SEARCH_USERS_ENDPOINT;
 			},
-					/* Navigation Item APIs */
+			
+			/* Navigation Item APIs */
 			getNavigationItemCreationEndpoint: function() {
 				return CREATE_NAVIGATION_ITEM_ENDPOINT;
 			},
@@ -114,6 +118,11 @@
 			},
 			getRootNavigationItemsEndpoint: function() {
 				return ROOT_NAVIGATION_ITEMS_ENDPOINT;
+			},
+			
+			/* Authentication endpoint */
+			getClientAuthenticationEndpoint: function() {
+				return CLIENT_AUTHENTICATION_ENDPOINT;
 			}
 		};
 	};

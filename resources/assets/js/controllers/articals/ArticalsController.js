@@ -1,5 +1,7 @@
 (function() {
 	
+	/* ============ Variables and Constructor ============= */
+	
 	var RestClient = null;
 	var HeaderUtil = null;
 	var DestinationUtil = null;
@@ -15,7 +17,7 @@
 		HeaderUtil = registry.getReference(clientModules.getHeaderUtilName());
 		DestinationUtil = registry.getReference(clientModules.getDestinationUtilName());
 		
-		var navItemUtil = registry.getReference(clientModules.getNavItemsUtilName());
+		var navItemUtil = registry.getReference(clientModules.getTemplateUtilName());
 		
 		$scope.host = DestinationUtil.getServerHostEndpoint();
 		
@@ -37,11 +39,15 @@
 	
 	module.controller("ArticalsController", ["$scope", "$routeParams", "$http", "$location", ArticalsController]);
 	
+	/* ================ Backend AJAX requests ================ */
+	
 	var loadProducts = function(productTypeIds) {
 		var requestData = prepareRequestData.call(this, productTypeIds);
 		if (typeof requestData === "undefined") {
 			return;
 		}
+		
+		openBusyDialog();
 		
 		RestClient.GET(requestData, jQuery.proxy(onSuccess, this), jQuery.proxy(onError, this));
 	};
@@ -73,7 +79,7 @@
 				jQuery.merge(productItems, products[productTypeIds[i]]);
 			}
 			this.items = productItems;
-			return;
+			return undefined;
 		}
 		
 		tempProductTypeIds = productTypeIds;
@@ -138,12 +144,27 @@
 		}
 		this.items = productItems;
 		tempProductTypeIds = null;
+		
+		closeBusyDialog();
 	};
 	
 	var onError = function(xhrResponse) {
+		closeBusyDialog();
+		
 		$("#result-modal-label").text("Неуспешенo извличане на данни.");
 		$("#result-modal-body").text("Данните за продукта, който искате да заредите не бяха успешно извлечени.");
 		$('#result-modal').modal({ keyboard: true });
+	};
+	
+	var openBusyDialog = function() {
+		$('#wait-modal').modal({
+			backdrop: 'static',
+			keyboard: false
+		});
+	};
+	
+	var closeBusyDialog = function() {
+		$('#wait-modal').modal('hide');
 	};
 	
 })();

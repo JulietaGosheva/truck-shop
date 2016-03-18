@@ -57,6 +57,6 @@ com.rs.client.module.ClientModules.prototype.getHeaderUtilName = function() {
 	return "HeaderUtil";
 };
 
-com.rs.client.module.ClientModules.prototype.getNavItemsUtilName = function() {
-	return "NavItemsUtil";
+com.rs.client.module.ClientModules.prototype.getTemplateUtilName = function() {
+	return "TemplateUtilName";
 };

@@ -81,6 +81,8 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 
 Route::post("/authentication", "Auth\AuthController@authenticate");
 
+Route::post("/client/authentication", "Auth\AuthController@authenticate");
+
 Route::get("/authentication", function() { return view("authentication"); });
 
 Route::get("/registration", function() { return view("registration"); });
