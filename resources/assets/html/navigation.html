@@ -26,10 +26,14 @@
                 
          </ul>
          
-         <p class="navbar-text navbar-right">
-             <a class="menu-item navbar-link" style="color: #fff;" href="#/login">Вход</a>
-             <span class="glyphicon glyphicon-option-vertical" style="color: #fff"></span>
-             <a class="menu-item navbar-link" style="color: #fff;" href="#/registration">Регистрация</a>
+         <p class="navbar-text navbar-right" ng-controller="SessionController">
+             <span class="glyphicon glyphicon-user" style="color: #fff" ng-hide="!isUserLoggedIn"></span>
+             <a class="menu-item navbar-link" style="color: #fff; text-decoration: none" href="" ng-hide="!isUserLoggedIn">{{ userName }}</a>
+             <a class="menu-item navbar-link" style="color: #fff;" href="#/logout" ng-hide="!isUserLoggedIn">(изход)</a>
+
+             <a class="menu-item navbar-link" style="color: #fff;" href="#/login" ng-hide="isUserLoggedIn">Вход</a>
+             <span class="glyphicon glyphicon-option-vertical" style="color: #fff" ng-hide="isUserLoggedIn"></span>
+             <a class="menu-item navbar-link" style="color: #fff;" href="#/registration" ng-hide="isUserLoggedIn">Регистрация</a>
          </p>
          
          <!-- <form ng-submit="search(uniqueId)" ng-controller="SearchController" class="navbar-form" role="search">

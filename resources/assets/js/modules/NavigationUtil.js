@@ -46,7 +46,7 @@ if (typeof com === "undefined") {
 
 		}
 	};
-} else {
+} else if(typeof com.rs.utils === "undefined") {
 	com.rs.utils = {};
 }
 

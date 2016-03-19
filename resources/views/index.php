@@ -22,6 +22,7 @@
 
 		<script src="resources/assets/js/modules/ClientCache.js"></script>
         <script src="resources/assets/js/modules/NavigationUtil.js"></script>
+        <script src="resources/assets/js/modules/UserUtil.js"></script>
         
         <script src="resources/assets/js/ClientModules.js"></script>
         <script src="resources/common/js/modules/HeaderUtil.js"></script>
@@ -32,6 +33,8 @@
         <script src="resources/assets/js/controllers/SearchController.js"></script>
         <script src="resources/assets/js/controllers/TemplateController.js"></script>
         <script src="resources/assets/js/controllers/LoginController.js"></script>
+        <script src="resources/assets/js/controllers/LogoutController.js"></script>
+        <script src="resources/assets/js/controllers/SessionController.js"></script>
         <script src="resources/assets/js/controllers/RegistrationController.js"></script>
         <script src="resources/assets/js/controllers/articals/ArticalsController.js"></script>
         <script src="resources/assets/js/controllers/articals/SubArticalsController.js"></script>

@@ -60,39 +60,13 @@ class AuthController extends Controller
         return $user;
     }
     
-//     private function extractUserDataFromRequest(Request $request) {
-//     	$userData = array();
-//     	$contentType = $request->header("Content-Type");
-    	
-//     	if ($contentType === "application/json") {
-//     		$rawContentBody = $request->getContent();
-//     		$requestBody = json_decode($rawContentBody);
-    		
-//     		$userData['email'] = $requestBody->email;
-//     		$userData['password'] = bcrypt($request->password);
-//     		$userData['first_name'] = $request->input('firstname');
-//     		$userData['last_name'] = $request->input('lastname');
-//     		$userData['role_id'] = $request->input('roleId');
-    		 
-//     		if ($request->has('objectName')) {
-//     			$userData['object_name'] = $request->input('objectName');
-//     		}
-//     	} else {
-// 	    	$userData['email'] = $request->input('email');
-// 	    	$userData['password'] = bcrypt($request->input('password'));
-//  			$userData['first_name'] = $request->input('firstname');
-// 	   		$userData['last_name'] = $request->input('lastname');
-//     		$userData['role_id'] = $request->input('roleId');
-	    	 
-// 	    	if ($request->has('objectName')) {
-// 	    		$userData['object_name'] = $request->input('objectName');
-// 	    	}
-//     	}
-//     	return $userData;
-//     }
-    
     public function authenticate(Request $request) {
     	if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+    		$requestPath = $request->path();
+    		if ($requestPath.startsWith("client")) {
+    			return Auth::user();
+    		}
+    		
     		return redirect()->intended('');
     	}
     	throw new UnauthorizedHttpException("Wrong email or password.");

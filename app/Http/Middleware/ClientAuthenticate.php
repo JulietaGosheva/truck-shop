@@ -11,7 +11,7 @@ class ClientAuthenticate
 
 	public function handle($request, Closure $next) {
 		$user = Auth::user();
-		if ($user !== null) {
+		if ($user === null) {
 			throw new UnauthorizedHttpException("Authentication is required to perform the requested operation.");
 		}
 		

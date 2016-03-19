@@ -11,6 +11,10 @@
 				templateUrl: "resources/assets/html/login.html",
 				controller: "LoginController"
 			})
+			.when("/logout", {
+				templateUrl: "resources/assets/html/startPage.html",
+				controller: "LogoutController"
+			})
 			.when("/contacts", {
 				templateUrl: "resources/assets/html/contacts.html"
 			})

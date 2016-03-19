@@ -60,3 +60,7 @@ com.rs.client.module.ClientModules.prototype.getHeaderUtilName = function() {
 com.rs.client.module.ClientModules.prototype.getTemplateUtilName = function() {
 	return "TemplateUtilName";
 };
+
+com.rs.client.module.ClientModules.prototype.getSessionUtilName = function() {
+	return "SessionUtilName";
+};

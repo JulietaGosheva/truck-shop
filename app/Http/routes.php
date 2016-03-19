@@ -40,14 +40,16 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	Route::get('/types/{typeId}/brands/{brandId}/models', 'ModelsController@getModels');
 });
 
-Route::group(['prefix' => 'users/api/v1', 'middleware' => ['auth', 'role']], function() {
-	Route::get('/', 'UsersController@findUsers');
+Route::group(['prefix' => 'users/api/v1'], function() {
+	Route::get('/', ['middleware' => ['auth', 'role'], 'uses' => 'UsersController@findUsers']);
 	
-	Route::post('/', ['middleware' => 'registration', 'uses' => 'Auth\AuthController@createUser']);
+	Route::post('/', ['middleware' => ['registration', 'auth', 'role'], 'uses' => 'Auth\AuthController@createUser']);
 	
-	Route::put('/', 'UsersController@editUser');
+	Route::put('/', ['middleware' => ['auth', 'role'], 'uses' => 'UsersController@editUser']);
 	
-	Route::delete('/', 'UsersController@deleteUser');
+	Route::delete('/', ['middleware' => ['auth', 'role'], 'uses' => 'UsersController@deleteUser']);
+	
+	Route::get('/data', 'UsersController@retrieveUserData');
 });
 
 Route::group(['prefix' => 'navigation/api/v1'], function() {

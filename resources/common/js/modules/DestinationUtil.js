@@ -34,6 +34,7 @@
 		var MODIFY_USER_ENDPOINT = USERS_ENDPOINT;
 		var DELETE_USER_ENDPOINT = USERS_ENDPOINT + "?id={userId}";
 		var SEARCH_USERS_ENDPOINT = USERS_ENDPOINT;
+		var USER_DATA_ENDPOINT = USERS_ENDPOINT + "/data";
 		
 		var CREATE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
 		var MODIFY_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
@@ -41,6 +42,8 @@
 		var SEARCH_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
 		var NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items";
 		var ROOT_NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items/root";
+		
+		var LOGOUT_ENDPOINT = SERVER_URL + "logout";
 		
 		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "registration";
 		
@@ -99,6 +102,9 @@
 			getUserSearchingEndpoint: function() {
 				return SEARCH_USERS_ENDPOINT;
 			},
+			getUsersDataEndpoint: function() {
+				return USER_DATA_ENDPOINT;
+			},
 			
 			/* Navigation Item APIs */
 			getNavigationItemCreationEndpoint: function() {
@@ -123,7 +129,11 @@
 			/* Authentication endpoint */
 			getClientAuthenticationEndpoint: function() {
 				return CLIENT_AUTHENTICATION_ENDPOINT;
+			},
+			getLogoutEndpoint: function() {
+				return LOGOUT_ENDPOINT;
 			}
+			
 		};
 	};
 	

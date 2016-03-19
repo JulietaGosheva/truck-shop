@@ -56,6 +56,9 @@
 	};
 	
 	var onSuccess = function(xhrResponse) {
+		var userUtil = new com.rs.utils.UserUtil();
+		userUtil.setUserData(xhrResponse.data);
+		
 		location.hash = "#/";
 	};
 	

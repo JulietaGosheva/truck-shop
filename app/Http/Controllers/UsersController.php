@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App;
+use Log;
+use Auth;
 use App\User;
 
 use Validator;
@@ -33,7 +35,6 @@ class UsersController extends Controller  {
 	}
 	
 	public function editUser(Request $request, Response $response) {
-		echo "sdsdds";
 		$validator = Validator::make($request->all(), [
 			'id' => 'required|numeric',
 			'email' => 'required|email|max:255',
@@ -102,5 +103,24 @@ class UsersController extends Controller  {
 		$response->setStatusCode(201);
 		
 		return $response;
+	}
+	
+	public function retrieveUserData(Request $request, Response $response) {
+		if (Auth::check() === false) {
+			$response->header(Constants::RESPONSE_HEADER, "There is no authenticated user.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+		
+		$user = Auth::user();
+		if ($user === null) {
+			$response->header(Constants::RESPONSE_HEADER, "There is no authenticated user.");
+			$response->setStatusCode(Response::HTTP_NO_CONTENT);
+			return $response;
+		}
+		
+		Log::debug("Retrieved user data: [" . json_encode($user) . "]");
+		
+		return $user;
 	}
 }
