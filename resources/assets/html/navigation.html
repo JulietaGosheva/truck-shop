@@ -36,6 +36,12 @@
              <a class="menu-item navbar-link" style="color: #fff;" href="#/registration" ng-hide="isUserLoggedIn">Регистрация</a>
          </p>
          
+         <p class="navbar-text navbar-right" style="padding-right: 15px;" ng-controller="CartController">
+            <a class="menu-item navbar-link" style="text-decoration: none" href="#/cart">
+                <span class="glyphicon glyphicon-shopping-cart" style="color: #fff"></span> <span class="badge">{{ itemCount }}</span>
+            </a>
+         </p>
+         
          <!-- <form ng-submit="search(uniqueId)" ng-controller="SearchController" class="navbar-form" role="search">
                    
             <div class="form-group">

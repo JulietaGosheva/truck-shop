@@ -68,6 +68,17 @@ Route::group(['prefix' => 'navigation/api/v1'], function() {
 
 Route::group(['prefix' => 'orders/api/v1'], function() {
 	//TODO: Add method for searching between two dates
+	Route::get('/', ['uses' => 'OrdersController@retrieveUserOrders']);
+	
+	Route::get('/products', ['uses' => 'OrdersController@retrieveUserOrdersFromCart']);
+	
+	Route::post('/products', ['middleware' => ['auth'], 'uses' => 'OrdersController@orderProducts']);
+	
+	Route::get('/products/{uniqueId}', ['uses' => 'OrdersController@isProductIntoCart']);
+	
+	Route::post('/products/{uniqueId}', ['uses' => 'OrdersController@addProductToCart']);
+	
+	Route::delete('/products/{uniqueId}', ['uses' => 'OrdersController@removeProductFromCart']);
 });
 
 /*

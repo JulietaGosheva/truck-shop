@@ -1,11 +1,15 @@
 (function() {
-	var application = angular.module("AngularApplication", ["ngRoute", "ui.bootstrap", "ngSanitize"]);
+	var application = angular.module("AngularApplication", ["ngRoute", "ui.bootstrap", "ngSanitize", "uiGmapgoogle-maps"]);
 	
 	application.config(function($routeProvider) {
 		$routeProvider
 			.when("/", {
 				templateUrl: "resources/assets/html/startPage.html",
 				controller: "CarouselController"
+			})
+			.when("/cart", {
+				templateUrl: "resources/assets/html/navbar/cart.html",
+				controller: "CartController"
 			})
 			.when("/login", {
 				templateUrl: "resources/assets/html/login.html",
@@ -56,5 +60,12 @@
 		};
 		
 		return directive;
+	});
+	
+	application.config(function(uiGmapGoogleMapApiProvider) {
+	    uiGmapGoogleMapApiProvider.configure({
+	        v: '3.20',
+	        libraries: 'weather,geometry,visualization'
+	    });
 	});
 })();

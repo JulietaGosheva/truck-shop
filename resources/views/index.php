@@ -10,10 +10,13 @@
 		<script src="resources/dependencies/external/chosen/chosen.jquery.js"></script>
 	    <script src="resources/dependencies/external/bootstrap/bootstrap.min.js"></script>
 		
+		<script src="resources/dependencies/js/maps/lodash.min.js"></script>
 		<script src="resources/dependencies/js/angular.min.js"></script>
 		<script src="resources/dependencies/js/angular-route.min.js"></script>
 		<script src="resources/dependencies/js/angular-sanitize.min.js"></script>
         <script src="resources/dependencies/js/ui-bootstrap-tpls-0.14.3.min.js"></script>
+		<script src="resources/dependencies/js/maps/angular-simple-logger.min.js"></script>
+		<script src="resources/dependencies/js/maps/angular-google-maps.min.js"></script>
 		
 		<script src="resources/assets/js/ClientController.js"></script>
 		
@@ -29,16 +32,19 @@
         <script src="resources/common/js/modules/RestClient.js"></script>
         <script src="resources/common/js/modules/AjaxClient.js"></script>
         <script src="resources/common/js/modules/DestinationUtil.js"></script>
+
+        <script src="resources/assets/js/modules/OrdersUtil.js"></script>
+        <script src="resources/assets/js/controllers/navbar/CartController.js"></script>
         
-        <script src="resources/assets/js/controllers/SearchController.js"></script>
-        <script src="resources/assets/js/controllers/TemplateController.js"></script>
-        <script src="resources/assets/js/controllers/LoginController.js"></script>
-        <script src="resources/assets/js/controllers/LogoutController.js"></script>
+        <script src="resources/assets/js/controllers/navbar/SearchController.js"></script>
+        <script src="resources/assets/js/controllers/template/TemplateController.js"></script>
+        <script src="resources/assets/js/controllers/navbar/LoginController.js"></script>
+        <script src="resources/assets/js/controllers/navbar/LogoutController.js"></script>
         <script src="resources/assets/js/controllers/SessionController.js"></script>
-        <script src="resources/assets/js/controllers/RegistrationController.js"></script>
+        <script src="resources/assets/js/controllers/navbar/RegistrationController.js"></script>
         <script src="resources/assets/js/controllers/articals/ArticalsController.js"></script>
         <script src="resources/assets/js/controllers/articals/SubArticalsController.js"></script>
-        <script src="resources/assets/js/controllers/DetailsController.js"></script>
+        <script src="resources/assets/js/controllers/articals/DetailsController.js"></script>
         <script src="resources/assets/js/controllers/CarouselController.js"></script>
         <script src="resources/assets/js/controllers/template/I18NController.js"></script>
         <script src="resources/assets/js/controllers/template/VTypeController.js"></script>

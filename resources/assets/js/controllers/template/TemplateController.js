@@ -19,7 +19,7 @@
 					$scope.items = navItems;
 				}
 			},
-			setBreadcrumb: function(navItem, navSubItem) {
+			setBreadcrumb: function(navItem, navSubItem, itemDetail) {
 				if (typeof navItem !== "undefined") {
 					jQuery("#articalBreadcrumb").css("display", "inline");
 					jQuery("#articalBreadcrumb").attr("href", navItem.href);
@@ -38,6 +38,16 @@
 				} else {
 					jQuery("#subArticalBreadcrumb").css("display", "none");
 					jQuery("#spanForSubArticalBreadcrumb").css("display", "none");
+				}
+				
+				if (typeof itemDetail !== "undefined") {
+					jQuery("#itemDetailBreadcrumb").css("display", "inline");
+					jQuery("#itemDetailBreadcrumb").attr("href", "");
+					jQuery("#spanForItemDetailBreadcrumb").css("display", "inline");
+					jQuery("#itemDetailBreadcrumb").text(itemDetail.displayName);
+				} else {
+					jQuery("#itemDetailBreadcrumb").css("display", "none");
+					jQuery("#spanForItemDetailBreadcrumb").css("display", "none");
 				}
 			}
 		};

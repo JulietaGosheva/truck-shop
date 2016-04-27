@@ -1,0 +1,75 @@
+<div align="center" ng-hide="!emptyCartMessage">
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ emptyCartMessage }}
+    </div>
+</div>
+
+<div ng-hide="emptyCartMessage">
+
+	<div align="center" style="margin-bottom: 25px;">
+	    <h2>Продукти във вашата кошница</h2>
+    </div>
+    
+	<form class="form-horizontal" ng-submit="executeRequest()">
+		<div ng-repeat="item in items">
+			<div class="media" style="margin-bottom: 20px; padding: 15px; border-right: 1px solid black; border-bottom: 1px solid black; box-shadow: 10px 10px 5px #888888;">
+                <div style="float: right">
+                    <button type="button" ng-click="removeProductFromCart(item.unique_id)" class="close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                
+				<div class="media-left">
+					<a ng-href="#/search/{{ item.unique_id }}"> 
+					   <img class="media-object" style="max-width: 300px; min-width: 300px; min-height: 200px; max-height:200px" src="{{ host }}resources/assets/images/{{ item.image_name }}" alt="default">
+					</a>
+				</div>
+				
+				<div class="media-body" style="padding-left: 20px;">
+					<h4 class="media-heading">Продукт: {{ item.product_types.name }}</h4>
+					<br>
+					<p>Производител: {{ item.brands.name }}</p>
+					<p>Модел: {{ item.models.name }}</p>
+					<p>Цена: {{ item.price }} лв.</p>
+					<div class="form-group" style="padding-left: 16px;">
+						<label for="orderCount">Бройка:</label>
+						<input type="number" name="quantity" value="{{ item.quantity }}" min="0" style="width: 45px; margin-left: 5px; padding-left: 5px;">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-sm-12" style="margin-top: 15px; margin-bottom: 25px; padding: 15px; box-shadow: 0px 4px 4px 4px #888888;">
+		    <div><h4 style="text-align: center; padding-bottom: 15px">Потребителски данни</h4></div>
+			<div class="col-sm-12">
+				<div class="form-group">
+				    <label>Емайл: </label>
+					<input type="email" class="form-control" id="email" value="{{ email }}" placeholder="Емайл" ng-model="email">
+				</div>
+				
+				<div class="form-group">
+	                <label>Телефон: </label>
+	                <input type="tel" class="form-control" id="phone" value="{{ phone }}" placeholder="Телефон" ng-model="phone">
+		        </div>
+		        
+		        <div class="form-group">
+	                <label>Адрес: </label>
+					<input type="text" class="form-control" id="address" value="{{ address }}" placeholder="Адрес" ng-model="address">
+				</div>
+		
+				<div class="form-group">
+				    <div class="col-sm-offset-5">
+    					<button style="min-width: 150px" type="submit" class="btn btn-primary">Поръчай</button>
+				    </div>
+				</div>
+			</div>
+			
+			<!-- <div class="col-sm-6">
+		        <ui-gmap-google-map center='googleMap.center' zoom='googleMap.zoom'></ui-gmap-google-map>
+		    </div> -->
+		</div>
+		
+	</form>
+    
+</div>

@@ -16,9 +16,12 @@
 		var SERVER_URL = "http://localhost/truck-shop/";
 		
 		var USERS_ENDPOINT = SERVER_URL + "users/api/v1";
+		var ORDERS_ENDPOINT = SERVER_URL + "orders/api/v1";
 		var PRODUCTS_ENDPOINT = SERVER_URL + "products/api/v1";
 		var NAVIGATION_ITEM_ENDPOINT = SERVER_URL + "navigation/api/v1";
 
+		
+		/* Product API Endpoints */
 		var CREATE_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
 		var MODIFY_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
 		var SEARCH_PRODUCTS_ENDPOINT = PRODUCTS_ENDPOINT;
@@ -30,12 +33,14 @@
 		var UPDATE_PRODUCT_IMAGE_ENDPOINT = PRODUCTS_ENDPOINT + "/image/{imageName}";
 		var PRODUCT_MODELS_ENDPOINT = PRODUCTS_ENDPOINT + "/types/{typeId}/brands/{brandId}/models";
 		
+		/* User API Endpoints */
 		var CREATE_USER_ENDPOINT = USERS_ENDPOINT;
 		var MODIFY_USER_ENDPOINT = USERS_ENDPOINT;
 		var DELETE_USER_ENDPOINT = USERS_ENDPOINT + "?id={userId}";
 		var SEARCH_USERS_ENDPOINT = USERS_ENDPOINT;
 		var USER_DATA_ENDPOINT = USERS_ENDPOINT + "/data";
 		
+		/* Navigation API Endpoints */
 		var CREATE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
 		var MODIFY_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT;
 		var DELETE_NAVIGATION_ITEM_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "?id={navigationItemId}";
@@ -43,10 +48,17 @@
 		var NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items";
 		var ROOT_NAVIGATION_ITEMS_ENDPOINT = NAVIGATION_ITEM_ENDPOINT + "/items/root";
 		
+		/* Orders API Endpoints */
+		var GET_USER_ORDERS = ORDERS_ENDPOINT;
+		var GET_USER_ORDERS_FROM_CART = ORDERS_ENDPOINT + "/products";
+		var ORDER_PRODUCTS = ORDERS_ENDPOINT + "/products";
+		var SEARCH_PRODUCT_INTO_CART = ORDERS_ENDPOINT + "/products/{uniqueId}";
+		var ADD_USER_ORDER_TO_CART = ORDERS_ENDPOINT + "/products/{uniqueId}";
+		var REMOVE_USER_ORDER_FROM_CART = ORDERS_ENDPOINT + "/products/{uniqueId}";
+		
+		/* Authentication Ednpoints */
 		var LOGOUT_ENDPOINT = SERVER_URL + "logout";
-		
 		var USER_REGISTRATION_ENDPOINT = SERVER_URL + "registration";
-		
 		var CLIENT_AUTHENTICATION_ENDPOINT = SERVER_URL + "client/authentication";
 		
 		return {
@@ -54,9 +66,12 @@
 				return SERVER_URL;
 			},
 			
-			/* Product APIs */
+			/* Product API Endpoints */
 			getProductListEndpoint: function() {
 				return LIST_PRODUCTS_ENDPOINT;
+			},
+			getMultipleProductDetailsEndpoint: function() {
+				return SEARCH_PRODUCTS_ENDPOINT + "?uniqueIds={uniqueIds}";
 			},
 			getProductCreationEndpoint: function() {
 				return CREATE_PRODUCTS_ENDPOINT;
@@ -86,7 +101,7 @@
 				return UPDATE_PRODUCT_IMAGE_ENDPOINT;
 			},
 			
-			/* User APIs */
+			/* User API Endpoints */
 			getUserRegistrationEndpoint : function() {
 				return USER_REGISTRATION_ENDPOINT;
 			},
@@ -106,7 +121,7 @@
 				return USER_DATA_ENDPOINT;
 			},
 			
-			/* Navigation Item APIs */
+			/* Navigation API Endpoints */
 			getNavigationItemCreationEndpoint: function() {
 				return CREATE_NAVIGATION_ITEM_ENDPOINT;
 			},
@@ -125,15 +140,34 @@
 			getRootNavigationItemsEndpoint: function() {
 				return ROOT_NAVIGATION_ITEMS_ENDPOINT;
 			},
+
+			/* Order API Endpoints */
+			getUserOrdersEndpoint: function() {
+				return GET_USER_ORDERS;
+			},
+			getUserOrdersFromCartEndpoint: function() {
+				return GET_USER_ORDERS_FROM_CART;
+			},
+			getCartProductSearchingEndpoint: function() {
+				return SEARCH_PRODUCT_INTO_CART;
+			},
+			getAddProductToCartEndpoint: function() {
+				return ADD_USER_ORDER_TO_CART;
+			},
+			getRemoveProductFromCartEndpoint: function() {
+				return REMOVE_USER_ORDER_FROM_CART;
+			},
+			getProductOrderEndpoint: function() {
+				return ORDER_PRODUCTS;
+			},
 			
-			/* Authentication endpoint */
+			/* Authentication Endpoints */
 			getClientAuthenticationEndpoint: function() {
 				return CLIENT_AUTHENTICATION_ENDPOINT;
 			},
 			getLogoutEndpoint: function() {
 				return LOGOUT_ENDPOINT;
 			}
-			
 		};
 	};
 	

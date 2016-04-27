@@ -64,3 +64,7 @@ com.rs.client.module.ClientModules.prototype.getTemplateUtilName = function() {
 com.rs.client.module.ClientModules.prototype.getSessionUtilName = function() {
 	return "SessionUtilName";
 };
+
+com.rs.client.module.ClientModules.prototype.getCartUtilName = function() {
+	return "CartUtilName";
+};

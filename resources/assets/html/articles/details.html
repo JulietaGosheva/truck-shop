@@ -1,11 +1,18 @@
-<div class="col-sm-6">
-    <img class="img-thumbnail pull-right" ng-src="{{ host }}resources/assets/images/{{ item.image_name }}" style="max-width: 100%; max-height: 400px;">
+<div ng-hide="isInvalidProduct">
+	<div class="col-sm-6">
+	    <img class="img-thumbnail pull-right" ng-src="{{ host }}resources/assets/images/{{ item.image_name }}" style="max-width: 100%; max-height: 400px;">
+	</div>
+	<div class="col-sm-4" style="text-font: 25px; text-align: center">
+	    <h3>Име : {{ item.name }} </h3> <br>
+	    <p>Уникален номер: {{ item.unique_id }}</p>
+	    <p>Тип на продукта: {{ item.product_types.name }}</p>
+	    <p>Производител: {{ item.brands.name }}</p>
+	    <p>Модел: {{ item.models.name }}</p>
+	    <p>Цена : {{ item.price }} лв.</p>
+	    <br>
+	    <a class="btn btn-primary" ng-click="executeRequest(item.unique_id)">{{ buttonText }}</a>
+	</div>
 </div>
-<div class="col-sm-4" style="text-font: 25px; text-align: center">
-    <h3>Име : {{ item.name }} </h3> <br>
-    <p>Уникален номер: {{ item.unique_id }}</p>
-    <p>Тип на продукта: {{ item.product_types.name }}</p>
-    <p>Производител: {{ item.brands.name }}</p>
-    <p>Модел: {{ item.models.name }}</p>
-    <p>Цена : {{ item.price }} лв.</p>
+<div style="text-font: 25px; text-align: center" ng-hide="!isInvalidProduct">
+    <h3>Моля върнете се към предходната страница.</h3>
 </div>
