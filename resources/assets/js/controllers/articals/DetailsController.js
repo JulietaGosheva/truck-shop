@@ -58,11 +58,13 @@
 		var onSuccess = jQuery.proxy(function(data, textStatus, jqXhr) {
 			closeBusyDialog();
 			
-			if (jqXhr.status !== 204) {
-				this.buttonText = "Премахни от количката";
-			} else {
-				this.buttonText = "Добави в количката";
-			}
+			this.$apply(jQuery.proxy(function() {
+				if (jqXhr.status !== 204) {
+					this.buttonText = "Премахни от количката";
+				} else {
+					this.buttonText = "Добави в количката";
+				}
+			}, this));
 		}, this);
 		
 		var onError = jQuery.proxy(function(jqXhr, textStatus, errorThrow) {
@@ -128,7 +130,9 @@
 		$("#result-modal-body").text("Продуктът беше добавен успешно към вашата кошница.");
 		$('#result-modal').modal({ keyboard: true });
 		
-		this.buttonText = "Премахни от количката";
+		this.$apply(jQuery.proxy(function() {
+			this.buttonText = "Премахни от количката";
+		}, this));
 		
 		registry.getReference(clientModules.getCartUtilName()).incrementItemsInTheCart();
 	};
@@ -148,7 +152,9 @@
 		$("#result-modal-body").text("Продуктът беше премахнат успешно към вашата кошница.");
 		$('#result-modal').modal({ keyboard: true });
 		
-		this.buttonText = "Добави в количката";
+		this.$apply(jQuery.proxy(function() {
+			this.buttonText = "Добави в количката";
+		}, this));
 		
 		registry.getReference(clientModules.getCartUtilName()).decrementItemsFromTheCart();
 	};

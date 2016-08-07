@@ -16,14 +16,33 @@
     	initModel($scope);
     	registerCartUtil($scope);
     	
+    	if (isCalledFromRouteMatchEvent() === false) {
+    		var onComplete = function(xhrResponse) {
+    			window.location.hash = "#/";
+    			window.location.hash = "#/cart";
+    		};
+		}
+    	
     	if (location.hash === "#/cart") {
     		registry.getReference(clientModules.getTemplateUtilName()).setBreadcrumb({ displayName: "Количка" });
     		
     		openBusyDialog();
     		
-    		ordersUtil.retrieveUserOrdersFromCart(jQuery.proxy(onSuccess, $scope), jQuery.proxy(onError, $scope));
+    		ordersUtil.retrieveUserOrdersFromCart(jQuery.proxy(onSuccess, $scope), jQuery.proxy(onError, $scope), onComplete);
     	} else {
     		ordersUtil.retrieveUserOrdersFromCart();
+    	}
+    };
+    
+    var isCartUtilRegistered = function() {
+    	return typeof registry.getReference(clientModules.getCartUtilName()) !== "undefined";
+    };
+    
+    var isCalledFromRouteMatchEvent = function() {
+    	try {
+     		throw new Error();
+    	} catch (e) {
+    		return e.stack.indexOf("angular-route.min.js") !== -1;
     	}
     };
     
@@ -48,9 +67,16 @@
     };
     
     var registerCartUtil = function($scope) {
+    	if (isCartUtilRegistered() || isCalledFromRouteMatchEvent()) {
+    		return;
+    	}
+    	
     	var cartUtil = {
     		setItemsCount: function(itemsCount) {
     			$scope.itemCount = itemsCount;
+    		},
+    		getItemsCount: function() {
+    			return $scope.itemCount;
     		},
     		incrementItemsInTheCart: function() {
     			$scope.$apply(function() {
@@ -72,7 +98,14 @@
     //TODO: Retrieve items by unique id. Try to find it in cache and if we don't find it, then search in backend
     var onSuccess = function(data, textStatus, jqXhr) {
     	var uniqueIds = typeof data === "undefined" ? [] : Object.toArray(data);
-    	registry.getReference(clientModules.getCartUtilName()).setItemsCount(uniqueIds.length);
+    	
+    	var cartUtil = registry.getReference(clientModules.getCartUtilName());
+    	if (typeof cartUtil === "undefined") {
+    		closeBusyDialog();
+    		return;
+    	}
+    	
+    	cartUtil.setItemsCount(uniqueIds.length);
     	
     	if (uniqueIds.length > 0) {
     		this.emptyCartMessage = undefined;
@@ -120,8 +153,11 @@
     
     var _removeProductFromCart = function(uniqueId) {
     	openBusyDialog();
-    	
-		ordersUtil.removeProductFromCart(jQuery.proxy(_onSuccessfullyRemovedProduct, this), jQuery.proxy(_onErrorOfRemovingProduct, this), uniqueId);
+
+    	var onSuccessFn = jQuery.proxy(_onSuccessfullyRemovedProduct, this);
+    	var onErrorFn = jQuery.proxy(_onErrorOfRemovingProduct, this);
+
+		ordersUtil.removeProductFromCart(onSuccessFn, onErrorFn, uniqueId);
 	};
     
     var _onSuccessfullyRemovedProduct = function(data, textStatus, jqXhr) {
@@ -193,8 +229,8 @@
 	
     var openBusyDialog = function() {
 		$('#wait-modal').modal({
-			backdrop: 'static',
-			keyboard: false
+//			backdrop: 'static',
+			keyboard: true
 		});
 	};
 	

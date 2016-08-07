@@ -69,7 +69,8 @@
 	        headers: typeof oData.headers === 'undefined' ? {} : oData.headers,
     		contentType: typeof oData.contentType === 'undefined' ? true : oData.contentType,
 	        success: onSuccess,
-	        error: onError
+	        error: onError,
+	        complete: oData.complete
 	    });
 	};
 	

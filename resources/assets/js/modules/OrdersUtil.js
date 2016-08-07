@@ -43,11 +43,12 @@ com.rs.utils.OrdersUtil = function() {
 com.rs.utils.OrdersUtil.prototype._selfInvoked = false;
 com.rs.utils.OrdersUtil.prototype._instance = undefined;
 
-com.rs.utils.OrdersUtil.prototype.retrieveUserOrdersFromCart = function(onSuccessFnProvided, onErrorFnProvided) {
+com.rs.utils.OrdersUtil.prototype.retrieveUserOrdersFromCart = function(onSuccessFnProvided, onErrorFnProvided, onComplete) {
 	var requestData = {
 		async: false,
 		dataType: 'json',
-		url: this._DestinationUtil.getUserOrdersFromCartEndpoint()
+		url: this._DestinationUtil.getUserOrdersFromCartEndpoint(),
+		complete: onComplete || function(xhrResponse) {}
 	};
 
 	var onSuccess = onSuccessFnProvided || jQuery.proxy(function(data, textStatus, jqXhr) {
