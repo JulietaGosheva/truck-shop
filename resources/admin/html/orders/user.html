@@ -1,14 +1,28 @@
 <div class="col-sm-12" style="padding-top: 25px;">
 
-	<form class="form-inline col-sm-offset-3" ng-submit="executeRequest(scope, {})">
+	<form class="form-inline col-sm-offset-3" ng-submit="findOrdersByUser({ 'name': name, 'email': email})">
 		<div class="form-group" style="padding-right: 15px; padding-left: 25px;">
 			<label style="padding-right: 15px;">Име</label>
-			<input type="text" class="form-control" placeholder="<име> <фамилия>">
+			<input type="text" class="form-control" placeholder="<име> <фамилия>" ng-model="name">
 		</div>
 		<div class="form-group" style="padding-right: 15px;">
 			<label style="padding-right: 15px;">Емайл</label> 
-			<input type="email" class="form-control" placeholder="потребителски емайл">
+			<input type="email" class="form-control" placeholder="потребителски емайл" ng-model="email">
 		</div>
 		<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></span></button>
 	</form>
+	
+	<div id="orderList" class="row" style="margin-top: 25px;">
+        <div class="col-sm-4 col-md-3" ng-repeat="order in userOrders">
+            <a href="#/orders/{{ order.id }}" class="thumbnail" style="text-decoration: none">
+                <div class="thumbnail-image" align="center">
+                    <i class="fa fa-user fa-5x"></i>
+                </div>
+                <div class="caption">
+                    <p class="center-alignment">Потребител : {{ order.first_name }} {{ order.last_name }}</h3>
+                    <p class="center-alignment">Дата : {{ order.order_date }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>

@@ -14,9 +14,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\OrderPersistenceHelper;
 
 class OrdersController extends Controller {
 
+	private $persistenceHelper = null;
+	
+	function __construct() {
+		$this->persistenceHelper = new OrderPersistenceHelper();
+	}
+	
 	public function retrieveUserOrders(Request $request, Response $response) {
 		return Orders::with("users", "products")->get();
 	}
@@ -95,40 +102,53 @@ class OrdersController extends Controller {
 		$rawContentBody = $request->getContent();
 		if ($rawContentBody === null) {
 			$response->header(Constants::RESPONSE_HEADER, "Missing content body.");
-			$response->setStatusCode(400);
+			$response->setStatusCode(Response::HTTP_BAD_REQUEST);
 			return $response;
 		}
 		
 		Log::debug("Sended request body: [" . $rawContentBody . "]");
 		$requestBody = json_decode($rawContentBody);
 		
-		DB::transaction(function() use(&$response, &$requestBody, &$user) {
-			$deliveryInfo = new \stdClass();
-			$deliveryInfo->email = $requestBody->email;
-			$deliveryInfo->phone = $requestBody->phone;
-			$deliveryInfo->address = $requestBody->address;
-			
-			$previousOrder = null;
-			foreach ($requestBody->products as $product) {
-				$createdEntry = Orders::create([
-						"user_id" => $user->id,
-						"product_id" => $product->id,
-						"order_date" => date("Y-m-d H:i:s"),
-						"delivery_date" => date("Y-m-d H:i:s"),
-						"is_payed" => 0,
-						"delivery_info" => json_encode($deliveryInfo, JSON_UNESCAPED_UNICODE),
-						"in_order_with" => $previousOrder !== null ? $previousOrder->id : 0,
-						"order_count" => $product->quantity
-				]);
-				
-				$previousOrder = $createdEntry;
-			}
+		return $this->persistenceHelper->persistOrder($request, $response, $requestBody, $user);
+	}
+	
+	public function retrieveOrdersForId(Request $request, Response $response, $orderId) {
+		Log::debug("Retrieving orders for id");
 		
-			$response->header("Content-Type", "application/json");
-			$response->header(Constants::RESPONSE_HEADER, "Successfully persisted entity.");
-			$response->setStatusCode(201);
-		});
+		$orders = $this->persistenceHelper->findEntitiesForId($request, $response, $orderId);
 		
-		return $response;
+		Log::debug("Retrieved orders: [" . json_encode($orders) . "]");
+		
+		return $orders;
+	}
+	
+	public function retrieveDailyEntities(Request $request, Response $response) {
+		Log::debug("Retrieving current date orders");
+		
+		$orders = $this->persistenceHelper->findDailyEntities($request, $response);
+		
+		Log::debug("Retrieved orders: [" . json_encode($orders) . "]");
+		
+		return $orders;
+	}
+	
+	public function retrieveEntitiesByDate(Request $request, Response $response) {
+		Log::debug("Retrieving orders by date");
+		
+		$orders = $this->persistenceHelper->findEntitiesByDate($request, $response);
+		
+		Log::debug("Retrieved orders: [" . json_encode($orders) . "]");
+		
+		return $orders;
+	}
+	
+	public function retrieveEntitiesByUser(Request $request, Response $response) {
+		Log::debug("Retrieving orders by user");
+	
+		$orders = $this->persistenceHelper->findEntitiesByUser($request, $response);
+	
+		Log::debug("Retrieved orders: [" . json_encode($orders) . "]");
+	
+		return $orders;
 	}
 }

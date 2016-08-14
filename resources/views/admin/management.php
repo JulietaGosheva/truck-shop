@@ -39,6 +39,7 @@
         <script src="resources/admin/js/controllers/navigations/EditNavigationController.js"></script>
 
         <script src="resources/admin/js/controllers/OrdersController.js"></script>
+        <script src="resources/admin/js/controllers/orders/OrderDetailsController.js"></script>
         <script src="resources/admin/js/controllers/PromotionController.js"></script>
         
         <script src="resources/common/js/modules/RestClient.js"></script>

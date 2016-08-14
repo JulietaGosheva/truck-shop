@@ -62,6 +62,10 @@
 				templateUrl: "resources/admin/html/orders.html",
 				controller: "OrdersController"
 			})
+			.when("/orders/:id", {
+				templateUrl: "resources/admin/html/orders/details.html",
+				controller: "OrderDetailsController"
+			})
 			.when("/promotions", {
 				templateUrl: "resources/admin/html/promotions.html",
 				controller: "PromotionController"

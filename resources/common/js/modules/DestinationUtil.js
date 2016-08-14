@@ -50,6 +50,10 @@
 		
 		/* Orders API Endpoints */
 		var GET_USER_ORDERS = ORDERS_ENDPOINT;
+		var GET_DAILY_ORDERS = ORDERS_ENDPOINT + "/daily";
+		var GET_ORDERS_BY_ID = ORDERS_ENDPOINT + "/by/id/{id}";
+		var GET_ORDERS_BY_DATE = ORDERS_ENDPOINT + "/by/date?orderDate={date}";
+		var GET_ORDERS_BY_USER = ORDERS_ENDPOINT + "/by/user?";
 		var GET_USER_ORDERS_FROM_CART = ORDERS_ENDPOINT + "/products";
 		var ORDER_PRODUCTS = ORDERS_ENDPOINT + "/products";
 		var SEARCH_PRODUCT_INTO_CART = ORDERS_ENDPOINT + "/products/{uniqueId}";
@@ -144,6 +148,18 @@
 			/* Order API Endpoints */
 			getUserOrdersEndpoint: function() {
 				return GET_USER_ORDERS;
+			},
+			getDailyOrdersEndpoint: function() {
+				return GET_DAILY_ORDERS;
+			},
+			getOrdersByDate: function() {
+				return GET_ORDERS_BY_DATE;
+			},
+			getOrdersById: function() {
+				return GET_ORDERS_BY_ID;
+			},
+			getOrdersByUser: function() {
+				return GET_ORDERS_BY_USER;
 			},
 			getUserOrdersFromCartEndpoint: function() {
 				return GET_USER_ORDERS_FROM_CART;

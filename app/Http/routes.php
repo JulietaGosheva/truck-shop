@@ -70,6 +70,14 @@ Route::group(['prefix' => 'orders/api/v1'], function() {
 	//TODO: Add method for searching between two dates
 	Route::get('/', ['uses' => 'OrdersController@retrieveUserOrders']);
 	
+	Route::get('/daily', ['middleware' => ['auth', 'role'], 'uses' => 'OrdersController@retrieveDailyEntities']);
+	
+	Route::get('/by/id/{orderId}', ['middleware' => ['auth', 'role'], 'uses' => 'OrdersController@retrieveOrdersForId']);
+	
+	Route::get('/by/date', ['middleware' => ['auth', 'role'], 'uses' => 'OrdersController@retrieveEntitiesByDate']);
+	
+	Route::get('/by/user', ['middleware' => ['auth', 'role'], 'uses' => 'OrdersController@retrieveEntitiesByUser']);
+	
 	Route::get('/products', ['uses' => 'OrdersController@retrieveUserOrdersFromCart']);
 	
 	Route::post('/products', ['middleware' => ['auth'], 'uses' => 'OrdersController@orderProducts']);

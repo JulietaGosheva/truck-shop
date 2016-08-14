@@ -1,0 +1,20 @@
+    <div ng-repeat="order in orders">
+        <div class="col-sm-7" style="margin-bottom: 50px;">
+           <img class="img-thumbnail" ng-src="resources/assets/images/{{ order.image_name }}" style="max-width: 600px; max-height: 400px; min-width: 600px; min-height: 400px;">
+        </div>
+        <div class="col-sm-5" style="">
+            <p>Име на поръчитела : {{ order.first_name }} {{ order.last_name }} </p>
+            <p>Поръчани бройки : {{ order.order_count }} </p>
+            <p>Дата на поръчване : {{ order.order_date }} </p>
+            <p>Емайл на поръчитела : {{ order.delivery_info.email }} </p>
+            <p>Тел. номер на поръчитела : {{ order.delivery_info.phone }} </p>
+            <p>Адрес на доставка : {{ order.delivery_info.address }} </p>
+            <p>Име на продукта : {{ order.name }} <p>
+            <p>Уникален номер : {{ order.unique_id }} </p>
+            <p>Вид/Тип : {{ order.product_type_name }} </p>
+            <p>Производител : {{ order.brand_name }} </p>
+            <p>Модел : {{ order.model_name }} </p>
+            <p>Цена за бройка : {{ order.price }} лв. </p>
+        </div>
+        
+    </div>

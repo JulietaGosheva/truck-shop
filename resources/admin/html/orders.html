@@ -3,45 +3,45 @@
     <div class="col-sm-7">
 	    <select class="form-control col-sm-offset-5" ng-change="setOption()" ng-model="selectedOption">
             <option selected disabled value="default">Изберете опция</option>
-	        <option value="{{ ordersByUser }}">Поръчки от даден потребител</option>
-	        <option value="{{ dailyOrders }}">Поръчки от днес</option>
-	        <option value="{{ ordersByDate }}">Поръчки по дадена дата</option>
-	        <option value="{{ ordersByProductType }}">Поръчки по вид на продукт</option>
-	        <option value="{{ mostSoldProducts }}">Най-купувани продукти за тази седмица</option>
+	        <option value="{{ ordersByUserOpt }}">Поръчки от даден потребител</option>
+	        <option value="{{ dailyOrdersOpt }}">Поръчки от днес</option>
+	        <option value="{{ ordersByDateOpt }}">Поръчки по дадена дата</option>
+	        <!-- <option value="{{ ordersByProductTypeOpt }}">Поръчки по вид на продукт</option>
+	        <option value="{{ mostSoldProductsOpt }}">Най-купувани продукти за тази седмица</option> -->
 	    </select>
     </div>
     
     <div style='padding-top: 45px;'>
         
-        <div ng-show="option == ordersByUser">
+        <div ng-show="option == ordersByUserOpt">
             
             <div ng-include="'resources/admin/html/orders/user.html'"></div>
         
         </div>
         
-        <div ng-show="option == dailyOrders">
+        <div ng-show="option == dailyOrdersOpt">
         
             <div ng-include="'resources/admin/html/orders/daily.html'"></div>
         
         </div>
         
-        <div ng-show="option == ordersByDate">
+        <div ng-show="option == ordersByDateOpt">
         
             <div ng-include="'resources/admin/html/orders/date.html'"></div>
         
         </div>
         
-        <div ng-show="option == ordersByProductType">
+        <!-- <div ng-show="option == ordersByProductTypeOpt">
         
             <div ng-include="'resources/admin/html/orders/products-type.html'"></div>
         
-        </div>
+        </div> -->
         
-        <div ng-show="option == mostSoldProducts">
+        <!-- <div ng-show="option == mostSoldProductsOpt">
 
             Най-продавани продукти        
         
-        </div>
+        </div> -->
         
     </div>
 
