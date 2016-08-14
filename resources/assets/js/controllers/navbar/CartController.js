@@ -32,6 +32,12 @@
     	} else {
     		ordersUtil.retrieveUserOrdersFromCart();
     	}
+    	
+    	setInterval(function() {
+    		if ($scope.emptyCartMessage === "Няма добавени продукти към вашата количка." || location.hash === "#/cart") {
+    			$("#wait-modal").hide();
+    		}
+    	}, 5000);
     };
     
     var isCartUtilRegistered = function() {
