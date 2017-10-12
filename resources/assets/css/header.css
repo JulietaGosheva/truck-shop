@@ -1,0 +1,38 @@
+.header {
+	position: relative;
+	width: 100%;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+
+.header .logo img {
+	max-width: 250px;
+	min-width: 250px;
+	max-height: 150px;
+	min-height: 150px;
+}
+
+.header .links {
+	position: absolute;
+	top: 35px;
+	right: 0px;
+	float: right;
+}
+
+.header .links  a {
+	color: #474747;
+	padding: 15px;
+	text-decoration: none;
+}
+
+.header .links  a:hover {
+	color: blue;
+}
+
+.header .phone{
+	position: absolute;
+	top: 65px;
+	right: 0px;
+	float: right;
+	font-family: Courier New;
+}

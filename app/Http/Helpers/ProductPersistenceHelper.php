@@ -31,7 +31,7 @@ class ProductPersistenceHelper {
 			
 		$id = $request->input("id");
 	
-		$product = Products::with('productTypes', 'brands', 'models')->find($id);
+		$product = $this->findEntityByProductId($id);
 	
 		if ($product === null) {
 			$response->header(Constants::RESPONSE_HEADER, "Entity not found.");
@@ -42,6 +42,10 @@ class ProductPersistenceHelper {
 		$response->header(Constants::RESPONSE_HEADER, "Successfully retrieved data.");
 	
 		return $product;
+	}
+	
+	public function findEntityByProductId($productId) {
+		return Products::with('productTypes', 'brands', 'models')->find($productId);
 	}
 	
 	public function findEntityByUniqueId(Request $request, Response $response) {
@@ -71,7 +75,24 @@ class ProductPersistenceHelper {
 	
 		return $product;
 	}
-	
+
+	public function findProductsByNavigationItemName($navigationItemName) {
+		$dbQuery = "SELECT"
+				. " p.id, p.name, p.image_name, p.price, p.unique_id,"
+				. " b.name AS brand_name,"
+				. " pt.name AS product_type_name,"
+				. " m.name AS model_name"
+				. " FROM products p"
+				. " JOIN product_types pt ON pt.id = p.product_type_id"
+				. " JOIN brands b ON b.id = p.brand_id"
+				. " JOIN models m ON m.id = p.model_id"
+				. " JOIN producttype_to_navigationitem_mapping pt_ni ON pt_ni.product_type_id = pt.id"
+				. " JOIN navigation_items ni ON ni.id = pt_ni.navigation_item_id"
+				. " WHERE ni.name = ?";
+		
+		return DB::select($dbQuery, [$navigationItemName]);
+	}
+
 	public function findEntitiesByProductTypeIds(Request $request, Response $response) {
 		$productTypeIds = $request->input("productTypeIds");
 		$productTypeIds = explode(";", $productTypeIds);

@@ -29,7 +29,7 @@
 		$scope.isInvalidProduct = false;
 		$scope.executeRequest = jQuery.proxy(executeRequest, $scope);
 		$scope.addProductToCart = jQuery.proxy(addProductToCart, $scope);
-		$scope.host = DestinationUtil.getServerHostEndpoint();
+		$scope.host = DestinationUtil.getResourcesEndpoint();
 	};
 	
 	module.controller("DetailsController", ["$scope", "$routeParams", "$http", DetailsController]);

@@ -19,7 +19,7 @@
 		
 		var navItemUtil = registry.getReference(clientModules.getTemplateUtilName());
 		
-		$scope.host = DestinationUtil.getServerHostEndpoint();
+		$scope.host = DestinationUtil.getResourcesEndpoint();
 		
 		var navItemName = $routeParams.navItemName;
 		var navSubItemName = $routeParams.navSubItemName;

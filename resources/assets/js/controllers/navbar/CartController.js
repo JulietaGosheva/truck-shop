@@ -67,7 +67,7 @@
 			zoom: 6
 		};
     	
-    	$scope.host = DestinationUtil.getServerHostEndpoint();
+    	$scope.host = DestinationUtil.getResourcesEndpoint();
     	$scope.executeRequest = jQuery.proxy(_executeRequest, $scope);
     	$scope.removeProductFromCart = jQuery.proxy(_removeProductFromCart, $scope);
     };

@@ -9,7 +9,13 @@
  |
  */
 
-Route::get('/', function () {
+Route::get('/', 'ViewsProductsController@getAllProducts');
+
+Route::get('/products/{navigationItemName}', 'ViewsProductsController@getProductsByNavigationItemName');
+
+Route::get('/product/{id}', 'ViewsProductsController@getProductById');
+
+Route::get('/v1', function () {
     return view('index');
 });
 
@@ -17,7 +23,7 @@ Route::get("/administration",  ['middleware' => ['auth', 'role'], function() {
 	return view("admin.management");
 }]);
 
-Route::group(['prefix' => 'products/api/v1'], function() {
+Route::group(['prefix' => 'rest/products/api/v1'], function() {
 	
 	Route::get('/', 'ProductsController@findEntities');
 	
@@ -40,7 +46,7 @@ Route::group(['prefix' => 'products/api/v1'], function() {
 	Route::get('/types/{typeId}/brands/{brandId}/models', 'ModelsController@getModels');
 });
 
-Route::group(['prefix' => 'users/api/v1'], function() {
+Route::group(['prefix' => 'rest/users/api/v1'], function() {
 	Route::get('/', ['middleware' => ['auth', 'role'], 'uses' => 'UsersController@findUsers']);
 	
 	Route::post('/', ['middleware' => ['registration', 'auth', 'role'], 'uses' => 'Auth\AuthController@createUser']);
@@ -52,7 +58,7 @@ Route::group(['prefix' => 'users/api/v1'], function() {
 	Route::get('/data', 'UsersController@retrieveUserData');
 });
 
-Route::group(['prefix' => 'navigation/api/v1'], function() {
+Route::group(['prefix' => 'rest/navigation/api/v1'], function() {
 	Route::get('/', 'NavigationController@findItem');
 	
 	Route::post('/', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@createItem']);
@@ -66,7 +72,7 @@ Route::group(['prefix' => 'navigation/api/v1'], function() {
 	Route::get('/items/root', ['middleware' => ['auth', 'role'], 'uses' => 'NavigationController@getRootItems']);
 });
 
-Route::group(['prefix' => 'orders/api/v1'], function() {
+Route::group(['prefix' => 'rest/orders/api/v1'], function() {
 	//TODO: Add method for searching between two dates
 	Route::get('/', ['uses' => 'OrdersController@retrieveUserOrders']);
 	

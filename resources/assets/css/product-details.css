@@ -1,0 +1,150 @@
+.product-details {
+	width: 100%;
+	display: inline-block;
+}
+
+.product-details-images {	
+    width: 60%;
+    float: left;
+    margin-right: 25px;
+}
+
+.product-details-main-image img {
+	min-width: 100%;
+	max-width: 100%;
+    min-height: 360px;
+	max-height: 360px;
+	padding: 3px;
+	margin-bottom: 15px;
+	border: 1px solid #dddddd;
+	border-radius: 3px 3px 3px 3px;
+}
+
+.product-details-secondary-images img {
+	max-width: 20%;
+	padding: 3px;
+    border: 1px solid #dddddd;
+    border-radius: 3px 3px 3px 3px;
+}
+
+.product-details-description table {
+	width: 37%;
+	border-top: 1px solid #dddddd;
+	border-right: 1px solid #dddddd;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 5px -1px 3px #dddddd;
+}
+
+.product-details-description table tr td {
+    padding: 10px;
+    font-size: 18px;
+    font-family: Arial;
+}
+
+.product-details-description table tr td {
+    text-align: center;
+}
+
+.product-details-description table tr td.description {
+    text-align: right;
+    width: 30%;
+}
+
+.product-details-description table tr td input {
+    height: 35px;
+    font-size: 15px;
+    position: relative;
+    width: 100%;
+    color: white;
+    border: 0px;
+    outline: none;
+    background-color: #bf0000;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.product-details-description table tr td input:hover {
+    color: #868686;
+}
+
+/* Modal functionality */
+
+.productImage {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.productImage:hover {
+    opacity: 0.7;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 100px;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9); 
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 580px;
+}
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+.modal-content, #caption { 
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}

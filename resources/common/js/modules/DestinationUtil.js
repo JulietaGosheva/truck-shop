@@ -13,7 +13,7 @@
 	var registry = com.rs.registry.Registry.prototype.getInstance();
 	
 	var DestinationUtil = function() {
-		var SERVER_URL = "http://localhost/truck-shop/";
+		var SERVER_URL = "http://localhost/truck-shop/rest/";
 		
 		var USERS_ENDPOINT = SERVER_URL + "users/api/v1";
 		var ORDERS_ENDPOINT = SERVER_URL + "orders/api/v1";
@@ -68,6 +68,9 @@
 		return {
 			getServerHostEndpoint: function() {
 				return SERVER_URL;
+			},
+			getResourcesEndpoint: function() {
+				return SERVER_URL.replace("/rest", "");
 			},
 			
 			/* Product API Endpoints */

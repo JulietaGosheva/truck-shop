@@ -7,7 +7,7 @@
 	});
 	
 	$.ajax({
-        url: "http://localhost/truck-shop/users/api/v1/data",
+        url: "http://localhost/truck-shop/rest/users/api/v1/data",
         type: "GET",
         async: false,
         dataType: 'json',
