@@ -39,10 +39,11 @@
 	outline: none;
 	background-color: #bf0000;
 	border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
 }
 
 .product form input:hover {
-	color: #868686;
+	background-color: #f92020;
 }
 
 .product p.product-name {
@@ -50,7 +51,7 @@
 }
 
 .product p.product-price {
-	color: red;
-	margin-top: -7px;
-	font-size: 17px;
+	color: #bf0000;
+	margin-top: -15px;
+	font-size: 20px;
 }

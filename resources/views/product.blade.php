@@ -41,7 +41,7 @@
 						<tr>
 							<td></td>
 							<td>
-								<form>
+								<form onsubmit="addProductToCart(event, {{ $product['unique_id'] }})">
 									<input type="submit" value="Добави в количка"/>
 								</form>
 							</td>

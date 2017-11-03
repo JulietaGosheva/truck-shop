@@ -76,7 +76,7 @@ class OrdersController extends Controller {
 		
 		$cart = $session->get("cart");
 		if (($key = array_search($uniqueId, $cart)) !== false) {
-			unset($cart[$key]);
+			array_splice($cart, $key, 1);
 
 			Log::debug("Element is successfully removed.");
 

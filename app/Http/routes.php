@@ -11,9 +11,21 @@
 
 Route::get('/', 'ViewsProductsController@getAllProducts');
 
+Route::get('/login', function () {
+	return view('login');
+});
+
 Route::get('/products/{navigationItemName}', 'ViewsProductsController@getProductsByNavigationItemName');
 
 Route::get('/product/{id}', 'ViewsProductsController@getProductById');
+
+Route::get('/cart', 'ViewOrdersController@retrieveUserOrdersFromCart');
+
+Route::get('/cart/quantity', 'ViewOrdersController@retrieveUserOrdersQuantityFromCart');
+
+Route::post('/cart/{uniqueId}', 'ViewOrdersController@addProductToCart');
+
+Route::delete('/cart/{uniqueId}', 'ViewOrdersController@removeProductFromCart');
 
 Route::get('/v1', function () {
     return view('index');

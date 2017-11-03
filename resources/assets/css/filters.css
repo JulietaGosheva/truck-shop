@@ -16,19 +16,21 @@
 }
 
 .filters a:hover {
-	color: #868686;
-}
-
-.filters .filters-quantity {
+	background-color: #f92020;
 }
 
 .filters .filters-quantity  select{
 	border-radius: 3px 3px 3px 3px;
 	margin-top: 12px;
-	margin-right: 12px;
+	margin-right: 25px;
 	padding-left: 3px;
-	outline: none;
-	height: 25px;
+	height: 30px;
 	border: 0px;
 	float: right;
+	font-size: 17px;
+	font-family: Arial;
+}
+
+.filters .filters-quantity  select:hover {
+	cursor: pointer;
 }

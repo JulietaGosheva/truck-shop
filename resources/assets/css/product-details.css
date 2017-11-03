@@ -60,10 +60,11 @@
     outline: none;
     background-color: #bf0000;
     border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
 }
 
 .product-details-description table tr td input:hover {
-    color: #868686;
+    background-color: #f92020;
 }
 
 /* Modal functionality */

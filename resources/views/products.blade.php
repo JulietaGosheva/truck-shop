@@ -8,6 +8,16 @@
 		<div class="filters-quantity">
 			<form>
 				<select name="">
+					<option value="10">Volvo</option>
+					<option value="20">MAN</option>
+					<option value="50">Mercedes</option>
+					<option value="100">ZAP</option>
+				</select>
+			</form>
+		</div>
+		<div class="filters-quantity">
+			<form>
+				<select name="">
 					<option value="10">10 от 100</option>
 					<option value="20">20 от 100</option>
 					<option value="50">50 от 100</option>
@@ -29,7 +39,7 @@
 					<p class="product-name">{{ $product['name'] }}</p>
 					<p class="product-price"><strong>{{ $product['price'] }} лв.</strong></p>
 				</div>
-				<form>
+				<form onsubmit="addProductToCart(event, {{ $product['unique_id'] }})">
 					<input type="submit" value="Добави в количка"/>
 				</form>
 			</div>

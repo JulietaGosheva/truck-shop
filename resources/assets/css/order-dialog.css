@@ -1,0 +1,12 @@
+.orderDialog {
+	display: none;
+	position: fixed;
+	top: 200px; 
+	z-index: 1; 
+	padding: 25px;
+	color: white; 
+	background-color: #474747; 
+	border-radius: 3px; 
+	font-size: 18px;
+	margin-left: -15px;
+}

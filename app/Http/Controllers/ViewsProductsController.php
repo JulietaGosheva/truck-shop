@@ -15,7 +15,7 @@ class ViewsProductsController extends ProductsController {
 	function __construct() {
 		$this->persistenceHelper = new ProductPersistenceHelper();
 	}
-	
+
 	public function getAllProducts(Response $response) {
 		$products = parent::getAllEntries($response);
 

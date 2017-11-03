@@ -1,0 +1,31 @@
+.registration-table {
+	min-width: 60%;
+	max-width: 60%;
+}
+
+.registration-table tr td {
+    padding: 10px;
+    font-size: 18px;
+}
+
+.registration-table tr td input {
+	padding: 15px;
+	border: 1px solid #dddddd;
+	border-radius: 3px;
+	width: 100%;
+}
+
+.registration-table tr td input:hover {
+    border: 1px solid #4ea7f4;
+}
+
+.registration-table tr td input#registration-button {
+    border: 0;
+	color: white; 
+    cursor: pointer;
+	background-color: #bf0000;
+}
+
+.registration-table tr td input#registration-button:hover {
+    background-color: #f92020;
+}

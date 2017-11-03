@@ -135,6 +135,10 @@ class ProductPersistenceHelper {
 		$uniqueIds = $request->input("uniqueIds");
 		$uniqueIds = explode(";", $uniqueIds);
 		
+		return $this->_findEntitiesByUniqueIds($uniqueIds);
+	}
+
+	public function _findEntitiesByUniqueIds($uniqueIds) {
 		Log::debug("Requested product type ids are: [" . json_encode($uniqueIds) . "]");
 		
 		$products = Products::with('productTypes', 'brands', 'models')->whereIn("unique_id", $uniqueIds)->get();
@@ -143,7 +147,7 @@ class ProductPersistenceHelper {
 		
 		return $products;
 	}
-	
+
 	public function persistProduct(Response $response, $requestBody) {
 		DB::transaction(function() use(&$response, &$requestBody) {
 			$brand = $this->persistAndRetrieveBrandEntry($requestBody);

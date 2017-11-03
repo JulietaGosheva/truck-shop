@@ -1,0 +1,31 @@
+.login-table {
+	min-width: 60%;
+	max-width: 60%;
+}
+
+.login-table tr td {
+    padding: 10px;
+    font-size: 18px;
+}
+
+.login-table tr td input {
+	padding: 15px;
+	border: 1px solid #dddddd;
+	border-radius: 3px;
+	width: 100%;
+}
+
+.login-table tr td input:hover {
+    border: 1px solid #4ea7f4;
+}
+
+.login-table tr td input#login-button {
+    border: 0;
+	color: white; 
+    cursor: pointer;
+	background-color: #bf0000;
+}
+
+.login-table tr td input#login-button:hover {
+    background-color: #f92020;
+}
